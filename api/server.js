@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { escapeApostrophe, dateForSQL, setParamInSQL } = require('./utils.js')
+const { dateForSQL, setParamInSQL } = require('./utils.js')
 const http = require('http')
 const odbc = require('odbc')
 const url = require('url')
@@ -21,11 +21,11 @@ async function connectAndCall (req, res, data) {
     let params
 
     if (req.method === 'GET') {
-      if (path_ == '/price') {
+      if (path_ === '/price') {
         // http://localhost:3001/price?id=15333
         sql = selectPriceById
         params = [query_.id]
-      } else if (path_ == '/pricesbyperiod') {
+      } else if (path_ === '/pricesbyperiod') {
         // http://localhost:3001/pricesbyperiod?beginDate=20250115&endDate=20250215
 
         const beginDate_ = dateForSQL(query_.beginDate)
@@ -33,7 +33,7 @@ async function connectAndCall (req, res, data) {
 
         sql = selectPricesByPeriod
         params = [beginDate_, endDate_]
-      } else if (path_ == '/pricesByMonthYear') {
+      } else if (path_ === '/pricesByMonthYear') {
         // http://localhost:3001/pricesByMonthYear?year=2025&month=01
 
         const year_ = dateForSQL(query_.year)
