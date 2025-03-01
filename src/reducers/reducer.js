@@ -2,7 +2,15 @@
 export const mainReducer = (state = {}, action) => {
     switch (action.type) {
         case "INITIALISATION":
-            return action.payload
+            console.log("action : ", action);
+            const result = {
+                ...state
+                , selectedPrice : { priceObject : "defaut valeur",
+                                    priceId: action.payload.selectedPriceId}
+            }
+            console.log("state : ", result);
+            
+            return result;
 
         case "SELECTED_PRICEID":
             return {

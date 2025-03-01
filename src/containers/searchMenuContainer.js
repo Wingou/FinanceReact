@@ -1,10 +1,10 @@
 import { connect } from "react-redux"
-import SearchMenu from "../components/searchMenu"
+import {SearchMenu} from "../components/searchMenu"
 
 const mapStateToPropsForm = state => {
 
   return {
-    selectedPriceId: state.selectedPrice.id
+    selectedPriceId: state.selectedPrice.priceId
   }
 }
 

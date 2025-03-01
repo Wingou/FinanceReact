@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import {PriceIdInput, BeginDateInput, EndDateInput} from '../components/searchMenuInputs'
 // import Button from './affButton';
 import { handlePriceId } from '../actions/search';
 
-class SearchMenu extends Component {
+export class SearchMenu extends Component {
   render () {
 
+    console.log("this.props : ",this.props )
     const selectedPriceId = this.props.selectedPriceId;
     // const selectedBeginDate = this.props.selectedPrice.beginDate;
     // const selectedEndDate = this.props.selectedPrice.endDate;
@@ -13,10 +13,10 @@ class SearchMenu extends Component {
     return (
       <div>
         { selectedPriceId }
-        {/* <PriceIdInput props={selectedPriceId} onChange={(e) => { handlePriceId(e); }}/>
+       {/* <PriceIdInput props={selectedPriceId} onChange={(e) => { handlePriceId(e); }}/> */}
         <BeginDateInput />
         <EndDateInput />
-          */}
+          
 
 
 
@@ -25,6 +25,27 @@ class SearchMenu extends Component {
       </div>
     )
   }
-}
+};
 
-export default SearchMenu
+
+
+
+const PriceIdInput = () => (
+  <div>
+    PriceId : <input name='priceId' value={this.props.selectedPriceId} />
+  </div>
+)
+
+const BeginDateInput = () => (
+  <div>
+    Begin Date : <input name='beginDate'  />
+  </div>
+)
+
+const EndDateInput = () => (
+  <div>
+    End Date : <input name='endDate'  />
+  </div>
+)
+
+

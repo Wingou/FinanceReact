@@ -64,6 +64,11 @@ $> npm test
 $> npm run build
 
 
+========================
+ EXTENSIONS CHROME
+========================
+React Developer Tools
+Redux DevTools
 
 
 

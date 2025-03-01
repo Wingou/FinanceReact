@@ -8,8 +8,9 @@ import  SearchMenu from "./containers/searchMenuContainer"
 export const store = configureStore(
   {
     reducer: mainReducer
-  }
-)
+  },
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 // const fetchPersonnes = async () => {
 //   const apiUrl = "http://localhost:3001/items";
@@ -21,6 +22,12 @@ export const store = configureStore(
 // }
 
 function App() {
+
+
+
+
+
+
 
   // const { isLoading, data, isError } = useQuery("personnes", fetchPersonnes);
 
@@ -40,9 +47,7 @@ function App() {
   store.dispatch({
     type: "INITIALISATION",
     payload: {
-      selectedPrice : {
-          id : -1
-      }
+      selectedPriceId : -1
     }
   })
 
@@ -50,7 +55,7 @@ function App() {
     <Provider store={store}>
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">AD directory</h1>
+          <h1 className="App-title">FINANCE REACT</h1>
         </header>
         
         <SearchMenu />
