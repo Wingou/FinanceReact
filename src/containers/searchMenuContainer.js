@@ -4,7 +4,9 @@ import {SearchMenu} from "../components/searchMenu"
 const mapStateToPropsForm = state => {
 
   return {
-    selectedPriceId: state.selectedPrice.priceId
+    selectedYear: state.selectedYear,
+    selectedMonth: state.selectedMonth,
+    prices : state.prices
   }
 }
 

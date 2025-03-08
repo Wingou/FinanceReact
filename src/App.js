@@ -3,6 +3,7 @@ import { Provider } from "react-redux"
 import { configureStore } from "@reduxjs/toolkit"
 import { mainReducer } from "../src/reducers/reducer"
 import  SearchMenu from "./containers/searchMenuContainer"
+import { useQuery } from "react-query";
 // import { useQuery } from "react-query"
 
 export const store = configureStore(
@@ -12,44 +13,38 @@ export const store = configureStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-// const fetchPersonnes = async () => {
-//   const apiUrl = "http://localhost:3001/items";
-//   return await fetch(apiUrl)
-//     .then(response => response.json())
-//     .then(data => data
-//     )
-//     .catch(error => console.error(error));
-// }
+const fetchPricesByCurrentMonth = async () => {
+  const apiUrl = "http://localhost:3001/pricesByMonthYear?year=2025&month=1";
+  return await fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => data
+    )
+    .catch(error => console.error(error));
+}
 
 function App() {
 
 
+  const { isLoading, data, isError } = useQuery("personnes", fetchPricesByCurrentMonth);
 
-
-
-
-
-  // const { isLoading, data, isError } = useQuery("personnes", fetchPersonnes);
-
-  // if (isLoading) { return <div className="App">Chargement...</div> }
-
-  // if (isError) { return <div className="App">Erreur !</div> }
-
-  // store.dispatch({
-  //   type: "INITIALISATION",
-  //   payload: {
-  //     isDisplayForm: false,
-  //     personne: data,
-  //     personneInput: personneVoid
-  //   }
-  // })
+  if (isLoading) { return <div className="App">Loading...</div> }
+  if (isError) { return <div className="App">Error !</div> }
 
   store.dispatch({
     type: "INITIALISATION",
     payload: {
-      selectedPriceId : -1
+      prices: data.prices,
+      selectedYear : data.selectedYear,
+      selectedMonth : data.selectedMonth
     }
   })
+
+  // store.dispatch({
+  //   type: "INITIALISATION",
+  //   payload: {
+  //     selectedPriceId : -1
+  //   }
+  // })
 
   return (
     <Provider store={store}>

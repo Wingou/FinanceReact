@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 require('dotenv').config()
 const { dateForSQL, setParamInSQL } = require('./utils.js')
 const http = require('http')
@@ -7,8 +8,12 @@ const url = require('url')
 const {
   selectPriceById,
   selectPricesByPeriod,
-  selectPricesByYearMonth
+  selectPricesByYearMonth,
+  getCategories,
+  getObjects
 } = require('./queries')
+
+const { parsePrices, parseCategories, parseObjects } = require('./parsers')
 
 async function connectAndCall (req, res, data) {
   const cnx = await odbc.connect('DSN=financereact')
@@ -41,27 +46,29 @@ async function connectAndCall (req, res, data) {
 
         sql = selectPricesByYearMonth
         params = [year_, month_]
+        parser = parsePrices
+      } else if (path_ === '/getCategories') {
+        // http://localhost:3001/getCategories
+
+        sql = getCategories
+        params = []
+        parser = parseCategories
+      } else if (path_ === '/getObjects') {
+        // http://localhost:3001/getObjects
+
+        sql = getObjects
+        parser = parseObjects
       }
     }
     if (path_ === '/favicon.ico') {
       res.writeHead(200, { 'Content-Type': 'image/x-icon' })
       return res.end()
     }
-    const rows = await cnx.query(setParamInSQL(sql, params))
-    const newRows = rows.map(res => {
-      const prix = {
-        prix: res.prix,
-        commentaire: res.commentaire,
-        dateAction: res.DateAction
-      }
 
-      const result = {
-        id: res.id,
-        prix
-      }
-      return result
-    })
-    const jsonData = JSON.stringify(newRows)
+    const rows = await cnx.query(setParamInSQL(sql, params))
+    const result = parser(rows, params)
+
+    const jsonData = JSON.stringify(result)
     res.setHeader('Content-Type', 'application/json')
     res.statusCode = 200
     res.end(jsonData)
