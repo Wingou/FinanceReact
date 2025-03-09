@@ -1,62 +1,37 @@
-import { Provider } from "react-redux"
-// import { personneVoid } from "./models/constante"
-import { configureStore } from "@reduxjs/toolkit"
-import { mainReducer } from "../src/reducers/reducer"
-import  SearchMenu from "./containers/searchMenuContainer"
-import { useQuery } from "react-query";
-// import { useQuery } from "react-query"
+import { useDispatch, useSelector } from 'react-redux'
+import SearchMenu from './containers/searchMenuContainer'
+import { useEffect } from 'react'
 
-export const store = configureStore(
-  {
-    reducer: mainReducer
-  },
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+function App () {
+  const selectedYear = useSelector(state => state.selectedYear)
+  const selectedMonth = useSelector(state => state.selectedMonth)
+  const dispatch = useDispatch()
 
-const fetchPricesByCurrentMonth = async () => {
-  const apiUrl = "http://localhost:3001/pricesByMonthYear?year=2025&month=1";
-  return await fetch(apiUrl)
-    .then(response => response.json())
-    .then(data => data
-    )
-    .catch(error => console.error(error));
-}
-
-function App() {
-
-
-  const { isLoading, data, isError } = useQuery("personnes", fetchPricesByCurrentMonth);
-
-  if (isLoading) { return <div className="App">Loading...</div> }
-  if (isError) { return <div className="App">Error !</div> }
-
-  store.dispatch({
-    type: "INITIALISATION",
-    payload: {
-      prices: data.prices,
-      selectedYear : data.selectedYear,
-      selectedMonth : data.selectedMonth
+  useEffect(() => {
+    const fetchData = async () => {
+      const apiUrl = `http://localhost:3001/pricesByMonthYear?year=${selectedYear}&month=${selectedMonth}`
+      const response = await fetch(apiUrl)
+      const data = await response.json()
+      dispatch({
+        type: 'SET_DATA',
+        payload: {
+          prices: data.prices,
+          selectedYear: data.selectedYear,
+          selectedMonth: data.selectedMonth
+        }
+      })
     }
-  })
-
-  // store.dispatch({
-  //   type: "INITIALISATION",
-  //   payload: {
-  //     selectedPriceId : -1
-  //   }
-  // })
+    fetchData()
+  }, [selectedYear, selectedMonth, dispatch])
 
   return (
-    <Provider store={store}>
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">FINANCE REACT</h1>
-        </header>
-        
-        <SearchMenu />
-      </div>
-    </Provider>
+    <div className='App'>
+      <header className='App-header'>
+        <h1 className='App-title'>FINANCE REACT</h1>
+      </header>
+      <SearchMenu />
+    </div>
   )
 }
 
-export default App;
+export default App
