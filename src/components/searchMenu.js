@@ -22,18 +22,20 @@ const PricesView = ({ prices }) => {
           <th style={{ border: '1px solid black' }}> CATEGORIE </th>
           <th style={{ border: '1px solid black' }}> OBJET </th>
           <th style={{ border: '1px solid black' }}> PRIX </th>
+          <th style={{ border: '1px solid black' }}> COMMENTAIRE </th>
           <th style={{ border: '1px solid black' }}> TEMPLATE </th>
         </tr>
       </thead>
       <tbody>
         {prices.map((p, index) => (
           <tr key={index}>
-            <td style={{ border: '1px solid black' }}>{p.id}</td>
-            <td style={{ border: '1px solid black' }}>{p.dateAction}</td>
+            <td style={{ border: '1px solid black' }}>{p.PriceId}</td>
+            <td style={{ border: '1px solid black' }}>{p.actionDate}</td>
             <td style={{ border: '1px solid black' }}></td>
-            <td style={{ border: '1px solid black' }}>{p.id_Objet}</td>
-            <td style={{ border: '1px solid black' }}>{p.prix}</td>
-            <td style={{ border: '1px solid black' }}>{p.template}</td>
+            <td style={{ border: '1px solid black' }}>{p.objectId}</td>
+            <td style={{ border: '1px solid black' }}>{p.price}</td>
+            <td style={{ border: '1px solid black' }}>{p.comment}</td>
+            <td style={{ border: '1px solid black' }}>{p.priceTemplate}</td>
           </tr>
         ))}
       </tbody>

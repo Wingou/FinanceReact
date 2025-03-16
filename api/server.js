@@ -41,10 +41,16 @@ async function connectAndCall (req, res, data) {
       } else if (path_ === '/pricesByMonthYear') {
         // http://localhost:3001/pricesByMonthYear?year=2025&month=01
 
+
+          
+
         const year_ = dateForSQL(query_.year)
         const month_ = dateForSQL(query_.month)
 
+        // console.log("ICI-------", year_)
+
         sql = selectPricesByYearMonth
+        // console.log("ICI sql-------", sql)
         params = [year_, month_]
         parser = parsePrices
       } else if (path_ === '/getCategories') {
@@ -55,7 +61,7 @@ async function connectAndCall (req, res, data) {
         parser = parseCategories
       } else if (path_ === '/getObjects') {
         // http://localhost:3001/getObjects
-
+        params = []
         sql = getObjects
         parser = parseObjects
       }
@@ -65,13 +71,19 @@ async function connectAndCall (req, res, data) {
       return res.end()
     }
 
+
+      console.log("path:", path_)
+      console.log("sql:", sql)
+      console.log("params:", params)
+
     const rows = await cnx.query(setParamInSQL(sql, params))
-    const result = parser(rows, params)
+    const result = await parser(rows, params)
 
     const jsonData = JSON.stringify(result)
+    console.log(" jsonData:",  jsonData)
     res.setHeader('Content-Type', 'application/json')
     res.statusCode = 200
-    res.end(jsonData)
+    await res.end(jsonData)
   } catch (error) {
     console.error(error)
   } finally {
