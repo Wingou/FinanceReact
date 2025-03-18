@@ -1,54 +1,53 @@
-export const mainReducer = (state = {}, action) => {
-  // console.log('PASSE PAR REDUCER')
-   console.log('type : ', action.type)
-   console.log('payload : ', action.payload)
+import { mockObjs, mockCats } from '../mocks/references'
 
+export const mainReducer = (state = {}, action) => {
   switch (action.type) {
     case '@@INIT':
       return {
         selectedYear: 2025,
         selectedMonth: 1,
         prices: [],
-        objects : [],
-        categories : []
+        objsAll: mockObjs,
+        catsAll: mockCats
       }
 
-    case 'SET_CATEGORIES':{
-      const result = {
-        ...state,
-        categories : action.payload.categories
-      }
-      return result;
-    }
-    case 'SET_OBJECTS':{
-      const result = {
-        ...state,
-        objects : action.payload.objects
-      }
-      return result;
-    }
     case 'SET_DATA': {
-      const result = {
+      const prices = action.payload.prices.map(p => {
+        const obj = state.objsAll.find(o => o.id === p.objectId)
+        const cat = state.catsAll.find(c => obj.catId === c.id)
+        return {
+          ...p,
+          objName: obj.objName,
+          catName: cat.catName,
+          catId: cat.id
+        }
+      })
+      const catNames = prices.map(p => p.catName)
+      const objNames = prices.map(p => p.objName)
+      return {
         ...state,
-        prices: action.payload.prices
+        prices: prices,
+        catsOn: [...new Set(catNames)].sort((a, b) =>
+          a.toLowerCase().localeCompare(b.toLowerCase())
+        ),
+        objsOn: [...new Set(objNames)].sort((a, b) =>
+          a.toLowerCase().localeCompare(b.toLowerCase())
+        )
       }
-      return result
     }
 
     case 'UPDATE_MONTH': {
-      const result = {
+      return {
         ...state,
         selectedMonth: action.payload
       }
-      return result
     }
 
     case 'UPDATE_YEAR': {
-      const result = {
+      return {
         ...state,
         selectedYear: action.payload
       }
-      return result
     }
 
     default:

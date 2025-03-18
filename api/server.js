@@ -4,7 +4,6 @@ const { dateForSQL, setParamInSQL } = require('./utils.js')
 const http = require('http')
 const odbc = require('odbc')
 const url = require('url')
-
 const {
   selectPriceById,
   selectPricesByPeriod,
@@ -12,7 +11,6 @@ const {
   getCategories,
   getObjects
 } = require('./queries')
-
 const { parsePrices, parseCategories, parseObjects } = require('./parsers')
 
 async function connectAndCall (req, res, data) {
@@ -20,11 +18,9 @@ async function connectAndCall (req, res, data) {
   const parsedUrl = url.parse(req.url, true)
   const query_ = parsedUrl.query
   const path_ = parsedUrl.pathname
-
   try {
     let sql
     let params
-
     if (req.method === 'GET') {
       if (path_ === '/price') {
         // http://localhost:3001/price?id=15333
@@ -32,30 +28,19 @@ async function connectAndCall (req, res, data) {
         params = [query_.id]
       } else if (path_ === '/pricesbyperiod') {
         // http://localhost:3001/pricesbyperiod?beginDate=20250115&endDate=20250215
-
         const beginDate_ = dateForSQL(query_.beginDate)
         const endDate_ = dateForSQL(query_.endDate)
-
         sql = selectPricesByPeriod
         params = [beginDate_, endDate_]
       } else if (path_ === '/pricesByMonthYear') {
         // http://localhost:3001/pricesByMonthYear?year=2025&month=01
-
-
-          
-
         const year_ = dateForSQL(query_.year)
         const month_ = dateForSQL(query_.month)
-
-        // console.log("ICI-------", year_)
-
         sql = selectPricesByYearMonth
-        // console.log("ICI sql-------", sql)
         params = [year_, month_]
         parser = parsePrices
       } else if (path_ === '/getCategories') {
         // http://localhost:3001/getCategories
-
         sql = getCategories
         params = []
         parser = parseCategories
@@ -70,17 +55,9 @@ async function connectAndCall (req, res, data) {
       res.writeHead(200, { 'Content-Type': 'image/x-icon' })
       return res.end()
     }
-
-
-      console.log("path:", path_)
-      console.log("sql:", sql)
-      console.log("params:", params)
-
     const rows = await cnx.query(setParamInSQL(sql, params))
     const result = await parser(rows, params)
-
     const jsonData = JSON.stringify(result)
-    console.log(" jsonData:",  jsonData)
     res.setHeader('Content-Type', 'application/json')
     res.statusCode = 200
     await res.end(jsonData)
@@ -92,12 +69,10 @@ async function connectAndCall (req, res, data) {
 }
 
 const port = process.env.PORT
-
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-
   if (req.method === 'OPTIONS') {
     res.statusCode = 200
     res.end()

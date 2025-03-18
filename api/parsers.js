@@ -2,9 +2,9 @@ function parseCategories (rows, _) {
   return {
     cat: rows.map(resCat => {
       return {
-        catId: resCat.id,
-        cat: resCat.Categorie,
-        catTemplate: resCat.template
+        id: resCat.id,
+        catName: resCat.Categorie,
+        template: resCat.template
       }
     })
   }
@@ -12,12 +12,12 @@ function parseCategories (rows, _) {
 
 function parseObjects (rows, _) {
   return {
-    obj : rows.map(resObj => {
+    obj: rows.map(resObj => {
       return {
-        objId: resObj.id,
-        objcatId: resObj.id_categorie,
-        obj: resObj.Objet,
-        objTemplate: resObj.template
+        id: resObj.id,
+        catId: resObj.id_categorie,
+        objName: resObj.Objet,
+        template: resObj.template
       }
     })
   }
@@ -26,12 +26,12 @@ function parseObjects (rows, _) {
 function parsePrices (rows, params) {
   const newRows = rows.map(res => {
     const price = {
-      priceId: res.id,
-      price: res.prix,
-      comment : res.commentaire,
+      id: res.id,
+      priceValue: res.prix,
+      comment: res.commentaire,
       actionDate: res.DateAction,
       objectId: res.id_Objet,
-      priceTemplate: res.template
+      template: res.template
     }
     return price
   })
