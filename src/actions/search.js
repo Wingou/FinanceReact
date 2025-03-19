@@ -15,3 +15,16 @@ export const handleUpdateMonth = e => {
   }
   store.dispatch(action)
 }
+
+export const handleFilteredCat = e => {
+  console.log('e name:', e.target.name)
+  console.log('e checked :', e.target.checked)
+  const action = {
+    type: 'UPDATE_FILTERED_CAT',
+    payload: {
+      catId: Number(e.target.name),
+      checked: e.target.checked
+    }
+  }
+  store.dispatch(action)
+}

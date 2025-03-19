@@ -1,39 +1,72 @@
 import React from 'react'
+import { formatPrice, withCurrency } from '../utils/helper'
 
-export const Table = ({ prices, activatedCats }) => {
-  console.log ("activatedCats", activatedCats)
+export const Table = ({ prices, catNames }) => {
   return (
-    <table style={{ border: '1px solid black' }}>
+    <table
+      style={{
+        border: '1px solid black',
+        margin: '2px',
+        borderSpacing: '0px',
+        fontFamily: 'verdana',
+        fontSize: '12px'
+      }}
+    >
       <thead>
         <tr key='0'>
-          <th style={{ border: '1px solid black' }}> DATE </th>
-          <th style={{ border: '1px solid black' }}> OBJET </th>
-          {activatedCats.map(activatedCatName => {
+          <th key='th_date' style={{ border: '1px solid black' }}>
+            {' '}
+            DATE{' '}
+          </th>
+          <th key='th_obj' style={{ border: '1px solid black' }}>
+            {' '}
+            OBJET{' '}
+          </th>
+          {catNames.map((activatedCatName, index) => {
             return (
-              <th style={{ border: '1px solid black' }}>{activatedCatName}</th>
+              <th key={index} style={{ border: '1px solid black' }}>
+                {activatedCatName}
+              </th>
             )
           })}
 
-          <th style={{ border: '1px solid black' }}> COMMENTAIRE </th>
+          <th key='th_comment' style={{ border: '1px solid black' }}>
+            {' '}
+            COMMENTAIRE{' '}
+          </th>
         </tr>
       </thead>
       <tbody>
         {prices.map((p, index) => {
           return (
             <tr key={index}>
-              <td style={{ border: '1px solid black' }}>{p.actionDate}</td>
-              <td style={{ border: '1px solid black' }}>{p.objName}</td>
-              {activatedCats.map(activatedCatName => {
+              <td key='td_date' style={{ border: '1px solid black' }}>
+                {p.actionDate}
+              </td>
+              <td key='td_obj' style={{ border: '1px solid black' }}>
+                {p.objName}
+              </td>
+              {catNames.map((activatedCatName, index) => {
                 return (
-                  <td style={{ border: '1px solid black' }}>
-                    {activatedCatName === p.catName ? p.priceValue : ''}
+                  <td
+                    key={index}
+                    style={{
+                      border: '1px solid black',
+                      textAlign: 'right',
+                      paddingRight: '5px'
+                    }}
+                  >
+                    {activatedCatName === p.catName
+                      ? formatPrice(p.priceValue)
+                      : ''}
                   </td>
                 )
               })}
-              <td style={{ border: '1px solid black' }}>{p.comment}</td>
+              <td key='td_comment' style={{ border: '1px solid black' }}>
+                {p.comment}
+              </td>
             </tr>
           )
-           
         })}
       </tbody>
     </table>

@@ -1,4 +1,5 @@
 import { mockObjs, mockCats } from '../mocks/references'
+import { formatDate } from '../utils/helper'
 
 export const mainReducer = (state = {}, action) => {
   switch (action.type) {
@@ -17,21 +18,27 @@ export const mainReducer = (state = {}, action) => {
         const cat = state.catsAll.find(c => obj.catId === c.id)
         return {
           ...p,
+          actionDate: formatDate(p.actionDate),
           objName: obj.objName,
           catName: cat.catName,
           catId: cat.id
         }
       })
       const catNames = prices.map(p => p.catName)
+      const activatedCats_ = [...new Set(catNames)]
+      const catsAll_ = state.catsAll.map(cat => {
+        return {
+          ...cat,
+          activated: activatedCats_.includes(cat.catName)
+        }
+      })
       const objNames = prices.map(p => p.objName)
       return {
         ...state,
+        catsAll: catsAll_,
         prices: prices,
-        activatedCats: [...new Set(catNames)].sort((a, b) =>
-          a.toLowerCase().localeCompare(b.toLowerCase())
-        ),
         activedObjs: [...new Set(objNames)].sort((a, b) =>
-          a.toLowerCase().localeCompare(b.toLowerCase())
+          a.localeCompare(b, 'fr', { sensitivity: 'base' })
         )
       }
     }
@@ -47,6 +54,20 @@ export const mainReducer = (state = {}, action) => {
       return {
         ...state,
         selectedYear: action.payload
+      }
+    }
+
+    case 'UPDATE_FILTERED_CAT': {
+      const { checked, catId } = action.payload
+      const catsAll_ = state.catsAll.map(c => {
+        return {
+          ...c,
+          filtered: c.id === catId ? checked : c.filtered
+        }
+      })
+      return {
+        ...state,
+        catsAll: catsAll_
       }
     }
 
