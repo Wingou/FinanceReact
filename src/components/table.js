@@ -1,29 +1,39 @@
 import React from 'react'
 
-export const Table = ({ prices }) => {
+export const Table = ({ prices, activatedCats }) => {
+  console.log ("activatedCats", activatedCats)
   return (
     <table style={{ border: '1px solid black' }}>
       <thead>
         <tr key='0'>
           <th style={{ border: '1px solid black' }}> DATE </th>
-          <th style={{ border: '1px solid black' }}> CATEGORIE </th>
           <th style={{ border: '1px solid black' }}> OBJET </th>
-          <th style={{ border: '1px solid black' }}> PRIX </th>
+          {activatedCats.map(activatedCatName => {
+            return (
+              <th style={{ border: '1px solid black' }}>{activatedCatName}</th>
+            )
+          })}
+
           <th style={{ border: '1px solid black' }}> COMMENTAIRE </th>
         </tr>
       </thead>
       <tbody>
         {prices.map((p, index) => {
-          const a = (
+          return (
             <tr key={index}>
               <td style={{ border: '1px solid black' }}>{p.actionDate}</td>
-              <td style={{ border: '1px solid black' }}>{p.catName}</td>
               <td style={{ border: '1px solid black' }}>{p.objName}</td>
-              <td style={{ border: '1px solid black' }}>{p.priceValue}</td>
+              {activatedCats.map(activatedCatName => {
+                return (
+                  <td style={{ border: '1px solid black' }}>
+                    {activatedCatName === p.catName ? p.priceValue : ''}
+                  </td>
+                )
+              })}
               <td style={{ border: '1px solid black' }}>{p.comment}</td>
             </tr>
           )
-          return a
+           
         })}
       </tbody>
     </table>

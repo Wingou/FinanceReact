@@ -27,10 +27,10 @@ export const mainReducer = (state = {}, action) => {
       return {
         ...state,
         prices: prices,
-        catsOn: [...new Set(catNames)].sort((a, b) =>
+        activatedCats: [...new Set(catNames)].sort((a, b) =>
           a.toLowerCase().localeCompare(b.toLowerCase())
         ),
-        objsOn: [...new Set(objNames)].sort((a, b) =>
+        activedObjs: [...new Set(objNames)].sort((a, b) =>
           a.toLowerCase().localeCompare(b.toLowerCase())
         )
       }

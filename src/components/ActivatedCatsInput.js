@@ -1,10 +1,10 @@
 import React from 'react'
 
-export const CatsOnInput = ({ catsOn }) => {
+export const ActivatedCatsInput = ({ activatedCats }) => {
   const result = (
     <div>
-      CatsOn :
-      {catsOn.map((c, index) => {
+      activatedCats :
+      {activatedCats.map((c, index) => {
         return (
           <label>
             {c} <input type='checkbox' />

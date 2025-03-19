@@ -6,8 +6,8 @@ const mapStateToPropsForm = state => {
     selectedYear: state.selectedYear,
     selectedMonth: state.selectedMonth,
     prices: state.prices,
-    catsOn: state.catsOn,
-    objsOn: state.objsOn
+    activatedCats: state.activatedCats,
+    activedObjs: state.activedObjs
   }
 }
 
