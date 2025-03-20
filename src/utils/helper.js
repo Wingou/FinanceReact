@@ -4,5 +4,10 @@ export const formatDate = d => {
 }
 
 export const formatPrice = p => {
+  return p!==0 ? p.toFixed(2) + ' €' : ''
+}
+
+export const formatPriceWithZero = p => {
   return p.toFixed(2) + ' €'
 }
+

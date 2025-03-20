@@ -9,7 +9,7 @@ export const ActivatedCatsInput = ({ activatedCats }) => {
         margin: '2px',
         borderSpacing: '0px',
         fontFamily: 'verdana',
-        fontSize: '12px'
+        fontSize: '10px'
       }}
     >
       {activatedCats.map((c, index) => {

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import TableView from './containers/tableView'
 import { useEffect } from 'react'
+import "./App.css";
 
 function App () {
   const selectedYear = useSelector(state => state.selectedYear)
@@ -86,9 +87,17 @@ function App () {
   return (
     <div className='App'>
       <header className='App-header'>
-        <h1 className='App-title'>FINANCE REACT</h1>
+        <h3 className='App-title'>FINANCE REACT</h3>
+        
       </header>
       <TableView />
+
+      <footer>
+      <div style={{textAlign:'center', 
+              fontFamily: 'verdana',
+              fontSize: '10px'
+            }} className='App-title'> - FINANCE REACT - March 2025 - </div>
+      </footer>
     </div>
   )
 }
