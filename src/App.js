@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
-import TableView from './containers/tableView'
 import { useEffect } from 'react'
-import "./App.css";
+import './App.css'
+import BoardViewContainer from './containers/boardViewContainer'
 
 function App () {
   const selectedYear = useSelector(state => state.selectedYear)
@@ -14,18 +14,15 @@ function App () {
         const apiPrices = `http://localhost:3001/pricesByMonthYear?year=${selectedYear}&month=${selectedMonth}`
         await fetch(apiPrices)
           .then(respPrices => {
-            const b = respPrices.json()
-            return b
+            return respPrices.json()
           })
           .then(rsPrices => {
-            const a = dispatch({
-              type: 'SET_DATA',
+            return dispatch({
+              type: 'SET_PRICES',
               payload: {
                 prices: rsPrices.prices
               }
             })
-
-            return a
           })
       }
       fetchPrices()
@@ -42,8 +39,8 @@ function App () {
   //       await fetch(apiCat)
   //         .then(respCat => respCat.json())
   //         .then(rsCat => {
-  //           console.log('rsCategories : ', rsCat)
-  //           console.log('rsCat complet:', JSON.stringify(rsCat, null, 2))
+  //           log('rsCategories : ', rsCat)
+  //           log('rsCat complet:', JSON.stringify(rsCat, null, 2))
   //           const c = dispatch({
   //             type: 'SET_CATEGORIES',
   //             payload: {
@@ -57,7 +54,7 @@ function App () {
 
   //     setCat()
   //   } catch (error) {
-  //     console.log('error getCategories : ', error)
+  //     log('error getCategories : ', error)
   //   }
   // }, [])
 
@@ -80,7 +77,7 @@ function App () {
 
   //     setObj()
   //   } catch (error) {
-  //     console.log('error getObjects : ', error)
+  //     log('error getObjects : ', error)
   //   }
   // }, [])
 
@@ -88,15 +85,10 @@ function App () {
     <div className='App'>
       <header className='App-header'>
         <h3 className='App-title'>FINANCE REACT</h3>
-        
       </header>
-      <TableView />
-
+      <BoardViewContainer />
       <footer>
-      <div style={{textAlign:'center', 
-              fontFamily: 'verdana',
-              fontSize: '10px'
-            }} className='App-title'> - FINANCE REACT - March 2025 - </div>
+        <div className='App-footer'>- FINANCE REACT - March 2025 -</div>
       </footer>
     </div>
   )

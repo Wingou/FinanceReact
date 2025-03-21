@@ -17,8 +17,6 @@ export const handleUpdateMonth = e => {
 }
 
 export const handleFilteredCat = e => {
-  // console.log('e name:', e.target.name)
-  // console.log('e checked :', e.target.checked)
   const action = {
     type: 'UPDATE_FILTERED_CAT',
     payload: {

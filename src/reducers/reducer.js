@@ -8,14 +8,14 @@ export const mainReducer = (state = {}, action) => {
         selectedYear: 2025,
         selectedMonth: 1,
         prices: [],
-        objsAll: mockObjs,
-        catsAll: mockCats
+        objects : mockObjs,
+        categories: mockCats
       }
 
-    case 'SET_DATA': {
+    case 'SET_PRICES': {
       const prices = action.payload.prices.map(p => {
-        const obj = state.objsAll.find(o => o.id === p.objectId)
-        const cat = state.catsAll.find(c => obj.catId === c.id)
+        const obj = state.objects.find(o => o.id === p.objectId)
+        const cat = state.categories.find(c => obj.catId === c.id)
         return {
           ...p,
           actionDate: formatDate(p.actionDate),
@@ -25,21 +25,17 @@ export const mainReducer = (state = {}, action) => {
         }
       })
       const catNames = prices.map(p => p.catName)
-      const activatedCats_ = [...new Set(catNames)]
-      const catsAll_ = state.catsAll.map(cat => {
+      const activatedCats = [...new Set(catNames)]
+      const categories = state.categories.map(cat => {
         return {
           ...cat,
-          activated: activatedCats_.includes(cat.catName)
+          activated: activatedCats.includes(cat.catName)
         }
       })
-      const objNames = prices.map(p => p.objName)
       return {
         ...state,
-        catsAll: catsAll_,
-        prices: prices,
-        activedObjs: [...new Set(objNames)].sort((a, b) =>
-          a.localeCompare(b, 'fr', { sensitivity: 'base' })
-        )
+        categories,
+        prices
       }
     }
 
@@ -59,7 +55,7 @@ export const mainReducer = (state = {}, action) => {
 
     case 'UPDATE_FILTERED_CAT': {
       const { checked, catId } = action.payload
-      const catsAll_ = state.catsAll.map(c => {
+      const categories = state.categories.map(c => {
         return {
           ...c,
           filtered: c.id === catId ? checked : c.filtered
@@ -67,7 +63,7 @@ export const mainReducer = (state = {}, action) => {
       })
       return {
         ...state,
-        catsAll: catsAll_
+        categories
       }
     }
 
