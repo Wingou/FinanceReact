@@ -32,11 +32,16 @@ const TableHeader = ({ props: catNames_ }) => {
 
 const TableTotal = ({ props }) => {
   const { activatedCats: activatedCats_, catNames: catNames_ } = props
+  const recetteAmount= activatedCats_.reduce( (acc, cats) =>  cats.filtered ? acc + cats.recette : acc ,0)
+  const depenseAmount= activatedCats_.reduce( (acc, cats) =>  cats.filtered ? acc + cats.depense : acc ,0)
+  const totalAmount= recetteAmount + depenseAmount
   return (
     <tbody>
       <tr key={'tr_recette'}>
         <td className='SumTitleCell' colSpan={2}>Recette</td>
-        <td> </td>
+        <td className={'moneyCell ' + (recetteAmount < 0 ? 'negative' : 'positive')}>
+                  {formatPrice(recetteAmount)}
+            </td>
         {catNames_.map(catName => {
           const priceOfCat = activatedCats_.find(
             c => catName === c.catName
@@ -51,7 +56,9 @@ const TableTotal = ({ props }) => {
       </tr>
       <tr key={'tr_depense'}>
         <td className='SumTitleCell' colSpan={2}>Dépense</td>
-        <td> </td>
+        <td className={'moneyCell ' + (depenseAmount < 0 ? 'negative' : 'positive')}>
+                  {formatPrice(depenseAmount)}
+            </td>
         {catNames_.map(catName => {
           const priceOfCat = activatedCats_.find(
             c => catName === c.catName
@@ -67,17 +74,11 @@ const TableTotal = ({ props }) => {
       </tr>
       <tr key={'tr_total'}>
         <td className='SumTitleCell totalBkgCell' colSpan={2}>Total (D-R)</td>
-          {console.log("Activateds :", activatedCats_)}
-          
-            <td>
-                 { activatedCats_.reduce( (acc, cats) => {return acc + cats.total} ,0)}
+              
+            <td className={'moneyCell totalBkgCell ' + (totalAmount < 0 ? 'negative' : 'positive')}>
+                  {formatPrice(totalAmount)}
             </td>
-          
 
-        
-        
-        
-        
         
         {catNames_.map(catName => {
           const priceOfCat = activatedCats_.find(
@@ -97,6 +98,7 @@ const TableTotal = ({ props }) => {
 
 const TableBody = ({ props }) => {
   const { prices: prices_, catNames: catNames_ } = props
+  // console.log("prices_:",prices_ )
   return (
     <tbody>
       {prices_.map((p, index) => {
@@ -108,7 +110,10 @@ const TableBody = ({ props }) => {
             <td key='td_obj'>
               {p.objName}
             </td>
-            <td> </td>
+            <td
+                  key={index}
+                  className={'moneyCell ' + (p.priceValue < 0 ? 'negative' : 'positive')}
+                > {formatPrice(p.priceValue)} </td>
             {catNames_.map((activatedCatName, index) => {
               const priceOfCat =
                 activatedCatName === p.catName ? p.priceValue : 0
