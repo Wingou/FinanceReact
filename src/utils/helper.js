@@ -10,3 +10,10 @@ export const formatPrice = p => {
 export const formatPriceWithZero = p => {
   return p.toFixed(2) + ' €'
 }
+
+export const convertDate = d => 
+  {
+    const date = new Date(d)
+    return date.toLocaleDateString('fr-FR')
+
+  }

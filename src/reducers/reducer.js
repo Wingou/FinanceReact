@@ -1,16 +1,34 @@
-import { mockObjs, mockCats } from '../mocks/references'
+import { mockCats } from '../mocks/getCategories'
+import { mockObjs } from '../mocks/getObjects'
+import { mockYears } from '../mocks/getYears'
 import { formatDate } from '../utils/helper'
 
 export const mainReducer = (state = {}, action) => {
   switch (action.type) {
     case '@@INIT':
+      {
+      const currentYear = new Date().getFullYear()
+      const currentMonth = new Date().getMonth()+1
       return {
-        selectedYear: 2025,
-        selectedMonth: 1,
         prices: [],
-        objects : mockObjs,
-        categories: mockCats
-      }
+        objects: mockObjs,
+        categories: mockCats,
+        years: mockYears.map((y)=> {return { year:y, filtered: y===currentYear }}),
+        months: [
+          'Janvier',
+          'Février',
+          'Mars',
+          'Avril',
+          'Mai',
+          'Juin',
+          'Juillet',
+          'Août',
+          'Septembre',
+          'Octobre',
+          'Novembre',
+          'Décembre'
+        ].map((m, index)=> {return { name : m, month:index+1, filtered:index+1===currentMonth}})
+      }}
 
     case 'SET_PRICES': {
       const prices = action.payload.prices.map(p => {
@@ -24,18 +42,21 @@ export const mainReducer = (state = {}, action) => {
           catId: cat.id
         }
       })
-      const catNames = prices.map(p => p.catName)
-      const activatedCats = [...new Set(catNames)]
+      const activatedCatIds = [...new Set(prices.map(p => p.catId))]
       const categories = state.categories.map(cat => {
         return {
           ...cat,
-          activated: activatedCats.includes(cat.catName)
+          activated: activatedCatIds.includes(cat.id),
+          filtered: activatedCatIds.includes(cat.id)
         }
       })
+
+      
+      
       return {
         ...state,
-        categories,
-        prices
+        prices,
+        categories
       }
     }
 

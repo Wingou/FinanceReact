@@ -1,10 +1,10 @@
 function parseCategories (rows, _) {
   return {
-    cat: rows.map(resCat => {
+    cat: rows.map(rs => {
       return {
-        id: resCat.id,
-        catName: resCat.Categorie,
-        template: resCat.template
+        id: rs.id,
+        catName: rs.Categorie,
+        template: rs.template
       }
     })
   }
@@ -12,37 +12,38 @@ function parseCategories (rows, _) {
 
 function parseObjects (rows, _) {
   return {
-    obj: rows.map(resObj => {
+    obj: rows.map(rs => {
       return {
-        id: resObj.id,
-        catId: resObj.id_categorie,
-        objName: resObj.Objet,
-        template: resObj.template
+        id: rs.id,
+        catId: rs.id_categorie,
+        objName: rs.Objet,
+        template: rs.template
       }
     })
   }
 }
 
-function parsePrices (rows, params) {
-  const newRows = rows.map(res => {
-    const price = {
-      id: res.id,
-      priceValue: res.prix,
-      comment: res.commentaire,
-      actionDate: res.DateAction,
-      objectId: res.id_Objet,
-      template: res.template
+function parseYears (rows, _) {
+  return { years: rows.map(rs => rs.year) }
+}
+
+function parsePricesByDates (rows, params) {
+  const newRows = rows.map(rs => {
+    return {
+      id: rs.id,
+      priceValue: rs.prix,
+      comment: rs.commentaire,
+      actionDate: rs.DateAction,
+      objectId: rs.id_Objet,
+      template: rs.template
     }
-    return price
   })
 
   const result = {
-    selectedYear: params[0],
-    selectedMonth: params[1],
     prices: newRows
   }
 
   return result
 }
 
-module.exports = { parsePrices, parseCategories, parseObjects }
+module.exports = { parsePricesByDates, parseCategories, parseObjects, parseYears }

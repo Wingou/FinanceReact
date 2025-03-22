@@ -4,8 +4,8 @@ import { BoardView } from '../components/boardView'
 const mapStateToProps = ({
   categories,
   prices,
-  selectedYear,
-  selectedMonth,
+  years,
+  months,
   activedObjs
 }) => {
   const activatedCats = categories
@@ -30,9 +30,11 @@ const mapStateToProps = ({
         depense
       }
     })
+
+
   return {
-    selectedYear,
-    selectedMonth,
+    years,
+    months,
     filteredPrices,
     activatedCats,
     filteredCats,

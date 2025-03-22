@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
-import { DateInput } from './YearInput'
 import { Board } from './board'
-import { ActivatedCatsInput } from './catsInput'
+import { ActivatedCatsInput } from './categorieInput'
+import { DateInput } from './dateInput'
 
 export class BoardView extends Component {
   render () {
     const {
-      selectedYear,
-      selectedMonth,
+      years,
+      months,
       filteredPrices,
       activatedCats,
       filteredCats
     } = this.props
     return (
       <div>
-        <DateInput selectedYear={selectedYear} selectedMonth={selectedMonth} />
+        <DateInput years={years} months={months} />
         {activatedCats.length !== 0 && (
           <ActivatedCatsInput activatedCats={activatedCats} />
         )}

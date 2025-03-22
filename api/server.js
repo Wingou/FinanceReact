@@ -7,11 +7,12 @@ const url = require('url')
 const {
   selectPriceById,
   selectPricesByPeriod,
-  selectPricesByYearMonth,
+  selectPricesByDates,
   getCategories,
-  getObjects
+  getObjects,
+  getYears
 } = require('./queries')
-const { parsePrices, parseCategories, parseObjects } = require('./parsers')
+const { parsePricesByDates, parseCategories, parseObjects, parseYears } = require('./parsers')
 
 async function connectAndCall (req, res, data) {
   const cnx = await odbc.connect('DSN=financereact')
@@ -32,13 +33,15 @@ async function connectAndCall (req, res, data) {
         const endDate_ = dateForSQL(query_.endDate)
         sql = selectPricesByPeriod
         params = [beginDate_, endDate_]
-      } else if (path_ === '/pricesByMonthYear') {
-        // http://localhost:3001/pricesByMonthYear?year=2025&month=01
-        const year_ = dateForSQL(query_.year)
-        const month_ = dateForSQL(query_.month)
-        sql = selectPricesByYearMonth
-        params = [year_, month_]
-        parser = parsePrices
+      } else if (path_ === '/pricesByDates') {
+        // http://localhost:3001/pricesByDates?years=2025,2024&months=1,2,3
+        const years_ = query_.years
+        const months_ = query_.months
+        console.log("yesrs:", years_)
+        console.log("months:", months_)
+        sql = selectPricesByDates
+        params = [years_, months_]
+        parser = parsePricesByDates
       } else if (path_ === '/getCategories') {
         // http://localhost:3001/getCategories
         sql = getCategories
@@ -49,6 +52,11 @@ async function connectAndCall (req, res, data) {
         params = []
         sql = getObjects
         parser = parseObjects
+      } else if (path_ === '/getYears') {
+        // http://localhost:3001/getYears
+        params = []
+        sql = getYears
+        parser = parseYears
       }
     }
     if (path_ === '/favicon.ico') {
