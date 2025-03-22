@@ -27,15 +27,17 @@ function parseYears (rows, _) {
   return { years: rows.map(rs => rs.year) }
 }
 
-function parsePricesByDates (rows, params) {
+function parsePricesByDates (rows, _) {
   const newRows = rows.map(rs => {
     return {
       id: rs.id,
       priceValue: rs.prix,
-      comment: rs.commentaire,
       actionDate: rs.DateAction,
+      comment: rs.commentaire,
       objectId: rs.id_Objet,
-      template: rs.template
+      template: rs.template,
+      dateCreate: rs.dateCreate,
+      dateModif: rs.dateModif
     }
   })
 
@@ -46,4 +48,9 @@ function parsePricesByDates (rows, params) {
   return result
 }
 
-module.exports = { parsePricesByDates, parseCategories, parseObjects, parseYears }
+module.exports = {
+  parsePricesByDates,
+  parseCategories,
+  parseObjects,
+  parseYears
+}

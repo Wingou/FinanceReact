@@ -6,7 +6,8 @@ const mapStateToProps = ({
   prices,
   years,
   months,
-  activedObjs
+  activedObjs,
+  filterOptions
 }) => {
   const activatedCats = categories
     .filter(cat => cat.activated)
@@ -31,6 +32,13 @@ const mapStateToProps = ({
       }
     })
 
+  const multipleYearsChecked = filterOptions.isMultipleYears
+  const multipleMonthsChecked = filterOptions.isMultipleMonths
+  const multipleCatsChecked = filterOptions.isMultipleCats
+
+  const allYearsChecked = years.filter(y => !y.filtered).length === 0
+  const allMonthsChecked = months.filter(m => !m.filtered).length === 0
+  const allCatsChecked = activatedCats.filter(c => !c.filtered).length === 0
 
   return {
     years,
@@ -38,7 +46,13 @@ const mapStateToProps = ({
     filteredPrices,
     activatedCats,
     filteredCats,
-    activedObjs
+    activedObjs,
+    allYearsChecked,
+    allMonthsChecked,
+    allCatsChecked,
+    multipleYearsChecked,
+    multipleMonthsChecked,
+    multipleCatsChecked
   }
 }
 const BoardViewContainer = connect(mapStateToProps)(BoardView)

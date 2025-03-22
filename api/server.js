@@ -12,7 +12,12 @@ const {
   getObjects,
   getYears
 } = require('./queries')
-const { parsePricesByDates, parseCategories, parseObjects, parseYears } = require('./parsers')
+const {
+  parsePricesByDates,
+  parseCategories,
+  parseObjects,
+  parseYears
+} = require('./parsers')
 
 async function connectAndCall (req, res, data) {
   const cnx = await odbc.connect('DSN=financereact')
@@ -37,8 +42,6 @@ async function connectAndCall (req, res, data) {
         // http://localhost:3001/pricesByDates?years=2025,2024&months=1,2,3
         const years_ = query_.years
         const months_ = query_.months
-        console.log("yesrs:", years_)
-        console.log("months:", months_)
         sql = selectPricesByDates
         params = [years_, months_]
         parser = parsePricesByDates

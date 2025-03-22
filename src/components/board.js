@@ -22,6 +22,9 @@ const HeaderLine = ({ props: filteredCats }) => {
           return <th key={index}>{cat.catName}</th>
         })}
         <th key='th_comment'> COMMENTAIRE </th>
+        <th key='th_dateCreate'> DATE CREATE </th>
+        <th key='th_dateModif'> DATE MODIF </th>
+        <th key='th_template'> TEMPLATE </th>
       </tr>
     </thead>
   )
@@ -29,7 +32,7 @@ const HeaderLine = ({ props: filteredCats }) => {
 
 const SumLines = ({ props: filteredCats }) => {
   return (
-    <tbody>
+    <tbody className='SumLineTBody'>
       <SumLine props={{ filteredCats, sumType: 'recette' }} />
       <SumLine props={{ filteredCats, sumType: 'depense' }} />
       <SumLine props={{ filteredCats, sumType: 'total' }} />
@@ -68,6 +71,9 @@ const BodyLines = ({ props }) => {
               )
             })}
             <td key='td_comment'>{p.comment}</td>
+            <td key='td_dateCreate'>{p.dateModif}</td>
+            <td key='td_dateModif'>{p.dateCreate}</td>
+            <td key='td_template'>{p.template}</td>
           </tr>
         )
       })}
@@ -130,6 +136,9 @@ const SumLine = ({ props }) => {
         )
       })}
       <td key={'td_comment_' + sumType}> </td>
+      <td key={'td_dateCreate_' + sumType}> </td>
+      <td key={'td_dateModif_' + sumType}> </td>
+      <td key={'td_template_' + sumType}> </td>
     </tr>
   )
 }

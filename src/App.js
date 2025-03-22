@@ -11,11 +11,9 @@ function App () {
   useEffect(() => {
     try {
       const fetchPrices = async () => {
-        const filteredYears = years.filter((y)=>y.filtered).map(y=>y.year)
-        const filteredMonths = months.filter((m)=>m.filtered).map(m=>m.month)
+        const filteredYears = years.filter(y => y.filtered).map(y => y.year)
+        const filteredMonths = months.filter(m => m.filtered).map(m => m.month)
         const apiPrices = `http://localhost:3001/pricesByDates?years=${filteredYears}&months=${filteredMonths}`
-        
-        console.log("apiPrices", apiPrices)
 
         await fetch(apiPrices)
           .then(respPrices => {

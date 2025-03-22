@@ -2,7 +2,7 @@ const selectPriceById = `SELECT id, prix, commentaire, DateAction FROM prix WHER
 
 const selectPricesByPeriod = `SELECT id, prix, commentaire, DateAction FROM prix WHERE (DateAction>=#?# AND DateAction<=#?#) ORDER BY DateAction`
 
-const selectPricesByDates = `SELECT id, prix, commentaire, DateAction, id_Objet, template FROM prix WHERE Year(DateAction) in (?) AND Month(DateAction) in (?) ORDER BY DateAction`
+const selectPricesByDates = `SELECT id, prix, commentaire, DateAction, id_Objet, dateCreate, dateModif, template FROM prix WHERE Year(DateAction) in (?) AND Month(DateAction) in (?) ORDER BY DateAction`
 
 const getCategories = `SELECT id, Categorie, template FROM categorie ORDER BY Ordre`
 
