@@ -44,11 +44,13 @@ export const mainReducer = (state = {}, action) => {
             filtered: index + 1 === currentMonth
           }
         }),
-
         filterOptions: {
           isMultipleYears: false,
           isMultipleMonths: false,
-          isMultipleCats: true
+          isMultipleCats: true,
+          searchWord: '',
+          searchMin: null,
+          searchMax: null
         }
       }
     }
@@ -60,10 +62,8 @@ export const mainReducer = (state = {}, action) => {
           obj_.length === 0
             ? { objName: '*Error*', objectId: -1, catId: -1 }
             : obj_[0]
-
         const cat_ = state.categories.filter(c => c.id === obj.catId)
         const cat = cat_.length === 0 ? { catName: '*Error*', id: -1 } : cat_[0]
-
         return {
           ...p,
           actionDate: formatDate(p.actionDate),
@@ -73,16 +73,13 @@ export const mainReducer = (state = {}, action) => {
           catName: cat.catName
         }
       })
-
       const activatedCatIds = [...new Set(prices.map(p => p.catId))]
       const categories = state.categories.map(cat => {
         return {
           ...cat,
           activated: activatedCatIds.includes(cat.id)
-          // filtered: activatedCatIds.includes(cat.id)
         }
       })
-
       return {
         ...state,
         prices,
@@ -94,31 +91,23 @@ export const mainReducer = (state = {}, action) => {
       const { months, filterOptions } = state
       const { month, filtered } = action.payload
       const { isMultipleMonths } = filterOptions
-
-      const selectedMonth = months.find(m => m.month === month)
-      const activatedMonths = months.filter(m => m.filtered)
-
-      if (!isMultipleMonths) {
+      const isCheckedMonthIsOnly =
+        months.filter(m => m.filtered === filtered).length === 1
+      const months_ = months.map(m => {
         return {
-          ...state,
-          months: months.map(m => {
-            return { ...m, filtered: m.month === month }
-          })
+          ...m,
+          filtered: isMultipleMonths
+            ? m.months === month
+              ? isCheckedMonthIsOnly
+                ? true
+                : filtered
+              : m.filtered
+            : m.month === month
         }
-      }
-
-      if (
-        activatedMonths.length === 1 &&
-        activatedMonths[0].month === selectedMonth.month
-      ) {
-        return state
-      } else {
-        return {
-          ...state,
-          months: months.map(m =>
-            m.month === month ? { ...m, filtered: filtered } : m
-          )
-        }
+      })
+      return {
+        ...state,
+        months: months_
       }
     }
 
@@ -126,67 +115,58 @@ export const mainReducer = (state = {}, action) => {
       const { years, filterOptions } = state
       const { year, filtered } = action.payload
       const { isMultipleYears } = filterOptions
-
-      const selectedYear = years.find(y => y.year === year)
-      const activatedYears = years.filter(y => y.filtered)
-
-      if (!isMultipleYears) {
+      const isCheckedYearIsOnly =
+        years.filter(y => y.filtered === filtered).length === 1
+      const years_ = years.map(y => {
         return {
-          ...state,
-          years: years.map(y => {
-            return { ...y, filtered: y.year === year }
-          })
+          ...y,
+          filtered: isMultipleYears
+            ? y.years === year
+              ? isCheckedYearIsOnly
+                ? true
+                : filtered
+              : y.filtered
+            : y.year === year
         }
-      }
-
-      if (
-        activatedYears.length === 1 &&
-        activatedYears[0].year === selectedYear.year
-      ) {
-        return state
-      } else {
-        return {
-          ...state,
-          years: years.map(y =>
-            y.year === year ? { ...y, filtered: filtered } : y
-          )
-        }
+      })
+      return {
+        ...state,
+        years: years_
       }
     }
 
     case 'UPDATE_ALL_YEARS': {
+      const { isAllYearsChecked } = action.payload
       const years = state.years.map(y => {
         return {
           ...y,
-          filtered:
-            y.year === currentYear ? true : action.payload.allYearsChecked
+          filtered: y.year === currentYear ? true : isAllYearsChecked
         }
       })
-
       return {
         ...state,
         years,
         filterOptions: {
           ...state.filterOptions,
-          isMultipleYears: action.payload.allYearsChecked
+          isMultipleYears: isAllYearsChecked
         }
       }
     }
+
     case 'UPDATE_ALL_MONTHS': {
       const months = state.months.map(m => {
         return {
           ...m,
           filtered:
-            m.month === currentMonth ? true : action.payload.allMonthsChecked
+            m.month === currentMonth ? true : action.payload.isAllMonthsChecked
         }
       })
-
       return {
         ...state,
         months,
         filterOptions: {
           ...state.filterOptions,
-          isMultipleMonths: action.payload.allMonthsChecked
+          isMultipleMonths: action.payload.isAllMonthsChecked
         }
       }
     }
@@ -194,14 +174,14 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_FILTERED_CAT': {
       const { checked, catId } = action.payload
       const categories = state.categories.map(c => {
+        const { isMultipleCats } = state.filterOptions
         return {
           ...c,
-          filtered:
-            c.id === catId
+          filtered: isMultipleCats
+            ? c.id === Number(catId)
               ? checked
-              : state.filterOptions.isMultipleCats
-              ? c.filtered
-              : false
+              : c.filtered
+            : c.id === Number(catId)
         }
       })
       return {
@@ -223,6 +203,8 @@ export const mainReducer = (state = {}, action) => {
         filterOptions: {
           ...state.filterOptions,
           isMultipleCats: action.payload
+            ? true
+            : state.filterOptions.isMultipleCats
         }
       }
     }
@@ -253,6 +235,39 @@ export const mainReducer = (state = {}, action) => {
         filterOptions: {
           ...state.filterOptions,
           isMultipleCats: action.payload
+        }
+      }
+    }
+
+    case 'UPDATE_SEARCH_WORD': {
+      return {
+        ...state,
+
+        filterOptions: {
+          ...state.filterOptions,
+          searchWord: action.payload
+        }
+      }
+    }
+
+    case 'UPDATE_SEARCH_MIN': {
+      return {
+        ...state,
+
+        filterOptions: {
+          ...state.filterOptions,
+          searchMin: action.payload === '' ? null : Number(action.payload)
+        }
+      }
+    }
+
+    case 'UPDATE_SEARCH_MAX': {
+      return {
+        ...state,
+
+        filterOptions: {
+          ...state.filterOptions,
+          searchMax: action.payload === '' ? null : Number(action.payload)
         }
       }
     }

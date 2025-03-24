@@ -11,13 +11,13 @@ import {
 export const DateInput = ({
   years,
   months,
-  allYearsChecked,
-  allMonthsChecked,
+  isAllYearsChecked,
+  isAllMonthsChecked,
   multipleYearsChecked,
   multipleMonthsChecked
 }) => (
   <div key='div_dateInput'>
-    <div className='CheckboxDiv'>
+    <div className='InputDiv'>
       <label key={'multipleYearsLabel'} className='CheckboxLabel'>
         <input
           key={'multipleYearsInput'}
@@ -31,21 +31,19 @@ export const DateInput = ({
         />
         MULTI -
       </label>
-
       <label key={'allYearsLabel'} className='CheckboxLabel'>
         <input
           key={'allYearsInput'}
           className='CheckboxInput'
           type='checkbox'
           name='allYears'
-          checked={allYearsChecked}
+          checked={isAllYearsChecked}
           onChange={e => {
             handleUpdateAllYears(e)
           }}
         />
         ALL -
       </label>
-
       {years.map((y, index) => {
         return (
           <label key={'yearLabel_' + index} className='CheckboxLabel'>
@@ -64,7 +62,7 @@ export const DateInput = ({
         )
       })}
     </div>
-    <div className='CheckboxDiv'>
+    <div className='InputDiv'>
       <label key={'multipleMonthsLabel'} className='CheckboxLabel'>
         <input
           key={'multipleMonthsInput'}
@@ -78,21 +76,19 @@ export const DateInput = ({
         />
         MULTI -
       </label>
-
       <label key={'allMonthsLabel'} className='CheckboxLabel'>
         <input
           key={'allMonthsInput'}
           className='CheckboxInput'
           type='checkbox'
           name='allMonths'
-          checked={allMonthsChecked}
+          checked={isAllMonthsChecked}
           onChange={e => {
             handleUpdateAllMonths(e)
           }}
         />
         ALL -
       </label>
-
       {months.map((m, index) => {
         return (
           <label key={'monthLabel_' + index} className='CheckboxLabel'>

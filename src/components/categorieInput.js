@@ -7,38 +7,36 @@ import {
 
 export const ActivatedCatsInput = ({
   activatedCats,
-  allCatsChecked,
-  multipleCatsChecked
+  isAllCatsChecked,
+  isMultipleCats
 }) => (
-  <div className='CheckboxDiv'>
+  <div className='InputDiv'>
     <label key={'multipleCatsLabel'} className='CheckboxLabel'>
       <input
         key={'multipleCatsInput'}
         className='CheckboxInput'
         type='checkbox'
         name='multipleCats'
-        checked={multipleCatsChecked}
+        checked={isMultipleCats}
         onChange={e => {
           handleUpdateMultipleCats(e)
         }}
       />
       MULTI -
     </label>
-
     <label key={'allCatsLabel'} className='CheckboxLabel'>
       <input
         key={'allCatsInput'}
         className='CheckboxInput'
         type='checkbox'
         name='allCats'
-        checked={allCatsChecked}
+        checked={isAllCatsChecked}
         onChange={e => {
           handleUpdateAllCats(e)
         }}
       />
       ALL -
     </label>
-
     {activatedCats.map((c, index) => (
       <label key={index} className='CheckboxLabel'>
         <input

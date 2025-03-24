@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Board } from './board'
 import { ActivatedCatsInput } from './categorieInput'
 import { DateInput } from './datesInput'
+import { SearchWordInput } from './searchInput'
 
 export class BoardView extends Component {
   render () {
@@ -11,31 +12,41 @@ export class BoardView extends Component {
       filteredPrices,
       activatedCats,
       filteredCats,
-      allYearsChecked,
-      allMonthsChecked,
-      allCatsChecked,
-      multipleYearsChecked,
-      multipleMonthsChecked,
-      multipleCatsChecked
+      isAllYearsChecked,
+      isAllMonthsChecked,
+      isAllCatsChecked,
+      filterOptions
     } = this.props
-
+    const {
+      isMultipleYears,
+      isMultipleMonths,
+      isMultipleCats,
+      searchWord,
+      searchMin,
+      searchMax
+    } = filterOptions
     return (
       <div>
         <DateInput
           years={years}
           months={months}
-          allYearsChecked={allYearsChecked}
-          allMonthsChecked={allMonthsChecked}
-          multipleYearsChecked={multipleYearsChecked}
-          multipleMonthsChecked={multipleMonthsChecked}
+          isAllYearsChecked={isAllYearsChecked}
+          isAllMonthsChecked={isAllMonthsChecked}
+          isMultipleYears={isMultipleYears}
+          isMultipleMonths={isMultipleMonths}
         />
         {activatedCats.length !== 0 && (
           <ActivatedCatsInput
             activatedCats={activatedCats}
-            allCatsChecked={allCatsChecked}
-            multipleCatsChecked={multipleCatsChecked}
+            isAllCatsChecked={isAllCatsChecked}
+            isMultipleCats={isMultipleCats}
           />
         )}
+        <SearchWordInput
+          searchWord={searchWord}
+          searchMin={searchMin}
+          searchMax={searchMax}
+        />
         {filteredPrices.length !== 0 && (
           <Board filteredPrices={filteredPrices} filteredCats={filteredCats} />
         )}

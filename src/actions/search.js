@@ -20,7 +20,7 @@ export const handleFilteredCat = e => {
   const action = {
     type: 'UPDATE_FILTERED_CAT',
     payload: {
-      catId: Number(e.target.name),
+      catId: e.target.name,
       checked: e.target.checked
     }
   }
@@ -38,7 +38,7 @@ export const handleUpdateAllCats = e => {
 export const handleUpdateAllYears = e => {
   const action = {
     type: 'UPDATE_ALL_YEARS',
-    payload: { allYearsChecked: e.target.checked }
+    payload: { isAllYearsChecked: e.target.checked }
   }
   store.dispatch(action)
 }
@@ -46,7 +46,7 @@ export const handleUpdateAllYears = e => {
 export const handleUpdateAllMonths = e => {
   const action = {
     type: 'UPDATE_ALL_MONTHS',
-    payload: { allMonthsChecked: e.target.checked }
+    payload: { isAllMonthsChecked: e.target.checked }
   }
   store.dispatch(action)
 }
@@ -71,6 +71,30 @@ export const handleUpdateMultipleCats = e => {
   const action = {
     type: 'UPDATE_MULTIPLE_CATS',
     payload: e.target.checked
+  }
+  store.dispatch(action)
+}
+
+export const handleUpdateSearchWord = e=>{
+    const action = {
+      type : 'UPDATE_SEARCH_WORD',
+      payload : e.target.value
+    }
+    store.dispatch(action)
+}
+
+export const handleUpdateSearchMin = e=>{
+  const action = {
+    type : 'UPDATE_SEARCH_MIN',
+    payload : e.target.value
+  }
+  store.dispatch(action)
+}
+
+export const handleUpdateSearchMax = e=>{
+  const action = {
+    type : 'UPDATE_SEARCH_MAX',
+    payload : e.target.value
   }
   store.dispatch(action)
 }
