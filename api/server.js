@@ -66,6 +66,7 @@ async function connectAndCall (req, res, data) {
       res.writeHead(200, { 'Content-Type': 'image/x-icon' })
       return res.end()
     }
+    console.log("SQL:", setParamInSQL(sql, params))
     const rows = await cnx.query(setParamInSQL(sql, params))
     const result = await parser(rows, params)
     const jsonData = JSON.stringify(result)

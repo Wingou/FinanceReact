@@ -18,7 +18,7 @@ export const DateInput = ({
 }) => (
   <div key='div_dateInput'>
     <div className='InputDiv'>
-      <label key={'multipleYearsLabel'} className='CheckboxLabel'>
+      <label key={'multipleYearsLabel'} className='CheckboxLabel HeadLabel'>
         <input
           key={'multipleYearsInput'}
           className='CheckboxInput'
@@ -29,9 +29,9 @@ export const DateInput = ({
             handleUpdateMultipleYears(e)
           }}
         />
-        MULTI -
+        MULTI
       </label>
-      <label key={'allYearsLabel'} className='CheckboxLabel'>
+      <label key={'allYearsLabel'} className='CheckboxLabel HeadLabel'>
         <input
           key={'allYearsInput'}
           className='CheckboxInput'
@@ -63,7 +63,7 @@ export const DateInput = ({
       })}
     </div>
     <div className='InputDiv'>
-      <label key={'multipleMonthsLabel'} className='CheckboxLabel'>
+      <label key={'multipleMonthsLabel'} className='CheckboxLabel HeadLabel'>
         <input
           key={'multipleMonthsInput'}
           className='CheckboxInput'
@@ -74,9 +74,9 @@ export const DateInput = ({
             handleUpdateMultipleMonths(e)
           }}
         />
-        MULTI -
+        MULTI
       </label>
-      <label key={'allMonthsLabel'} className='CheckboxLabel'>
+      <label key={'allMonthsLabel'} className='CheckboxLabel HeadLabel'>
         <input
           key={'allMonthsInput'}
           className='CheckboxInput'

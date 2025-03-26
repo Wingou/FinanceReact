@@ -35,7 +35,8 @@
   border-spacing: 0px;
   font-family: verdana;
   font-size: 10px;
-  margin: auto;
+  margin: 2px;
+
 }
 
 td {
@@ -108,6 +109,10 @@ th {
   white-space: nowrap;
 }
 
+.HeadLabel {
+  font-weight: bold;
+}
+
 .CheckboxInput {
   vertical-align: middle;
 }
@@ -133,4 +138,14 @@ th {
   font-size: 10px;
   margin: 2px;
 
+}
+
+.NoDataFound {
+  font-family: verdana;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 2px;
+  padding: 50px;
+  border: 1px solid red;
 }

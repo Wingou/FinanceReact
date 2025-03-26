@@ -11,7 +11,7 @@ export const ActivatedCatsInput = ({
   isMultipleCats
 }) => (
   <div className='InputDiv'>
-    <label key={'multipleCatsLabel'} className='CheckboxLabel'>
+    <label key={'multipleCatsLabel'} className='CheckboxLabel HeadLabel'>
       <input
         key={'multipleCatsInput'}
         className='CheckboxInput'
@@ -22,9 +22,9 @@ export const ActivatedCatsInput = ({
           handleUpdateMultipleCats(e)
         }}
       />
-      MULTI -
+      MULTI
     </label>
-    <label key={'allCatsLabel'} className='CheckboxLabel'>
+    <label key={'allCatsLabel'} className='CheckboxLabel HeadLabel'>
       <input
         key={'allCatsInput'}
         className='CheckboxInput'

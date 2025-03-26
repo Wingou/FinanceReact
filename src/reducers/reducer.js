@@ -1,6 +1,3 @@
-import { mockCats } from '../mocks/getCategories'
-import { mockObjs } from '../mocks/getObjects'
-import { mockYears } from '../mocks/getYears'
 import { formatDate } from '../utils/helper'
 
 export const mainReducer = (state = {}, action) => {
@@ -10,20 +7,9 @@ export const mainReducer = (state = {}, action) => {
     case '@@INIT': {
       return {
         prices: [],
-        objects: mockObjs,
-        categories: [
-          {
-            id: -1,
-            catName: 'ERROR',
-            template: 0,
-            activated: false,
-            filtered: false
-          },
-          ...mockCats
-        ],
-        years: mockYears.map(y => {
-          return { year: y, filtered: y === currentYear }
-        }),
+        objects: [],
+        categories: [],
+        years: [],
         months: [
           'Janvier',
           'Février',
@@ -52,6 +38,41 @@ export const mainReducer = (state = {}, action) => {
           searchMin: null,
           searchMax: null
         }
+      }
+    }
+
+    case 'SET_CATEGORIES': {
+      const cat0 = {
+        id: -1,
+        catName: 'ERROR',
+        template: 0,
+        activated: false,
+        filtered: false
+      }
+      const categories = action.payload.categories
+        .map(c => {
+          return {
+            ...c,
+            activated: false,
+            filtered: false
+          }
+        })
+        .concat(cat0)
+      return { ...state, categories }
+    }
+
+    case 'SET_OBJECTS': {
+      const objects = action.payload.objects
+      return { ...state, objects }
+    }
+
+    case 'SET_YEARS': {
+      const years = action.payload.years
+      return {
+        ...state,
+        years: years.map(y => {
+          return { year: y, filtered: y === currentYear }
+        })
       }
     }
 
@@ -121,7 +142,7 @@ export const mainReducer = (state = {}, action) => {
         return {
           ...y,
           filtered: isMultipleYears
-            ? y.years === year
+            ? y.year === year
               ? isCheckedYearIsOnly
                 ? true
                 : filtered

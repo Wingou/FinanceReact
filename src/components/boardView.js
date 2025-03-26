@@ -3,6 +3,7 @@ import { Board } from './board'
 import { ActivatedCatsInput } from './categorieInput'
 import { DateInput } from './datesInput'
 import { SearchWordInput } from './searchInput'
+import { NoBoard } from './noBoard'
 
 export class BoardView extends Component {
   render () {
@@ -47,8 +48,10 @@ export class BoardView extends Component {
           searchMin={searchMin}
           searchMax={searchMax}
         />
-        {filteredPrices.length !== 0 && (
+        {filteredPrices.length !== 0 ? (
           <Board filteredPrices={filteredPrices} filteredCats={filteredCats} />
+        ) : (
+          <NoBoard />
         )}
       </div>
     )
