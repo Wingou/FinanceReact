@@ -149,3 +149,24 @@ th {
   padding: 50px;
   border: 1px solid red;
 }
+
+.divMenu { 
+   border: 1px solid blue;
+  text-align: center;
+  background-color: white;
+  width: 100%;
+  
+
+}
+
+.buttonMenu {  font-family: verdana;
+  font-size: 10px;
+  text-transform: uppercase;
+  width: 100px;
+  
+  margin: 5px;
+
+
+  
+
+}

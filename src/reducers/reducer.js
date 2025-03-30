@@ -1,44 +1,11 @@
+import { CURRENT_MONTH, CURRENT_YEAR, VIEW } from '../constants/constants'
+import { initialModel } from '../models/initialModel'
 import { formatDate } from '../utils/helper'
 
 export const mainReducer = (state = {}, action) => {
-  const currentYear = new Date().getFullYear()
-  const currentMonth = new Date().getMonth() + 1
   switch (action.type) {
     case '@@INIT': {
-      return {
-        prices: [],
-        objects: [],
-        categories: [],
-        years: [],
-        months: [
-          'Janvier',
-          'Février',
-          'Mars',
-          'Avril',
-          'Mai',
-          'Juin',
-          'Juillet',
-          'Août',
-          'Septembre',
-          'Octobre',
-          'Novembre',
-          'Décembre'
-        ].map((m, index) => {
-          return {
-            name: m,
-            month: index + 1,
-            filtered: index + 1 === currentMonth
-          }
-        }),
-        filterOptions: {
-          isMultipleYears: false,
-          isMultipleMonths: false,
-          isMultipleCats: true,
-          searchWord: '',
-          searchMin: null,
-          searchMax: null
-        }
-      }
+      return initialModel
     }
 
     case 'SET_CATEGORIES': {
@@ -71,7 +38,7 @@ export const mainReducer = (state = {}, action) => {
       return {
         ...state,
         years: years.map(y => {
-          return { year: y, filtered: y === currentYear }
+          return { year: y, filtered: y === CURRENT_YEAR }
         })
       }
     }
@@ -111,13 +78,13 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_MONTH': {
       const { months, filterOptions } = state
       const { month, filtered } = action.payload
-      const { isMultipleMonths } = filterOptions
+      const { isMultiMonths } = filterOptions
       const isCheckedMonthIsOnly =
         months.filter(m => m.filtered === filtered).length === 1
       const months_ = months.map(m => {
         return {
           ...m,
-          filtered: isMultipleMonths
+          filtered: isMultiMonths
             ? m.months === month
               ? isCheckedMonthIsOnly
                 ? true
@@ -135,13 +102,13 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_YEAR': {
       const { years, filterOptions } = state
       const { year, filtered } = action.payload
-      const { isMultipleYears } = filterOptions
+      const { isMultiYears } = filterOptions
       const isCheckedYearIsOnly =
         years.filter(y => y.filtered === filtered).length === 1
       const years_ = years.map(y => {
         return {
           ...y,
-          filtered: isMultipleYears
+          filtered: isMultiYears
             ? y.year === year
               ? isCheckedYearIsOnly
                 ? true
@@ -161,7 +128,7 @@ export const mainReducer = (state = {}, action) => {
       const years = state.years.map(y => {
         return {
           ...y,
-          filtered: y.year === currentYear ? true : isAllYearsChecked
+          filtered: y.year === CURRENT_YEAR ? true : isAllYearsChecked
         }
       })
       return {
@@ -169,7 +136,7 @@ export const mainReducer = (state = {}, action) => {
         years,
         filterOptions: {
           ...state.filterOptions,
-          isMultipleYears: isAllYearsChecked
+          isMultiYears: isAllYearsChecked
         }
       }
     }
@@ -179,7 +146,7 @@ export const mainReducer = (state = {}, action) => {
         return {
           ...m,
           filtered:
-            m.month === currentMonth ? true : action.payload.isAllMonthsChecked
+            m.month === CURRENT_MONTH ? true : action.payload.isAllMonthsChecked
         }
       })
       return {
@@ -187,7 +154,7 @@ export const mainReducer = (state = {}, action) => {
         months,
         filterOptions: {
           ...state.filterOptions,
-          isMultipleMonths: action.payload.isAllMonthsChecked
+          isMultiMonths: action.payload.isAllMonthsChecked
         }
       }
     }
@@ -195,10 +162,10 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_FILTERED_CAT': {
       const { checked, catId } = action.payload
       const categories = state.categories.map(c => {
-        const { isMultipleCats } = state.filterOptions
+        const { isMultiCats } = state.filterOptions
         return {
           ...c,
-          filtered: isMultipleCats
+          filtered: isMultiCats
             ? c.id === Number(catId)
               ? checked
               : c.filtered
@@ -223,9 +190,7 @@ export const mainReducer = (state = {}, action) => {
         categories,
         filterOptions: {
           ...state.filterOptions,
-          isMultipleCats: action.payload
-            ? true
-            : state.filterOptions.isMultipleCats
+          isMultiCats: action.payload ? true : state.filterOptions.isMultiCats
         }
       }
     }
@@ -235,7 +200,7 @@ export const mainReducer = (state = {}, action) => {
         ...state,
         filterOptions: {
           ...state.filterOptions,
-          isMultipleYears: action.payload
+          isMultiYears: action.payload
         }
       }
     }
@@ -245,7 +210,7 @@ export const mainReducer = (state = {}, action) => {
         ...state,
         filterOptions: {
           ...state.filterOptions,
-          isMultipleMonths: action.payload
+          isMultiMonths: action.payload
         }
       }
     }
@@ -255,7 +220,7 @@ export const mainReducer = (state = {}, action) => {
         ...state,
         filterOptions: {
           ...state.filterOptions,
-          isMultipleCats: action.payload
+          isMultiCats: action.payload
         }
       }
     }
@@ -292,6 +257,28 @@ export const mainReducer = (state = {}, action) => {
         }
       }
     }
+
+    case 'TO_HOME': {
+      return {
+        ...state,
+        view: VIEW.HOME
+      }
+    }
+
+    case 'TO_ADD': {
+      return {
+        ...state,
+        view: VIEW.ADD
+      }
+    }
+
+    case 'TO_BOARD': {
+      return {
+        ...state,
+        view: VIEW.BOARD
+      }
+    }
+
 
     default:
       return state

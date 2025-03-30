@@ -6,7 +6,7 @@ import {
   handleUpdateAllMonths,
   handleUpdateMultipleYears,
   handleUpdateMultipleMonths
-} from '../actions/search'
+} from '../../actions/search'
 
 export const DateInput = ({
   years,

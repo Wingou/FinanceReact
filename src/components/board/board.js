@@ -1,5 +1,5 @@
 import React from 'react'
-import { formatPrice, formatPriceWithZero } from '../utils/helper'
+import { formatPrice, formatPriceWithZero } from '../../utils/helper'
 
 export const Board = ({ filteredPrices, filteredCats }) => {
   return (

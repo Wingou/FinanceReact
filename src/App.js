@@ -1,27 +1,33 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import './App.css'
-import BoardViewContainer from './containers/boardViewContainer'
+import HomeViewContainer from './containers/homeViewContainer.js'
+import {VIEW} from './constants/constants.js'
+import BoardViewContainer from './containers/boardViewContainer.js'
+import AddViewContainer from './containers/addViewContainer.js'
+import { Menu } from './components/common/menu.js'
 
 function App () {
   const years = useSelector(state => state.years)
   const months = useSelector(state => state.months)
+  const view = useSelector(state => state.view)
   const dispatch = useDispatch()
   const [isListsSet, setLists] = useState(false)
 
   useEffect(() => {
     const fetchListsData = async () => {
       try {
-        await fetchObj(dispatch)
-        await fetchCat(dispatch)
-        await fetchYears(dispatch)
+        await fetchConstant('obj', dispatch)
+        await fetchConstant('cat', dispatch)
+        await fetchConstant('years',dispatch)
         setLists(true)
       } catch (error) {
         console.error('error fetchListsData : ', error)
       }
     }
-    fetchListsData()
-  }, [dispatch])
+    if (view===VIEW.BOARD) {
+      fetchListsData()}
+  }, [view, dispatch])
 
   useEffect(() => {
     const fetchPricesData = async () => {
@@ -31,18 +37,34 @@ function App () {
         console.error('error fetchPrices : ', error)
       }
     }
-
     if (isListsSet) {
       fetchPricesData()
     }
   }, [isListsSet, years, months, dispatch])
 
+
+
+    let View_
+    switch (view) {
+              case 'add':  View_ = <AddViewContainer />
+                break;
+              case 'board':  View_ = <BoardViewContainer />
+              break;
+              default :  View_ = <HomeViewContainer />
+              
+        }
+
+
+
   return (
     <div className='App'>
       <header className='App-header'>
-        <h3 className='App-title'>FINANCE REACT</h3>
+        <h2 className='App-title'>FINANCE REACT</h2>
+        { Menu }
       </header>
-      <BoardViewContainer />
+      
+      {View_}
+      
       <footer>
         <div className='App-footer'>- FINANCE REACT - March 2025 -</div>
       </footer>
@@ -52,38 +74,42 @@ function App () {
 
 export default App
 
-const fetchCat = async dispatch => {
+const fetchConstant = async (constant, dispatch) => {
   try {
-    const apiCat = `http://localhost:3001/getCategories`
-    const respCat = await fetch(apiCat)
-    const rsCat = await respCat.json()
-    dispatch({
-      type: 'SET_CATEGORIES',
-      payload: {
-        categories: rsCat.cat
-      }
-    })
-    return rsCat
-  } catch (error) {
-    console.error('error getCategories :', error)
-    throw error
-  }
-}
+    const api = {
+      cat: 'http://localhost:3001/getCategories',
+      obj: 'http://localhost:3001/getObjects',
+      years: 'http://localhost:3001/getYears'
+    }[constant]
 
-const fetchObj = async dispatch => {
-  try {
-    const apiObj = `http://localhost:3001/getObjects`
-    const respObj = await fetch(apiObj)
-    const rsObj = await respObj.json()
-    dispatch({
-      type: 'SET_OBJECTS',
-      payload: {
-        objects: rsObj.obj
-      }
-    })
-    return rsObj
+    const param = rs => {
+      return {
+        cat: {
+          type: 'SET_CATEGORIES',
+          payload: {
+            categories: rs.cat
+          }
+        },
+        obj: {
+          type: 'SET_OBJECTS',
+          payload: {
+            objects: rs.obj
+          }
+        },
+        years: {
+          type: 'SET_YEARS',
+          payload: {
+            years: rs.years
+          }
+        }
+      }[constant]
+    }
+    const resp = await fetch(api)
+    const rs = await resp.json()
+    dispatch(param(rs))
+    return rs
   } catch (error) {
-    console.error('error getObjects :', error)
+    console.error('error get ' + constant, error)
     throw error
   }
 }
@@ -103,23 +129,5 @@ const fetchPrices = async (years, months, dispatch) => {
     })
   } catch (error) {
     console.error('error pricesByDates :', error)
-  }
-}
-
-const fetchYears = async dispatch => {
-  try {
-    const apiYears = `http://localhost:3001/getYears`
-    const respYears = await fetch(apiYears)
-    const rsYears = await respYears.json()
-    dispatch({
-      type: 'SET_YEARS',
-      payload: {
-        years: rsYears.years
-      }
-    })
-    return rsYears
-  } catch (error) {
-    console.error('error getYears :', error)
-    throw error
   }
 }

@@ -3,7 +3,7 @@ import {
   handleUpdateSearchWord,
   handleUpdateSearchMin,
   handleUpdateSearchMax
-} from '../actions/search'
+} from '../../actions/search'
 
 export const SearchWordInput = ({ search, searchMin, searchMax }) => (
   <div key='div_searchInput'>

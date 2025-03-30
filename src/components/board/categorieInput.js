@@ -3,12 +3,12 @@ import {
   handleFilteredCat,
   handleUpdateAllCats,
   handleUpdateMultipleCats
-} from '../actions/search'
+} from '../../actions/search'
 
 export const ActivatedCatsInput = ({
   activatedCats,
   isAllCatsChecked,
-  isMultipleCats
+  isMultiCats
 }) => (
   <div className='InputDiv'>
     <label key={'multipleCatsLabel'} className='CheckboxLabel HeadLabel'>
@@ -17,7 +17,7 @@ export const ActivatedCatsInput = ({
         className='CheckboxInput'
         type='checkbox'
         name='multipleCats'
-        checked={isMultipleCats}
+        checked={isMultiCats}
         onChange={e => {
           handleUpdateMultipleCats(e)
         }}

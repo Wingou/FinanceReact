@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { BoardView } from '../components/boardView'
+import { BoardView } from '../components/board/boardView'
 
 const mapStateToProps = ({
   categories,

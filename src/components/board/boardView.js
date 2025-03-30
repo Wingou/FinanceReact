@@ -19,9 +19,9 @@ export class BoardView extends Component {
       filterOptions
     } = this.props
     const {
-      isMultipleYears,
-      isMultipleMonths,
-      isMultipleCats,
+      isMultiYears,
+      isMultiMonths,
+      isMultiCats,
       searchWord,
       searchMin,
       searchMax
@@ -33,14 +33,14 @@ export class BoardView extends Component {
           months={months}
           isAllYearsChecked={isAllYearsChecked}
           isAllMonthsChecked={isAllMonthsChecked}
-          isMultipleYears={isMultipleYears}
-          isMultipleMonths={isMultipleMonths}
+          isMultiYears={isMultiYears}
+          isMultiMonths={isMultiMonths}
         />
         {activatedCats.length !== 0 && (
           <ActivatedCatsInput
             activatedCats={activatedCats}
             isAllCatsChecked={isAllCatsChecked}
-            isMultipleCats={isMultipleCats}
+            isMultiCats={isMultiCats}
           />
         )}
         <SearchWordInput
