@@ -1,6 +1,7 @@
 
 export const CURRENT_YEAR = new Date().getFullYear()
 export const CURRENT_MONTH = new Date().getMonth() + 1
+export const CURRENT_DATE = new Date().toLocaleDateString("fr-FR")
 
 export const CATEGORIES = 'categories'
 export const OBJECTS = 'objects'

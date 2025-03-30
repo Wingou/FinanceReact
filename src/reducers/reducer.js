@@ -280,6 +280,15 @@ export const mainReducer = (state = {}, action) => {
     }
 
 
+    case 'ADD_PRICE_CATID': {
+      return {
+        ...state,
+        addPriceInput : {...state.addPriceInput,
+                          catId:action.payload
+         }
+      }
+    }
+
     default:
       return state
   }

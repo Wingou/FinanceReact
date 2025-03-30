@@ -3,11 +3,13 @@ import { AddView } from '../components/add/addView'
  
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({categories, objects}) => {
   return {
-    years : state.years
+    categories,
+    objects
   }
 }
 const AddViewContainer = connect(mapStateToProps)(AddView)
 export default AddViewContainer
+
 

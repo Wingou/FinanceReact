@@ -1,4 +1,4 @@
-import { CURRENT_MONTH, MONTHS, VIEW } from "../constants/constants"
+import { CURRENT_DATE, CURRENT_MONTH, MONTHS, VIEW } from "../constants/constants"
 
 
 
@@ -22,7 +22,15 @@ export const initialModel = {
           searchMin: null,
           searchMax: null
         },
-        view : VIEW.HOME
+        view : VIEW.HOME,
+        addPriceInput : {
+          catId:null,
+          objId:null,
+          priceValue:0,
+          actionDate: CURRENT_DATE,
+          comment:null,
+          template:0
+        }
       }
 
  
