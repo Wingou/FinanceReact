@@ -10,13 +10,15 @@ const {
   selectPricesByDates,
   getCategories,
   getObjects,
-  getYears
+  getYears,
+  addPrice
 } = require('./queries')
 const {
   parsePricesByDates,
   parseCategories,
   parseObjects,
-  parseYears
+  parseYears,
+  parseAddPrice
 } = require('./parsers')
 
 async function connectAndCall (req, res, data) {
@@ -28,17 +30,7 @@ async function connectAndCall (req, res, data) {
     let sql
     let params
     if (req.method === 'GET') {
-      if (path_ === '/price') {
-        // http://localhost:3001/price?id=15333
-        sql = selectPriceById
-        params = [query_.id]
-      } else if (path_ === '/pricesbyperiod') {
-        // http://localhost:3001/pricesbyperiod?beginDate=20250115&endDate=20250215
-        const beginDate_ = dateForSQL(query_.beginDate)
-        const endDate_ = dateForSQL(query_.endDate)
-        sql = selectPricesByPeriod
-        params = [beginDate_, endDate_]
-      } else if (path_ === '/pricesByDates') {
+      if (path_ === '/pricesByDates') {
         // http://localhost:3001/pricesByDates?years=2025,2024&months=1,2,3
         const years_ = query_.years
         const months_ = query_.months
@@ -62,14 +54,43 @@ async function connectAndCall (req, res, data) {
         parser = parseYears
       }
     }
+    if (req.method === 'POST') {
+
+      if (path_ === '/addPrice') {
+              const  {price,  comment,  actionDate,objId  } =  data
+               // http://localhost:3001/addPrice
+               params = [`${price}`,  `${comment}`, `${actionDate}` ,objId]
+               sql = addPrice
+               parser = parseAddPrice
+    }}
+
+    // sql = `INSERT INTO personne (nom, prenom, template) VALUES ('${dNom}', '${dPrenom}', 0)`
+    // await cnx.query(sql);
+
+    // const sqlId = await cnx.query(`SELECT @@IDENTITY as id`);
+    // itemId = sqlId[0].id;
+    
+
     if (path_ === '/favicon.ico') {
       res.writeHead(200, { 'Content-Type': 'image/x-icon' })
       return res.end()
     }
     console.log("SQL:", setParamInSQL(sql, params))
     const rows = await cnx.query(setParamInSQL(sql, params))
-    const result = await parser(rows, params)
+
+    let rows_
+    if (req.method === 'POST')
+    {    const sqlId = await cnx.query(`SELECT @@IDENTITY as id`);
+          rows_ = sqlId[0].id;
+     } else
+
+     {
+      rows_=rows
+     }
+     console.log("rows_:", rows_)
+    const result = await parser(rows_, params)
     const jsonData = JSON.stringify(result)
+    
     res.setHeader('Content-Type', 'application/json')
     res.statusCode = 200
     await res.end(jsonData)

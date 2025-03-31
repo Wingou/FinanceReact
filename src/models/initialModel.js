@@ -24,12 +24,11 @@ export const initialModel = {
         },
         view : VIEW.HOME,
         addPriceInput : {
-          catId:null,
+          catId:-1,
           objId:null,
           priceValue:0,
           actionDate: CURRENT_DATE,
-          comment:null,
-          template:0
+          comment:""
         }
       }
 

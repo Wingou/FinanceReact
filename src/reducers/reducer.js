@@ -1,6 +1,6 @@
 import { CURRENT_MONTH, CURRENT_YEAR, VIEW } from '../constants/constants'
 import { initialModel } from '../models/initialModel'
-import { formatDate } from '../utils/helper'
+import { formatDate, getFirstObjId } from '../utils/helper'
 
 export const mainReducer = (state = {}, action) => {
   switch (action.type) {
@@ -12,6 +12,7 @@ export const mainReducer = (state = {}, action) => {
       const cat0 = {
         id: -1,
         catName: 'ERROR',
+        position:99,
         template: 0,
         activated: false,
         filtered: false
@@ -25,12 +26,19 @@ export const mainReducer = (state = {}, action) => {
           }
         })
         .concat(cat0)
-      return { ...state, categories }
+
+      return { ...state, categories}
     }
 
     case 'SET_OBJECTS': {
       const objects = action.payload.objects
-      return { ...state, objects }
+      const firstObjectId = objects.filter(o => o.template > 0)
+                  .sort((a, b) => {
+                        return a.objName.localeCompare(b.objName)
+                  })[0].id
+      return { ...state, objects, addPriceInput : {...state.addPriceInput,
+        objId: firstObjectId
+       } }
     }
 
     case 'SET_YEARS': {
@@ -228,7 +236,6 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_SEARCH_WORD': {
       return {
         ...state,
-
         filterOptions: {
           ...state.filterOptions,
           searchWord: action.payload
@@ -239,7 +246,6 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_SEARCH_MIN': {
       return {
         ...state,
-
         filterOptions: {
           ...state.filterOptions,
           searchMin: action.payload === '' ? null : Number(action.payload)
@@ -250,7 +256,6 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_SEARCH_MAX': {
       return {
         ...state,
-
         filterOptions: {
           ...state.filterOptions,
           searchMax: action.payload === '' ? null : Number(action.payload)
@@ -280,14 +285,57 @@ export const mainReducer = (state = {}, action) => {
     }
 
 
-    case 'ADD_PRICE_CATID': {
+    case 'ADDPRICEINPUT_SET_CATID': {
+      const catId = Number(action.payload)
       return {
         ...state,
         addPriceInput : {...state.addPriceInput,
-                          catId:action.payload
+                          catId,
+                          objId : getFirstObjId(catId, state.objects)
+
          }
       }
     }
+
+    case 'ADDPRICEINPUT_SET_OBJID': {
+      return {
+        ...state,
+        addPriceInput : {...state.addPriceInput,
+                          objId:Number(action.payload)
+         }
+      }
+    }
+
+    case 'ADDPRICEINPUT_SET_DATE' : {
+      return {
+        ...state,
+        addPriceInput : {...state.addPriceInput,
+                          actionDate:action.payload
+         }
+      }
+
+    }
+    case 'ADDPRICEINPUT_SET_PRICE' : {
+      return {
+        ...state,
+        addPriceInput : {...state.addPriceInput,
+                          priceValue:action.payload
+         }
+      }
+
+    }
+
+    case 'ADDPRICEINPUT_SET_COMMENT' : {
+      return {
+        ...state,
+        addPriceInput : {...state.addPriceInput,
+                          comment:action.payload
+         }
+      }
+
+    }
+    
+    
 
     default:
       return state
