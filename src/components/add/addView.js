@@ -1,17 +1,29 @@
 import React, { Component, useState } from 'react'
-import { handleAddPrice, handleCatIdInput, handleCommentInput, handleDateInput, handleObjIdInput, handlePriceInput } from '../../actions/add'
+import {
+  handleAddPrice,
+  handleCatIdInput,
+  handleCommentInput,
+  handleDateInput,
+  handleObjIdInput,
+  handlePriceInput
+} from '../../actions/add'
 import { CURRENT_DATE } from '../../constants/constants'
+import { Board } from '../board/board'
 
 export class AddView extends Component {
   render () {
-    const { categories, objects, addPriceInput } = this.props
+    const { categories, objects, addPriceInput, filteredPrices,filteredCats} = this.props
 
     const cat = categories
       .filter(c => c.template === 0 && c.id > 0 && c.position !== null)
       .sort((a, b) => a.id > b.id)
 
     const CatList = (
-      <select value={addPriceInput.catId} onChange={e => handleCatIdInput(e)}>
+      <select
+        className='InputSelect'
+        value={addPriceInput.catId}
+        onChange={e => handleCatIdInput(e)}
+      >
         <option key={'option_catId_null'} value={-1}>
           -
         </option>
@@ -45,10 +57,14 @@ export class AddView extends Component {
           )
 
     const ObjList = (
-      <select value={addPriceInput.objId} onChange={e => handleObjIdInput(e)}>
+      <select
+        className='InputSelect'
+        value={addPriceInput.objId}
+        onChange={e => handleObjIdInput(e)}
+      >
         {objectsByCatId.map((obj_, index) => {
           return (
-            <option key={'option_objId_' + index} value={obj_.id} >
+            <option key={'option_objId_' + index} value={obj_.id}>
               {obj_.objName + (obj_.catName ? ' (' + obj_.catName + ')' : '')}
             </option>
           )
@@ -57,52 +73,76 @@ export class AddView extends Component {
     )
 
     return (
-      <div className='InputDiv'>
-        <label key={'catLabel'} className='InputLabel'>
-          Catégorie {CatList}
-        </label>
-        <label key={'objLabel'} className='InputLabel'>
-          Objet {ObjList}
-        </label>
-        
-        <label key={'priceLabel'} className='InputLabel'>
-          Prix
-          <input
-            key={'priceInput'}
-            className='TextInput'
-            type='text'
-            name='price'
-            defaultValue='0'
-            onBlur ={e =>handlePriceInput(e)}
-          />
-        </label>
+      <div className='addViewDiv'>
+      <div className='InputAddDiv'>
+        <div key={'priceDiv'} className='InputAddElement'>
+          <div className='InputAddElementLabel'>Prix</div>
+          <div className='InputAddElementField'>
+            <input
+              key={'priceInput'}
+              className='PriceInput'
+              type='text'
+              name='price'
+              defaultValue='0'
+              onBlur={e => handlePriceInput(e)}
+            />
+          </div>
+        </div>
 
-        <label key={'dateActionLabel'} className='InputLabel'>
-          Date 
-          <input
-            key={'dateActionInput'}
-            className='TextInput'
-            type='date'
-            name='dateAction'
-            defaultValue={CURRENT_DATE}
-            onChange={e =>handleDateInput(e)}
-          />
-        </label>
+        <div key={'dateActionDiv'} className='InputAddElement'>
+          <div className='InputAddElementLabel'>Date</div>
+          <div className='InputAddElementField'>
+            <input
+              key={'dateActionInput'}
+              className='DateInput'
+              type='date'
+              name='dateAction'
+              defaultValue={CURRENT_DATE}
+              onChange={e => handleDateInput(e)}
+            />
+          </div>
+        </div>
 
-        <label key={'commentLabel'} className='InputLabel'>
-          Commentaire 
-          <input
-            key={'commentInput'}
-            className='TextInput'
-            type='text'
-            name='comment'
-            onBlur ={e => handleCommentInput(e)}
-          />
-        </label>
+        <div key={'catDiv'} className='InputAddElement'>
+          <div className='InputAddElementLabel'>Catégorie </div>
+          <div className='InputAddElementField'>{CatList}</div>
+        </div>
+        <div key={'objDiv'} className='InputAddElement'>
+          <div className='InputAddElementLabel'>Objet </div>
+          <div className='InputAddElementField'>{ObjList}</div>
+        </div>
 
-        <button onClick={()=>handleAddPrice(addPriceInput)}>Ajouter</button>
+        <div key={'commentDiv'} className='InputAddElement'>
+          <div className='InputAddElementLabel'>Commentaire </div>
+          <div className='InputAddElementField'>
+            <input
+              key={'commentInput'}
+              className='CommentInput'
+              type='text'
+              name='comment'
+              onBlur={e => handleCommentInput(e)}
+            />
+          </div>
+        </div>
+
+        <div key={'buttonDiv'} className='InputAddElement'>
+        <div className='InputAddElementField'>
+        <button
+          className='ButtonOK'
+          onClick={() => handleAddPrice(addPriceInput)}
+        >
+          OK
+        </button>
+        </div>
+      </div>
+      </div>
+
+      <Board filteredPrices={filteredPrices} filteredCats={filteredCats} />
+
 
       </div>
+      
+
     )
   }
 }

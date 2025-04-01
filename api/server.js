@@ -7,14 +7,15 @@ const url = require('url')
 const {
   selectPriceById,
   selectPricesByPeriod,
-  selectPricesByDates,
-  getCategories,
-  getObjects,
-  getYears,
-  addPrice
+  setPricesByDates,
+  setCategories,
+  setObjects,
+  setYears,
+  addPrice,
+  setPricesTop
 } = require('./queries')
 const {
-  parsePricesByDates,
+  parsePrices,
   parseCategories,
   parseObjects,
   parseYears,
@@ -34,23 +35,29 @@ async function connectAndCall (req, res, data) {
         // http://localhost:3001/pricesByDates?years=2025,2024&months=1,2,3
         const years_ = query_.years
         const months_ = query_.months
-        sql = selectPricesByDates
+        sql = setPricesByDates
         params = [years_, months_]
-        parser = parsePricesByDates
-      } else if (path_ === '/getCategories') {
-        // http://localhost:3001/getCategories
-        sql = getCategories
+        parser = parsePrices
+      } else if (path_ === '/pricesTop') {
+        // http://localhost:3001/pricesByDates?top=10
+        const top_ = query_.top
+        sql = setPricesTop
+        params = [top_]
+        parser = parsePrices
+      } else if (path_ === '/setCategories') {
+        // http://localhost:3001/setCategories
+        sql = setCategories
         params = []
         parser = parseCategories
-      } else if (path_ === '/getObjects') {
-        // http://localhost:3001/getObjects
+      } else if (path_ === '/setObjects') {
+        // http://localhost:3001/setObjects
         params = []
-        sql = getObjects
+        sql = setObjects
         parser = parseObjects
-      } else if (path_ === '/getYears') {
-        // http://localhost:3001/getYears
+      } else if (path_ === '/setYears') {
+        // http://localhost:3001/setYears
         params = []
-        sql = getYears
+        sql = setYears
         parser = parseYears
       }
     }
@@ -63,13 +70,6 @@ async function connectAndCall (req, res, data) {
                sql = addPrice
                parser = parseAddPrice
     }}
-
-    // sql = `INSERT INTO personne (nom, prenom, template) VALUES ('${dNom}', '${dPrenom}', 0)`
-    // await cnx.query(sql);
-
-    // const sqlId = await cnx.query(`SELECT @@IDENTITY as id`);
-    // itemId = sqlId[0].id;
-    
 
     if (path_ === '/favicon.ico') {
       res.writeHead(200, { 'Content-Type': 'image/x-icon' })

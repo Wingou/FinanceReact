@@ -1,6 +1,18 @@
-import { CURRENT_MONTH, CURRENT_YEAR, VIEW } from '../constants/constants'
+import {
+  catNone,
+  CURRENT_MONTH,
+  CURRENT_YEAR,
+  objNone,
+  VIEW
+} from '../constants/constants'
 import { initialModel } from '../models/initialModel'
-import { formatDate, getFirstObjId } from '../utils/helper'
+import {
+  formatDate,
+  getCatById,
+  getFirstObjId,
+  getObj,
+  getObjById
+} from '../utils/helper'
 
 export const mainReducer = (state = {}, action) => {
   switch (action.type) {
@@ -9,14 +21,6 @@ export const mainReducer = (state = {}, action) => {
     }
 
     case 'SET_CATEGORIES': {
-      const cat0 = {
-        id: -1,
-        catName: 'ERROR',
-        position:99,
-        template: 0,
-        activated: false,
-        filtered: false
-      }
       const categories = action.payload.categories
         .map(c => {
           return {
@@ -25,20 +29,23 @@ export const mainReducer = (state = {}, action) => {
             filtered: false
           }
         })
-        .concat(cat0)
+        .concat(catNone)
 
-      return { ...state, categories}
+      return { ...state, categories }
     }
 
     case 'SET_OBJECTS': {
-      const objects = action.payload.objects
-      const firstObjectId = objects.filter(o => o.template > 0)
-                  .sort((a, b) => {
-                        return a.objName.localeCompare(b.objName)
-                  })[0].id
-      return { ...state, objects, addPriceInput : {...state.addPriceInput,
-        objId: firstObjectId
-       } }
+      const objects = action.payload.objects.concat(objNone)
+      const firstObjectId = objects
+        .filter(o => o.template > 0)
+        .sort((a, b) => {
+          return a.objName.localeCompare(b.objName)
+        })[0].id
+      return {
+        ...state,
+        objects,
+        addPriceInput: { ...state.addPriceInput, objId: firstObjectId }
+      }
     }
 
     case 'SET_YEARS': {
@@ -53,17 +60,12 @@ export const mainReducer = (state = {}, action) => {
 
     case 'SET_PRICES': {
       const prices = action.payload.prices.map(p => {
-        const obj_ = state.objects.filter(o => o.id === p.objectId)
-        const obj =
-          obj_.length === 0
-            ? { objName: '*Error*', objectId: -1, catId: -1 }
-            : obj_[0]
-        const cat_ = state.categories.filter(c => c.id === obj.catId)
-        const cat = cat_.length === 0 ? { catName: '*Error*', id: -1 } : cat_[0]
+        const obj = getObjById(state.objects, p.objId)
+        const cat = getCatById(state.categories, obj.catId)
         return {
           ...p,
           actionDate: formatDate(p.actionDate),
-          objectId: obj.objectId,
+          objId: obj.id,
           objName: obj.objName,
           catId: cat.id,
           catName: cat.catName
@@ -284,58 +286,63 @@ export const mainReducer = (state = {}, action) => {
       }
     }
 
-
     case 'ADDPRICEINPUT_SET_CATID': {
       const catId = Number(action.payload)
       return {
         ...state,
-        addPriceInput : {...state.addPriceInput,
-                          catId,
-                          objId : getFirstObjId(catId, state.objects)
-
-         }
+        addPriceInput: {
+          ...state.addPriceInput,
+          catId,
+          objId: getFirstObjId(catId, state.objects)
+        }
       }
     }
 
     case 'ADDPRICEINPUT_SET_OBJID': {
       return {
         ...state,
-        addPriceInput : {...state.addPriceInput,
-                          objId:Number(action.payload)
-         }
+        addPriceInput: { ...state.addPriceInput, objId: Number(action.payload) }
       }
     }
 
-    case 'ADDPRICEINPUT_SET_DATE' : {
+    case 'ADDPRICEINPUT_SET_DATE': {
       return {
         ...state,
-        addPriceInput : {...state.addPriceInput,
-                          actionDate:action.payload
-         }
+        addPriceInput: { ...state.addPriceInput, actionDate: action.payload }
       }
-
     }
-    case 'ADDPRICEINPUT_SET_PRICE' : {
+    case 'ADDPRICEINPUT_SET_PRICE': {
       return {
         ...state,
-        addPriceInput : {...state.addPriceInput,
-                          priceValue:action.payload
-         }
+        addPriceInput: { ...state.addPriceInput, priceValue: action.payload }
       }
-
     }
 
-    case 'ADDPRICEINPUT_SET_COMMENT' : {
+    case 'ADDPRICEINPUT_SET_COMMENT': {
       return {
         ...state,
-        addPriceInput : {...state.addPriceInput,
-                          comment:action.payload
-         }
+        addPriceInput: { ...state.addPriceInput, comment: action.payload }
       }
-
     }
-    
-    
+
+    case 'SET_PRICES_AFTER_ADD': {
+      const { id, price, objId, actionDate, comment } = action.payload
+      return {
+        ...state,
+        prices: {
+          id,
+          priceValue: price,
+          actionDate,
+          comment,
+          template: 0,
+          dateCreate: '2025-04-01 18:17:00',
+          dateModif: '2025-04-01 18:17:00',
+          objName: 'Asian Soupe',
+          catId: 12,
+          catName: 'Restau'
+        }
+      }
+    }
 
     default:
       return state

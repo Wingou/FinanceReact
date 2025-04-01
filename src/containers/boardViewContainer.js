@@ -68,7 +68,7 @@ const mapStateToProps = ({
 const BoardViewContainer = connect(mapStateToProps)(BoardView)
 export default BoardViewContainer
 
-const sumPrices = (filteredPrices, cat, sumType) =>
+export const sumPrices = (filteredPrices, cat, sumType) =>
   filteredPrices.reduce((acc, price) => {
     const isPricePos = {
       recette: price.priceValue < 0,

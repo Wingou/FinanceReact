@@ -1,4 +1,5 @@
 import { store } from '../store'
+import { formatPriceSQL, formatTextSQL } from '../utils/helper'
 
 export const handleCatIdInput = e => {
   const catId = e.target.value
@@ -50,20 +51,21 @@ export const handleCommentInput = e => {
 export const handleAddPrice = async (addPriceInput)=> {
 
   const dataInput = {
-    price: addPriceInput.priceValue,
+    price: formatPriceSQL(addPriceInput.priceValue),
     objId: addPriceInput.objId,
     actionDate: addPriceInput.actionDate,
-    comment: addPriceInput.comment
+    comment: formatTextSQL(addPriceInput.comment)
   }
   
     try {
       const api  = `http://localhost:3001/addPrice`
       const resp = await fetch(api, { method: "POST", body: JSON.stringify(dataInput) })
       const rs = await resp.json()
+      console.log("rs :", rs)
       store.dispatch({
-        type: 'SET_PRICES',
-        payload: {
-          prices: rs.prices
+        type: 'SET_PRICES_AFTER_ADD',
+        payload:   {...addPriceInput,
+                id :  rs
         }
       })
     } catch (error) {

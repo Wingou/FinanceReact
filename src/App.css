@@ -29,6 +29,8 @@
   color: #61dafb;
 }
 
+/* ------ TABLE BOARD ----------- */
+
 .boardTable {
   border: 1px solid black;
   margin: 2px;
@@ -67,6 +69,11 @@ th {
   background-color: lightcyan;
 }
 
+
+
+/* ------ DISPLAY ----------- */
+
+
 .moneyCell {
   border: 1px solid black;
   text-align: right;
@@ -83,6 +90,19 @@ th {
 .negative {
   color: red;
 }
+
+.NoDataFound {
+  font-family: verdana;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 2px;
+  padding: 50px;
+  border: 1px solid red;
+}
+
+
+/* ------ MENU ----------- */
 
 .Checkbox {
   vertical-align: middle;
@@ -103,6 +123,9 @@ th {
   text-align: left;
 }
 
+
+
+
 .CheckboxLabel {
   font-family: verdana;
   font-size: 10px;
@@ -121,7 +144,7 @@ th {
   font-family: verdana;
   font-size: 10px;
   padding: 2px;
-
+  white-space: nowrap;
 }
 
 .TextInput {
@@ -129,7 +152,6 @@ th {
   font-family: verdana;
   font-size: 10px;
   margin: 2px;
-
 }
 
 .NumberInput {
@@ -140,33 +162,102 @@ th {
 
 }
 
-.NoDataFound {
-  font-family: verdana;
-  font-size: 20px;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin: 2px;
-  padding: 50px;
-  border: 1px solid red;
-}
 
-.divMenu { 
-   border: 1px solid blue;
+/* ------ MENU ----------- */
+
+.divMenu {
+  border: 1px solid blue;
   text-align: center;
   background-color: white;
   width: 100%;
-  
-
 }
 
-.buttonMenu {  font-family: verdana;
+.buttonMenu {
+  font-family: verdana;
   font-size: 10px;
   text-transform: uppercase;
   width: 100px;
-  
   margin: 5px;
+}
+
+
+/* ------ ADD ----------- */
 
 
   
+
+
+
+
+.InputAddElement ,
+.ButtonOK,
+.CommentInput,
+.DateInput,
+.PriceInput,
+.InputSelect {
+  font-family: verdana;
+  font-size: 12px;
 
 }
+
+.PriceInput,
+.DateInput,
+.CommentInput,
+.ButtonOK {
+  margin: 2px;
+}
+
+.InputSelect{
+  width:400px;
+}
+
+
+.DateInput,
+.ButtonOK,
+.PriceInput {
+  width:200px;
+}
+
+.PriceInput {
+  text-align: right;
+}
+
+.DateInput {
+  
+  text-align: center;
+}
+
+.CommentInput {
+
+  width:400px;
+}
+
+.InputAddDiv {
+  border: 1px solid blue;
+  margin: 2px;
+  border-spacing: 0px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 10px ;
+  padding-bottom: 15px ;
+}
+
+.InputAddElement {
+  padding: 2px;
+  text-align: center;
+}
+
+.InputAddElementField,
+.InputAddElementLabel {
+  width:400px;
+}
+
+.InputAddElementLabel {
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 5px;
+  
+}
+

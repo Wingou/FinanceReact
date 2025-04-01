@@ -29,7 +29,8 @@ export const initialModel = {
           priceValue:0,
           actionDate: CURRENT_DATE,
           comment:""
-        }
+        },
+        top:10
       }
 
  
