@@ -4,7 +4,7 @@ function parseCategories (rows, _) {
       return {
         id: rs.id,
         catName: rs.Categorie,
-        position:rs.Ordre,
+        position: rs.Ordre,
         template: rs.template
       }
     })
@@ -35,7 +35,7 @@ function parsePrices (rows, _) {
       priceValue: rs.prix,
       actionDate: rs.DateAction,
       comment: rs.commentaire,
-      objId: rs.id_Objet,
+      objId: rs.id_objet,
       template: rs.template,
       dateCreate: rs.dateCreate,
       dateModif: rs.dateModif
@@ -49,12 +49,10 @@ function parsePrices (rows, _) {
   return result
 }
 
-
 function parseAddPrice (rows, _) {
-  console.log("Rows : ", rows)
-  return { rs : rows }
+  console.log('Rows : ', rows)
+  return { rs: rows }
 }
-
 
 module.exports = {
   parsePrices,

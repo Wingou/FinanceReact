@@ -10,8 +10,6 @@ export const handleCatIdInput = e => {
   store.dispatch(action)
 }
 
-
-
 export const handleObjIdInput = e => {
   const objId = e.target.value
   const action = {
@@ -21,59 +19,54 @@ export const handleObjIdInput = e => {
   store.dispatch(action)
 }
 
-
 export const handleDateInput = e => {
-  const actionDate = e.target.value.split("T")[0]
+  const actionDate = e.target.value.split('T')[0]
   const action = {
-    type : 'ADDPRICEINPUT_SET_DATE',
-    payload : actionDate
+    type: 'ADDPRICEINPUT_SET_DATE',
+    payload: actionDate
   }
   store.dispatch(action)
 }
 
 export const handlePriceInput = e => {
   const action = {
-    type : 'ADDPRICEINPUT_SET_PRICE',
-    payload : e.target.value
+    type: 'ADDPRICEINPUT_SET_PRICE',
+    payload: e.target.value
   }
   store.dispatch(action)
 }
 
 export const handleCommentInput = e => {
   const action = {
-    type : 'ADDPRICEINPUT_SET_COMMENT',
-    payload : e.target.value
+    type: 'ADDPRICEINPUT_SET_COMMENT',
+    payload: e.target.value
   }
   store.dispatch(action)
 }
 
-
-export const handleAddPrice = async (addPriceInput)=> {
-
+export const handleAddPrice = async addPriceInput => {
   const dataInput = {
     price: formatPriceSQL(addPriceInput.priceValue),
     objId: addPriceInput.objId,
     actionDate: addPriceInput.actionDate,
     comment: formatTextSQL(addPriceInput.comment)
   }
-  
-    try {
-      const api  = `http://localhost:3001/addPrice`
-      const resp = await fetch(api, { method: "POST", body: JSON.stringify(dataInput) })
-      const rs = await resp.json()
-      console.log("rs :", rs)
-      store.dispatch({
-        type: 'SET_PRICES_AFTER_ADD',
-        payload:   {...addPriceInput,
-                id :  rs
-        }
-      })
-    } catch (error) {
-      console.error('error addPrice :', error)
-    }
-  
 
+  try {
+    const api = `http://localhost:3001/addPrice`
+    const resp = await fetch(api, {
+      method: 'POST',
+      body: JSON.stringify(dataInput)
+    })
+    const rs = await resp.json()
 
+    store.dispatch({
+      type: 'SET_PRICES_AFTER_ADD',
+      payload: { ...addPriceInput, id: rs.rs }
+    })
+  } catch (error) {
+    console.error('error addPrice :', error)
+  }
 }
 
 // export const handleMajPersonne = async (id, personneInput) => {

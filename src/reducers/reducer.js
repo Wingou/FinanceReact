@@ -1,18 +1,13 @@
 import {
   catNone,
+  CURRENT_DATE_TIME,
   CURRENT_MONTH,
   CURRENT_YEAR,
   objNone,
   VIEW
 } from '../constants/constants'
-import { initialModel } from '../models/initialModel'
-import {
-  formatDate,
-  getCatById,
-  getFirstObjId,
-  getObj,
-  getObjById
-} from '../utils/helper'
+import { initialAddPriceInput, initialModel } from '../models/initialModel'
+import { getCatById, getObjById } from '../utils/helper'
 
 export const mainReducer = (state = {}, action) => {
   switch (action.type) {
@@ -36,15 +31,9 @@ export const mainReducer = (state = {}, action) => {
 
     case 'SET_OBJECTS': {
       const objects = action.payload.objects.concat(objNone)
-      const firstObjectId = objects
-        .filter(o => o.template > 0)
-        .sort((a, b) => {
-          return a.objName.localeCompare(b.objName)
-        })[0].id
       return {
         ...state,
-        objects,
-        addPriceInput: { ...state.addPriceInput, objId: firstObjectId }
+        objects
       }
     }
 
@@ -64,7 +53,7 @@ export const mainReducer = (state = {}, action) => {
         const cat = getCatById(state.categories, obj.catId)
         return {
           ...p,
-          actionDate: formatDate(p.actionDate),
+          actionDate: p.actionDate,
           objId: obj.id,
           objName: obj.objName,
           catId: cat.id,
@@ -293,7 +282,7 @@ export const mainReducer = (state = {}, action) => {
         addPriceInput: {
           ...state.addPriceInput,
           catId,
-          objId: getFirstObjId(catId, state.objects)
+          objId: -1
         }
       }
     }
@@ -326,21 +315,29 @@ export const mainReducer = (state = {}, action) => {
     }
 
     case 'SET_PRICES_AFTER_ADD': {
-      const { id, price, objId, actionDate, comment } = action.payload
+      const { id, catId, objId, priceValue, actionDate, comment } =
+        action.payload
+      const objName = getObjById(state.objects, objId).objName
+      const catName = getObjById(state.categories, catId).catName
       return {
         ...state,
-        prices: {
-          id,
-          priceValue: price,
-          actionDate,
-          comment,
-          template: 0,
-          dateCreate: '2025-04-01 18:17:00',
-          dateModif: '2025-04-01 18:17:00',
-          objName: 'Asian Soupe',
-          catId: 12,
-          catName: 'Restau'
-        }
+        prices: [
+          {
+            id,
+            priceValue: Number(priceValue),
+            actionDate: actionDate,
+            comment,
+            objId,
+            template: 0,
+            dateCreate: CURRENT_DATE_TIME,
+            dateModif: CURRENT_DATE_TIME,
+            objName,
+            catId,
+            catName
+          },
+          ...state.prices
+        ],
+        addPriceInput: initialAddPriceInput
       }
     }
 

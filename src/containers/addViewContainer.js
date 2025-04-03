@@ -1,21 +1,14 @@
 import { connect } from 'react-redux'
 import { AddView } from '../components/add/addView'
 import { sumPrices } from './boardViewContainer'
- 
 
-
-const mapStateToProps = ({categories, objects,addPriceInput, prices}) => {
-
-
-  const filteredPrices = prices.sort((a,b)=> a.dateModif.localeCompare(b.dateModif))
-                    .slice(0,10)
-    
-  const filteredPricesCats = [...new Set(filteredPrices.map(p => p.catId))]
+const mapStateToProps = ({ categories, objects, addPriceInput, prices }) => {
+  const filteredPricesCats = [...new Set(prices.map(p => p.catId))]
   const filteredCats = categories
     .filter(cat => filteredPricesCats.includes(cat.id))
     .map(cat => {
-      const recette = sumPrices(filteredPrices, cat, 'recette')
-      const depense = sumPrices(filteredPrices, cat, 'depense')
+      const recette = sumPrices(prices, cat, 'recette')
+      const depense = sumPrices(prices, cat, 'depense')
       return {
         ...cat,
         recette,
@@ -27,11 +20,9 @@ const mapStateToProps = ({categories, objects,addPriceInput, prices}) => {
     categories,
     objects,
     addPriceInput,
-    filteredPrices,
+    filteredPrices: prices,
     filteredCats
   }
 }
 const AddViewContainer = connect(mapStateToProps)(AddView)
 export default AddViewContainer
-
-

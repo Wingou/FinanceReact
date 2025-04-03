@@ -1,5 +1,18 @@
 import React from 'react'
-import { formatPrice, formatPriceWithZero } from '../../utils/helper'
+import {
+  formatDateFR,
+  formatPrice,
+  formatPriceWithZero
+} from '../../utils/helper'
+
+export const BoardWithoutSum = ({ filteredPrices, filteredCats }) => {
+  return (
+    <table className='boardTable'>
+      <HeaderLine props={filteredCats} />
+      <BodyLines props={{ filteredPrices, filteredCats }} />
+    </table>
+  )
+}
 
 export const Board = ({ filteredPrices, filteredCats }) => {
   return (
@@ -47,7 +60,7 @@ const BodyLines = ({ props }) => {
       {filteredPrices.map((p, index) => {
         return (
           <tr key={index}>
-            <td key='td_date'>{p.actionDate}</td>
+            <td key='td_date'>{formatDateFR(p.actionDate)}</td>
             <td key='td_obj'>{p.objName}</td>
             <td
               key={index}
@@ -71,8 +84,8 @@ const BodyLines = ({ props }) => {
               )
             })}
             <td key='td_comment'>{p.comment}</td>
-            <td key='td_dateCreate'>{p.dateModif}</td>
-            <td key='td_dateModif'>{p.dateCreate}</td>
+            <td key='td_dateCreate'>{formatDateFR(p.dateModif)}</td>
+            <td key='td_dateModif'>{formatDateFR(p.dateCreate)}</td>
             <td key='td_template'>{p.template}</td>
           </tr>
         )
