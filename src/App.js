@@ -11,14 +11,17 @@ function App () {
   const years = useSelector(state => state.years)
   const months = useSelector(state => state.months)
   const view = useSelector(state => state.view)
-  const top = useSelector(state => state.top)
+  const top = useSelector(state => state.searchOptions.top)
+  const [isFetchConstantReady, setIsFetchConstantReady] = useState(false)
+
   const dispatch = useDispatch()
   useEffect(() => {
     const fetchListsData = async () => {
       try {
-        await fetchConstant('obj', dispatch)
         await fetchConstant('cat', dispatch)
+        await fetchConstant('obj', dispatch)
         await fetchConstant('years', dispatch)
+        setIsFetchConstantReady(true)
       } catch (error) {
         console.error('error fetchListsData : ', error)
       }
@@ -40,7 +43,7 @@ function App () {
   }, [view, years, months, dispatch])
 
   useEffect(() => {
-    const fetchPricesDataTop = async (top_) => {
+    const fetchPricesDataTop = async top_ => {
       try {
         await fetchPricesTop(top_, dispatch)
       } catch (error) {
@@ -68,7 +71,7 @@ function App () {
     <div className='App'>
       <header className='App-header'>
         <h2 className='App-title'>FINANCE REACT</h2>
-        {Menu}
+        {isFetchConstantReady ? Menu : 'Loading...'}
       </header>
       {View_}
       <footer>
@@ -153,4 +156,3 @@ const fetchPricesTop = async (top, dispatch) => {
     console.error('error pricesTop :', error)
   }
 }
-

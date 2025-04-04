@@ -29,6 +29,11 @@ export const handleDateInput = e => {
 }
 
 export const handlePriceInput = e => {
+  const valeur = e.target.value.replace(',', '.')
+  if (!/^-?\d*\.?\d{0,2}$/.test(valeur)) {
+    e.target.value = e.target.value.slice(0, -1)
+  }
+
   const action = {
     type: 'ADDPRICEINPUT_SET_PRICE',
     payload: e.target.value
@@ -68,49 +73,3 @@ export const handleAddPrice = async addPriceInput => {
     console.error('error addPrice :', error)
   }
 }
-
-// export const handleMajPersonne = async (id, personneInput) => {
-//   let actionType = "PERSONNEMAJ";
-//   let apiUrl = "http://localhost:3001/update";
-//   if (id === 0) {
-//       actionType = "ADDPERSONNE";
-//       apiUrl = "http://localhost:3001/add";
-//   }
-//   const dataInput = {
-//       id: personneInput.id,
-//       nom: personneInput.personne.nom,
-//       prenom: personneInput.personne.prenom,
-//       num: personneInput.adresse.num,
-//       voie: personneInput.adresse.voie,
-//       cp: personneInput.adresse.cp,
-//       ville: personneInput.adresse.ville,
-//       societe: personneInput.travail.societe,
-//       fonction: personneInput.travail.fonction
-//   }
-//   await fetch(apiUrl, { method: "POST", body: JSON.stringify(dataInput) })
-//       .then(data => data.json())
-//       .then(res => {
-//           const payload = {
-//               id: res[0].id,
-//               personne: {
-//                   nom: res[0].personne.nom,
-//                   prenom: res[0].personne.prenom,
-//               },
-//               adresse: {
-//                   num: res[0].adresse.num,
-//                   voie: res[0].adresse.voie,
-//                   cp: res[0].adresse.cp,
-//                   ville: res[0].adresse.ville
-//               },
-//               travail: {
-//                   societe: res[0].travail.societe,
-//                   fonction: res[0].travail.fonction
-//               }
-//           }
-//           store.dispatch({
-//               type: actionType,
-//               payload
-//           })
-//       })
-//       .catch(error => console.error(error));
-// }

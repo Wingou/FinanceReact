@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   catNone,
   CURRENT_DATE_TIME,
@@ -30,7 +31,11 @@ export const mainReducer = (state = {}, action) => {
     }
 
     case 'SET_OBJECTS': {
-      const objects = action.payload.objects.concat(objNone)
+      const objects_ = action.payload.objects.concat(objNone)
+      const objects = objects_.map(o => {
+        const catName = getCatById(state.categories, o.catId).catName
+        return { ...o, catName }
+      })
       return {
         ...state,
         objects
@@ -75,9 +80,9 @@ export const mainReducer = (state = {}, action) => {
     }
 
     case 'UPDATE_MONTH': {
-      const { months, filterOptions } = state
+      const { months, searchOptions } = state
       const { month, filtered } = action.payload
-      const { isMultiMonths } = filterOptions
+      const { isMultiMonths } = searchOptions
       const isCheckedMonthIsOnly =
         months.filter(m => m.filtered === filtered).length === 1
       const months_ = months.map(m => {
@@ -99,9 +104,9 @@ export const mainReducer = (state = {}, action) => {
     }
 
     case 'UPDATE_YEAR': {
-      const { years, filterOptions } = state
+      const { years, searchOptions } = state
       const { year, filtered } = action.payload
-      const { isMultiYears } = filterOptions
+      const { isMultiYears } = searchOptions
       const isCheckedYearIsOnly =
         years.filter(y => y.filtered === filtered).length === 1
       const years_ = years.map(y => {
@@ -133,8 +138,8 @@ export const mainReducer = (state = {}, action) => {
       return {
         ...state,
         years,
-        filterOptions: {
-          ...state.filterOptions,
+        searchOptions: {
+          ...state.searchOptions,
           isMultiYears: isAllYearsChecked
         }
       }
@@ -151,8 +156,8 @@ export const mainReducer = (state = {}, action) => {
       return {
         ...state,
         months,
-        filterOptions: {
-          ...state.filterOptions,
+        searchOptions: {
+          ...state.searchOptions,
           isMultiMonths: action.payload.isAllMonthsChecked
         }
       }
@@ -161,7 +166,7 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_FILTERED_CAT': {
       const { checked, catId } = action.payload
       const categories = state.categories.map(c => {
-        const { isMultiCats } = state.filterOptions
+        const { isMultiCats } = state.searchOptions
         return {
           ...c,
           filtered: isMultiCats
@@ -187,9 +192,9 @@ export const mainReducer = (state = {}, action) => {
       return {
         ...state,
         categories,
-        filterOptions: {
-          ...state.filterOptions,
-          isMultiCats: action.payload ? true : state.filterOptions.isMultiCats
+        searchOptions: {
+          ...state.searchOptions,
+          isMultiCats: action.payload ? true : state.searchOptions.isMultiCats
         }
       }
     }
@@ -197,8 +202,8 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_MULTIPLE_YEARS': {
       return {
         ...state,
-        filterOptions: {
-          ...state.filterOptions,
+        searchOptions: {
+          ...state.searchOptions,
           isMultiYears: action.payload
         }
       }
@@ -207,8 +212,8 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_MULTIPLE_MONTHS': {
       return {
         ...state,
-        filterOptions: {
-          ...state.filterOptions,
+        searchOptions: {
+          ...state.searchOptions,
           isMultiMonths: action.payload
         }
       }
@@ -217,8 +222,8 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_MULTIPLE_CATS': {
       return {
         ...state,
-        filterOptions: {
-          ...state.filterOptions,
+        searchOptions: {
+          ...state.searchOptions,
           isMultiCats: action.payload
         }
       }
@@ -227,8 +232,8 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_SEARCH_WORD': {
       return {
         ...state,
-        filterOptions: {
-          ...state.filterOptions,
+        searchOptions: {
+          ...state.searchOptions,
           searchWord: action.payload
         }
       }
@@ -237,8 +242,8 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_SEARCH_MIN': {
       return {
         ...state,
-        filterOptions: {
-          ...state.filterOptions,
+        searchOptions: {
+          ...state.searchOptions,
           searchMin: action.payload === '' ? null : Number(action.payload)
         }
       }
@@ -247,8 +252,8 @@ export const mainReducer = (state = {}, action) => {
     case 'UPDATE_SEARCH_MAX': {
       return {
         ...state,
-        filterOptions: {
-          ...state.filterOptions,
+        searchOptions: {
+          ...state.searchOptions,
           searchMax: action.payload === '' ? null : Number(action.payload)
         }
       }
@@ -315,10 +320,9 @@ export const mainReducer = (state = {}, action) => {
     }
 
     case 'SET_PRICES_AFTER_ADD': {
-      const { id, catId, objId, priceValue, actionDate, comment } =
-        action.payload
-      const objName = getObjById(state.objects, objId).objName
-      const catName = getObjById(state.categories, catId).catName
+      const { id, objId, priceValue, actionDate, comment } = action.payload
+      const obj = getObjById(state.objects, objId)
+
       return {
         ...state,
         prices: [
@@ -331,9 +335,9 @@ export const mainReducer = (state = {}, action) => {
             template: 0,
             dateCreate: CURRENT_DATE_TIME,
             dateModif: CURRENT_DATE_TIME,
-            objName,
-            catId,
-            catName
+            objName: obj.objName,
+            catId: obj.catId,
+            catName: obj.catName
           },
           ...state.prices
         ],

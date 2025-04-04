@@ -7,9 +7,9 @@ const mapStateToProps = ({
   years,
   months,
   activedObjs,
-  filterOptions
+  searchOptions
 }) => {
-  const { searchMin, searchMax } = filterOptions
+  const { searchMin, searchMax } = searchOptions
   const activatedCats = categories
     .filter(cat => cat.activated)
     .sort((a, b) =>
@@ -21,18 +21,18 @@ const mapStateToProps = ({
   const filteredPrices = prices
     .filter(price => filteredCatIds.includes(price.catId))
     .filter(price =>
-      filterOptions.searchWord.length < 3
+      searchOptions.searchWord.length < 3
         ? true
         : price.comment
             .replace(/\s/g, '')
             .toLowerCase()
             .includes(
-              filterOptions.searchWord.replace(/\s/g, '').toLowerCase()
+              searchOptions.searchWord.replace(/\s/g, '').toLowerCase()
             ) ||
           price.objName
             .replace(/\s/g, '')
             .toLowerCase()
-            .includes(filterOptions.searchWord.replace(/\s/g, '').toLowerCase())
+            .includes(searchOptions.searchWord.replace(/\s/g, '').toLowerCase())
     )
     .filter(price => (searchMin == null ? true : price.priceValue >= searchMin))
     .filter(price => (searchMax == null ? true : price.priceValue <= searchMax))
@@ -62,7 +62,7 @@ const mapStateToProps = ({
     isAllYearsChecked,
     isAllMonthsChecked,
     isAllCatsChecked,
-    filterOptions
+    searchOptions
   }
 }
 const BoardViewContainer = connect(mapStateToProps)(BoardView)

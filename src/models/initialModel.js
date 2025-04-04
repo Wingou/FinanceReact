@@ -8,7 +8,7 @@ import {
 export const initialAddPriceInput = {
   catId: -1,
   objId: -1,
-  priceValue: 0,
+  priceValue: null,
   actionDate: CURRENT_DATE,
   comment: ''
 }
@@ -25,15 +25,15 @@ export const initialModel = {
       filtered: index + 1 === CURRENT_MONTH
     }
   }),
-  filterOptions: {
+  searchOptions: {
     isMultiYears: false,
     isMultiMonths: false,
     isMultiCats: true,
     searchWord: '',
     searchMin: null,
-    searchMax: null
+    searchMax: null,
+    top: 10
   },
   view: VIEW.HOME,
-  addPriceInput: initialAddPriceInput,
-  top: 10
+  addPriceInput: initialAddPriceInput
 }

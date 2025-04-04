@@ -16,7 +16,7 @@ export class BoardView extends Component {
       isAllYearsChecked,
       isAllMonthsChecked,
       isAllCatsChecked,
-      filterOptions
+      searchOptions
     } = this.props
     const {
       isMultiYears,
@@ -25,7 +25,7 @@ export class BoardView extends Component {
       searchWord,
       searchMin,
       searchMax
-    } = filterOptions
+    } = searchOptions
     return (
       <div>
         <DateInput
@@ -36,13 +36,13 @@ export class BoardView extends Component {
           isMultiYears={isMultiYears}
           isMultiMonths={isMultiMonths}
         />
-        {activatedCats.length !== 0 && (
-          <ActivatedCatsInput
-            activatedCats={activatedCats}
-            isAllCatsChecked={isAllCatsChecked}
-            isMultiCats={isMultiCats}
-          />
-        )}
+
+        <ActivatedCatsInput
+          activatedCats={activatedCats}
+          isAllCatsChecked={isAllCatsChecked}
+          isMultiCats={isMultiCats}
+        />
+
         <SearchWordInput
           searchWord={searchWord}
           searchMin={searchMin}
