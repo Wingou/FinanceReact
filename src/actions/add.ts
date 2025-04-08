@@ -1,7 +1,8 @@
-import { store } from '../store'
+import { store } from '../store/store'
+import { AddPriceInput } from '../types/common'
 import { formatPriceSQL, formatTextSQL } from '../utils/helper'
 
-export const handleCatIdInput = e => {
+export const handleCatIdInput = (e : React.ChangeEvent<HTMLInputElement>) => {
   const catId = e.target.value
   const action = {
     type: 'ADDPRICEINPUT_SET_CATID',
@@ -10,7 +11,7 @@ export const handleCatIdInput = e => {
   store.dispatch(action)
 }
 
-export const handleObjIdInput = e => {
+export const handleObjIdInput = (e : React.ChangeEvent<HTMLInputElement> )=> {
   const objId = e.target.value
   const action = {
     type: 'ADDPRICEINPUT_SET_OBJID',
@@ -19,7 +20,7 @@ export const handleObjIdInput = e => {
   store.dispatch(action)
 }
 
-export const handleDateInput = e => {
+export const handleDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   const actionDate = e.target.value.split('T')[0]
   const action = {
     type: 'ADDPRICEINPUT_SET_DATE',
@@ -28,7 +29,7 @@ export const handleDateInput = e => {
   store.dispatch(action)
 }
 
-export const handlePriceInput = e => {
+export const handlePriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   const valeur = e.target.value.replace(',', '.')
   if (!/^-?\d*\.?\d{0,2}$/.test(valeur)) {
     e.target.value = e.target.value.slice(0, -1)
@@ -41,7 +42,7 @@ export const handlePriceInput = e => {
   store.dispatch(action)
 }
 
-export const handleCommentInput = e => {
+export const handleCommentInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   const action = {
     type: 'ADDPRICEINPUT_SET_COMMENT',
     payload: e.target.value
@@ -49,7 +50,9 @@ export const handleCommentInput = e => {
   store.dispatch(action)
 }
 
-export const handleAddPrice = async addPriceInput => {
+
+
+export const handleAddPrice = async (addPriceInput : AddPriceInput ) => {
   const dataInput = {
     price: formatPriceSQL(addPriceInput.priceValue),
     objId: addPriceInput.objId,

@@ -7,14 +7,26 @@ import {
   handleUpdateMultipleYears,
   handleUpdateMultipleMonths
 } from '../../actions/search'
+import { Month, Year } from '../../types/common'
 
-export const DateInput = ({
+
+
+interface DateInputProps {
+  years:Year[],
+  months:Month[],
+  isAllYearsChecked: boolean,
+  isAllMonthsChecked: boolean,
+  isMultiYears: boolean,
+  isMultiMonths: boolean
+}
+
+export const DateInput :React.FC<DateInputProps>= ({
   years,
   months,
   isAllYearsChecked,
   isAllMonthsChecked,
-  multipleYearsChecked,
-  multipleMonthsChecked
+  isMultiYears,
+  isMultiMonths
 }) => (
   <div key='div_dateInput'>
     <div className='InputDiv'>
@@ -24,8 +36,8 @@ export const DateInput = ({
           className='CheckboxInput'
           type='checkbox'
           name='multipleYears'
-          checked={multipleYearsChecked}
-          onChange={e => {
+          checked={isMultiYears}
+          onChange={(e : React.ChangeEvent<HTMLInputElement>)=> {
             handleUpdateMultipleYears(e)
           }}
         />
@@ -38,7 +50,7 @@ export const DateInput = ({
           type='checkbox'
           name='allYears'
           checked={isAllYearsChecked}
-          onChange={e => {
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             handleUpdateAllYears(e)
           }}
         />
@@ -53,7 +65,7 @@ export const DateInput = ({
               type='checkbox'
               name={y.year}
               checked={y.filtered}
-              onChange={e => {
+              onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
                 handleUpdateYear(e)
               }}
             />
@@ -69,8 +81,8 @@ export const DateInput = ({
           className='CheckboxInput'
           type='checkbox'
           name='multipleMonths'
-          checked={multipleMonthsChecked}
-          onChange={e => {
+          checked={isMultiMonths}
+          onChange={(e : React.ChangeEvent<HTMLInputElement>) => {
             handleUpdateMultipleMonths(e)
           }}
         />
@@ -83,7 +95,7 @@ export const DateInput = ({
           type='checkbox'
           name='allMonths'
           checked={isAllMonthsChecked}
-          onChange={e => {
+          onChange={(e : React.ChangeEvent<HTMLInputElement> )=> {
             handleUpdateAllMonths(e)
           }}
         />
@@ -98,7 +110,7 @@ export const DateInput = ({
               type='checkbox'
               name={m.month}
               checked={m.filtered}
-              onChange={e => {
+              onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
                 handleUpdateMonth(e)
               }}
             />

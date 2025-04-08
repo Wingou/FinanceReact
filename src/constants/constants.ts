@@ -24,11 +24,12 @@ export const MONTHS = [
   'Décembre'
 ]
 
-export const VIEW = {
-  HOME: 'home',
-  BOARD: 'board',
-  ADD: 'add'
-}
+ 
+export type VIEW =   'HOME' |  'BOARD'|  'ADD'
+
+export type SUM_TYPE = 'RECETTE' | 'DEPENSE'  |'TOTAL'
+
+
 
 export const objNone = { id: -1, catId: -1, objName: 'NONE', template: 0 }
 

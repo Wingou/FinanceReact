@@ -4,27 +4,38 @@ import {
   formatPrice,
   formatPriceWithZero
 } from '../../utils/helper'
+import { Categorie, Price } from '../../types/common'
+import { SUM_TYPE } from '../../constants/constants'
 
-export const BoardWithoutSum = ({ filteredPrices, filteredCats }) => {
+interface BoardProps {
+  filteredPrices: Price[],
+  filteredCats: Categorie[]
+}
+
+export const BoardWithoutSum: React.FC<BoardProps> = ({ filteredPrices, filteredCats }) => {
   return (
     <table className='boardTable'>
-      <HeaderLine props={filteredCats} />
-      <BodyLines props={{ filteredPrices, filteredCats }} />
+      <HeaderLine filteredCats={filteredCats} />
+      <BodyLines filteredPrices={filteredPrices} filteredCats={filteredCats} />
     </table>
   )
 }
 
-export const Board = ({ filteredPrices, filteredCats }) => {
+export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats }) => {
   return (
     <table className='boardTable'>
-      <HeaderLine props={filteredCats} />
-      <SumLines props={filteredCats} />
-      <BodyLines props={{ filteredPrices, filteredCats }} />
+      <HeaderLine filteredCats={filteredCats} />
+      <SumLines filteredCats={filteredCats} />
+      <BodyLines filteredPrices={filteredPrices} filteredCats={filteredCats} />
     </table>
   )
 }
 
-const HeaderLine = ({ props: filteredCats }) => {
+interface FilteredCatsProps {
+  filteredCats: Categorie[]
+}
+
+const HeaderLine: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
   return (
     <thead>
       <tr key='tr_header'>
@@ -43,18 +54,21 @@ const HeaderLine = ({ props: filteredCats }) => {
   )
 }
 
-const SumLines = ({ props: filteredCats }) => {
+const SumLines: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
   return (
     <tbody className='SumLineTBody'>
-      <SumLine props={{ filteredCats, sumType: 'recette' }} />
-      <SumLine props={{ filteredCats, sumType: 'depense' }} />
-      <SumLine props={{ filteredCats, sumType: 'total' }} />
+      <SumLine filteredCats={filteredCats} sumType='RECETTE' />
+      <SumLine filteredCats={filteredCats} sumType='DEPENSE' />
+      <SumLine filteredCats={filteredCats} sumType='TOTAL' />
     </tbody>
   )
 }
 
-const BodyLines = ({ props }) => {
-  const { filteredPrices, filteredCats } = props
+interface FilteredProps { filteredPrices: Price[], filteredCats: Categorie[] }
+
+
+const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats }) => {
+
   return (
     <tbody>
       {filteredPrices.map((p, index) => {
@@ -94,16 +108,18 @@ const BodyLines = ({ props }) => {
   )
 }
 
-const SumLine = ({ props }) => {
-  const { filteredCats, sumType } = props
+interface SumLineProps { filteredCats: Categorie[], sumType: SUM_TYPE }
+
+const SumLine: React.FC<SumLineProps> = ({ filteredCats, sumType }) => {
+
   const amount = filteredCats.reduce((acc, cats) => {
     if (cats.filtered) {
       switch (sumType) {
-        case 'recette':
+        case 'RECETTE':
           return acc + cats.recette
-        case 'depense':
+        case 'DEPENSE':
           return acc + cats.depense
-        case 'total':
+        case 'TOTAL':
           return acc + cats.recette + cats.depense
         default:
           return acc
@@ -113,14 +129,22 @@ const SumLine = ({ props }) => {
     }
   }, 0)
 
-  const titleAmount =
-    {
-      recette: 'recette',
-      depense: 'depense',
-      total: 'total (R-D)'
-    }[sumType] || 0
+
+  interface TitleAmountMap {
+    RECETTE: string,
+    DEPENSE: string,
+    TOTAL: string
+  }
+
+  const titleAmount: string =
+    ({
+      'RECETTE': 'recette',
+      'DEPENSE': 'depense',
+      'TOTAL': 'total (R-D)'
+    } as TitleAmountMap)[sumType] || ''
+
   const formatPriceFunc =
-    sumType === 'total' ? formatPriceWithZero : formatPrice
+    sumType === 'TOTAL' ? formatPriceWithZero : formatPrice
   return (
     <tr key={'tr_' + sumType}>
       <td key={'td_' + sumType} className='SumTitleCell' colSpan={2}>
@@ -133,11 +157,11 @@ const SumLine = ({ props }) => {
         {formatPriceFunc(amount)}
       </td>
       {filteredCats.map((cat, index) => {
-        const price =
+        const price: number =
           {
-            recette: cat.recette,
-            depense: cat.depense,
-            total: cat.recette + cat.depense
+            'RECETTE': cat.recette,
+            'DEPENSE': cat.depense,
+            'TOTAL': cat.recette + cat.depense
           }[sumType] || 0
         return (
           <td

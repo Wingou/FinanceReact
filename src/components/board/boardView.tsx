@@ -4,8 +4,22 @@ import { ActivatedCatsInput } from './categorieInput'
 import { DateInput } from './datesInput'
 import { SearchWordInput } from './searchInput'
 import { NoBoard } from './noBoard'
+import { Categorie, Month, Price, SearchOptions, Year } from '../../types/common'
 
-export class BoardView extends Component {
+
+interface BoardViewProps {
+  years:Year[],
+  months:Month[],
+  filteredPrices:Price[],
+  activatedCats:Categorie[],
+  filteredCats:Categorie[],
+  isAllYearsChecked:boolean,
+  isAllMonthsChecked:boolean,
+  isAllCatsChecked:boolean,
+  searchOptions:SearchOptions
+}
+
+export class BoardView extends Component<BoardViewProps, {}> {
   render () {
     const {
       years,

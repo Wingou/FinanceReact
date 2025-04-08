@@ -101,4 +101,18 @@ Redux DevTools
 
 
 
-
+TypeScript :
+npx tsc --init
+-> cela va générer le fichier : tsconfig.json
+Vérifier que l'on a les lignes ci-dessous activées pour que les typages manquants soient signalés :
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true
+  }
+}

@@ -5,7 +5,14 @@ import {
   handleUpdateSearchMax
 } from '../../actions/search'
 
-export const SearchWordInput = ({ search, searchMin, searchMax }) => (
+
+interface SearchWordInputProps {
+  searchWord:string,
+   searchMin:number, 
+   searchMax:number
+}
+
+export const SearchWordInput:React.FC<SearchWordInputProps> = ({ searchWord, searchMin, searchMax }) => (
   <div key='div_searchInput'>
     <div className='InputDiv'>
       <label key={'searchLabel'} className='InputLabel'>
@@ -15,7 +22,7 @@ export const SearchWordInput = ({ search, searchMin, searchMax }) => (
           className='TextInput'
           type='text'
           name='search'
-          defaultValue={search}
+          defaultValue={searchWord}
           onChange={e => {
             handleUpdateSearchWord(e)
           }}

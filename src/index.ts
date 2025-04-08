@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import './index.css'
 import App from './App'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { store } from './store'
+import { store } from './store/store'
 
 const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(document.getElementById('root'))
