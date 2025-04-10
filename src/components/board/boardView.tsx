@@ -7,7 +7,7 @@ import { NoBoard } from './noBoard'
 import { Categorie, Month, Price, SearchOptions, Year } from '../../types/common'
 
 
-interface BoardViewProps {
+export interface BoardViewProps {
   years:Year[],
   months:Month[],
   filteredPrices:Price[],

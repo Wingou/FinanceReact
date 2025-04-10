@@ -138,8 +138,8 @@ const SumLine: React.FC<SumLineProps> = ({ filteredCats, sumType }) => {
 
   const titleAmount: string =
     ({
-      'RECETTE': 'recette',
-      'DEPENSE': 'depense',
+      'RECETTE': 'RECETTE',
+      'DEPENSE': 'DEPENSE',
       'TOTAL': 'total (R-D)'
     } as TitleAmountMap)[sumType] || ''
 

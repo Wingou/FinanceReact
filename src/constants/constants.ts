@@ -24,14 +24,14 @@ export const MONTHS = [
   'Décembre'
 ]
 
- 
-export type VIEW =   'HOME' |  'BOARD'|  'ADD'
+export type COY =  'CAT' | 'OBJ' | 'YEARS'
+export type VIEW = 'HOME' | 'BOARD' | 'ADD'
 
-export type SUM_TYPE = 'RECETTE' | 'DEPENSE'  |'TOTAL'
+export type SUM_TYPE = 'RECETTE' | 'DEPENSE' | 'TOTAL'
 
 
 
-export const objNone = { id: -1, catId: -1, objName: 'NONE', template: 0 }
+export const objNone = { id: -1, catId: -1, objName: 'NONE', template: 0, catName: 'NONE' }
 
 export const catNone = {
   id: -1,

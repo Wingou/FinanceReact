@@ -8,8 +8,8 @@ import {
 
 interface SearchWordInputProps {
   searchWord:string,
-   searchMin:number, 
-   searchMax:number
+   searchMin:number|null, 
+   searchMax:number|null
 }
 
 export const SearchWordInput:React.FC<SearchWordInputProps> = ({ searchWord, searchMin, searchMax }) => (
@@ -34,7 +34,7 @@ export const SearchWordInput:React.FC<SearchWordInputProps> = ({ searchWord, sea
           className='NumberInput'
           type='text'
           name='searchMin'
-          defaultValue={searchMin}
+          defaultValue={searchMin===null? '':searchMin.toString() }
           onChange={e => {
             handleUpdateSearchMin(e)
           }}
@@ -47,7 +47,7 @@ export const SearchWordInput:React.FC<SearchWordInputProps> = ({ searchWord, sea
           className='NumberInput'
           type='text'
           name='searchMax'
-          defaultValue={searchMax}
+          defaultValue={searchMax===null? '':searchMax.toString() }
           onChange={e => {
             handleUpdateSearchMax(e)
           }}

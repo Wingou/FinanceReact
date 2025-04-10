@@ -7,9 +7,16 @@ import {
   VIEW
 } from '../constants/constants'
 import { initialAddPriceInput, initialModel } from '../models/initialModel'
+import { Categorie, Object, Price, StateType, Year } from '../types/common'
 import { getCatById, getObjById } from '../utils/helper'
 
-export const mainReducer = (state = {}, action) => {
+
+interface ActionType {
+  type: string,
+  payload: any
+}
+
+export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
   switch (action.type) {
     case '@@INIT': {
       return initialModel
@@ -17,7 +24,7 @@ export const mainReducer = (state = {}, action) => {
 
     case 'SET_CATEGORIES': {
       const categories = action.payload.categories
-        .map(c => {
+        .map((c: Categorie): Categorie => {
           return {
             ...c,
             activated: false,
@@ -31,7 +38,7 @@ export const mainReducer = (state = {}, action) => {
 
     case 'SET_OBJECTS': {
       const objects_ = action.payload.objects.concat(objNone)
-      const objects = objects_.map(o => {
+      const objects = objects_.map((o: Object): Object => {
         const catName = getCatById(state.categories, o.catId).catName
         return { ...o, catName }
       })
@@ -42,17 +49,17 @@ export const mainReducer = (state = {}, action) => {
     }
 
     case 'SET_YEARS': {
-      const years = action.payload.years
+      const years = action.payload.years as number[]
       return {
         ...state,
-        years: years.map(y => {
-          return { year: y, filtered: y === CURRENT_YEAR }
+        years: years.map((y: number): Year => {
+          return { year: y, name: y.toString(), filtered: y === CURRENT_YEAR }
         })
       }
     }
 
     case 'SET_PRICES': {
-      const prices = action.payload.prices.map(p => {
+      const prices = action.payload.prices.map((p: Price): Price => {
         const obj = getObjById(state.objects, p.objId)
         const cat = getCatById(state.categories, obj.catId)
         return {
@@ -64,7 +71,7 @@ export const mainReducer = (state = {}, action) => {
           catName: cat.catName
         }
       })
-      const activatedCatIds = [...new Set(prices.map(p => p.catId))]
+      const activatedCatIds = [...new Set(prices.map((p: Price): number => p.catId))]
       const categories = state.categories.map(cat => {
         return {
           ...cat,
@@ -88,7 +95,7 @@ export const mainReducer = (state = {}, action) => {
         return {
           ...m,
           filtered: isMultiMonths
-            ? m.months === month
+            ? m.month === month
               ? isCheckedMonthIsOnly
                 ? true
                 : filtered
@@ -106,8 +113,7 @@ export const mainReducer = (state = {}, action) => {
       const { years, searchOptions } = state
       const { year, filtered } = action.payload
       const { isMultiYears } = searchOptions
-      const isCheckedYearIsOnly =
-        years.filter(y => y.filtered === filtered).length === 1
+      const isCheckedYearIsOnly = years.filter(y => y.filtered).length === 1
       const years_ = years.map(y => {
         return {
           ...y,
@@ -131,7 +137,7 @@ export const mainReducer = (state = {}, action) => {
       const years = state.years.map(y => {
         return {
           ...y,
-          filtered: y.year === CURRENT_YEAR ? true : isAllYearsChecked
+          filtered: y.name === CURRENT_YEAR.toString() ? true : isAllYearsChecked
         }
       })
       return {
@@ -261,21 +267,21 @@ export const mainReducer = (state = {}, action) => {
     case 'TO_HOME': {
       return {
         ...state,
-        view: VIEW.HOME
+        view: 'HOME' as VIEW
       }
     }
 
     case 'TO_ADD': {
       return {
         ...state,
-        view: VIEW.ADD
+        view: 'ADD' as VIEW
       }
     }
 
     case 'TO_BOARD': {
       return {
         ...state,
-        view: VIEW.BOARD
+        view: 'BOARD' as VIEW
       }
     }
 

@@ -23,7 +23,6 @@ const MsgNoCat: React.FC = () => (
   <div className="MsgNoCatDiv">Pas de catégorie</div>
 )
 
-// Typage des props imbriqués (tu passais tout en `props`)
 interface InputDivProps {
   props: ActivatedCatsInputProps
 }

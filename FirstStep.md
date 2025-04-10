@@ -116,3 +116,7 @@ Vérifier que l'on a les lignes ci-dessous activées pour que les typages manqua
     "alwaysStrict": true
   }
 }
+
+Puis installer les bibliothèques pour typescript
+npm install --save-dev typescript @types/node
+npm i --save-dev @types/react-dom

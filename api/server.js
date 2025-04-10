@@ -1,12 +1,10 @@
 /* eslint-disable no-undef */
 require('dotenv').config()
-const { dateForSQL, setParamInSQL } = require('./utils.js')
+const { setParamInSQL } = require('./utils.js')
 const http = require('http')
 const odbc = require('odbc')
 const url = require('url')
 const {
-  selectPriceById,
-  selectPricesByPeriod,
   setPricesByDates,
   setCategories,
   setObjects,
@@ -62,35 +60,31 @@ async function connectAndCall (req, res, data) {
       }
     }
     if (req.method === 'POST') {
-
       if (path_ === '/addPrice') {
-              const  {price,  comment,  actionDate,objId  } =  data
-               // http://localhost:3001/addPrice
-               params = [`${price}`,  `${comment}`, `${actionDate}` ,objId]
-               sql = addPrice
-               parser = parseAddPrice
-    }}
+        const { price, comment, actionDate, objId } = data
+        // http://localhost:3001/addPrice
+        params = [`${price}`, `${comment}`, `${actionDate}`, objId]
+        sql = addPrice
+        parser = parseAddPrice
+      }
+    }
 
     if (path_ === '/favicon.ico') {
       res.writeHead(200, { 'Content-Type': 'image/x-icon' })
       return res.end()
     }
-    console.log("SQL:", setParamInSQL(sql, params))
     const rows = await cnx.query(setParamInSQL(sql, params))
 
     let rows_
-    if (req.method === 'POST')
-    {    const sqlId = await cnx.query(`SELECT @@IDENTITY as id`);
-          rows_ = sqlId[0].id;
-     } else
-
-     {
-      rows_=rows
-     }
-     console.log("rows_:", rows_)
+    if (req.method === 'POST') {
+      const sqlId = await cnx.query(`SELECT @@IDENTITY as id`)
+      rows_ = sqlId[0].id
+    } else {
+      rows_ = rows
+    }
     const result = await parser(rows_, params)
     const jsonData = JSON.stringify(result)
-    
+
     res.setHeader('Content-Type', 'application/json')
     res.statusCode = 200
     await res.end(jsonData)

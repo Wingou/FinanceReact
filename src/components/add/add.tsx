@@ -9,9 +9,21 @@ import {
 } from '../../actions/add'
 import { CURRENT_DATE } from '../../constants/constants'
 import { getCatById, getObjById } from '../../utils/helper'
+import { AddPriceInput, Categorie, Object, Price } from '../../types/common'
+import React from 'react'
 
-export const AddForm = ({ props }) => {
-  const { addPriceInput } = props
+export interface AddFormProps {
+  addPriceInput : AddPriceInput,
+  categories : Categorie[],
+  objects : Object[],
+  filteredPrices:Price[],
+
+   filteredCats: Categorie[]
+}
+
+export const AddForm:React.FC<AddFormProps> = ( addFormProps ) => {
+  
+  const {addPriceInput} = addFormProps
 
   const isObjetOK = addPriceInput.objId !== -1
   const isPriceOK =
@@ -30,7 +42,7 @@ export const AddForm = ({ props }) => {
   const [comment_, setComment_] = useState(addPriceInput.comment)
 
   return (
-    <div className='InputAdd_Form'>
+  <div className='InputAdd_Form'>
       <div key={'Col1'} className='InputAdd_Col1'>
         <input
           key={'Input_Date'}
@@ -41,9 +53,9 @@ export const AddForm = ({ props }) => {
           onChange={e => handleDateInput(e)}
         />
 
-        <SelectCat props={props} />
+        <SelectCat {...addFormProps} />
 
-        <SelectObj props={props} />
+        <SelectObj {...addFormProps} />
       </div>
 
       <div key={'Col2'} className='InputAdd_Col2'>
@@ -100,11 +112,11 @@ export const AddForm = ({ props }) => {
   )
 }
 
-export const SelectCat = ({ props }) => {
-  const { categories, addPriceInput } = props
+export const SelectCat : React.FC<AddFormProps>= ( { categories, addPriceInput }) => {
+  
   const cat = categories
     .filter(c => c.template === 0 && c.id > 0 && c.position !== null)
-    .sort((a, b) => a.id > b.id)
+    .sort((a, b) => a.id - b.id)
 
   const catById = getCatById(categories, addPriceInput.catId)
   const catNameForTitle =
@@ -114,7 +126,7 @@ export const SelectCat = ({ props }) => {
     <select
       className='InputAdd_Select_Cat'
       value={addPriceInput.catId}
-      onChange={e => handleCatIdInput(e)}
+      onChange={(e:React.ChangeEvent<HTMLSelectElement>) => handleCatIdInput(e)}
       title={catNameForTitle}
     >
       <option
@@ -139,8 +151,11 @@ export const SelectCat = ({ props }) => {
   )
 }
 
-export const SelectObj = ({ props }) => {
-  const { categories, objects, addPriceInput } = props
+
+
+
+export const SelectObj : React.FC<AddFormProps>= ({ categories, objects, addPriceInput }) => {
+  
 
   const objectsAll = objects
     .filter(o => o.template === 0)
@@ -170,7 +185,7 @@ export const SelectObj = ({ props }) => {
     <select
       className='InputAdd_Select_Obj'
       value={addPriceInput.objId}
-      onChange={e => handleObjIdInput(e)}
+      onChange={(e : React.ChangeEvent<HTMLSelectElement>) => handleObjIdInput(e)}
       title={objNameForTitle}
     >
       <option
@@ -186,7 +201,7 @@ export const SelectObj = ({ props }) => {
           (addPriceInput.catId !== -1 ? '' : ' (' + obj_.catName + ')')
 
         return (
-          <option key={'option_objId_' + index} value={obj_.id} title={objName}>
+          <option key={'option_objId_' + index} value={obj_.id.toString()} title={objName}>
             {objName}
           </option>
         )

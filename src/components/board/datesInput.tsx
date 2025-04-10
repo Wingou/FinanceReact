@@ -63,7 +63,7 @@ export const DateInput :React.FC<DateInputProps>= ({
               key={'yearInput_' + index}
               className='CheckboxInput'
               type='checkbox'
-              name={y.year}
+              name={y.name}
               checked={y.filtered}
               onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
                 handleUpdateYear(e)
@@ -108,7 +108,7 @@ export const DateInput :React.FC<DateInputProps>= ({
               key={'monthInput_' + index}
               className='CheckboxInput'
               type='checkbox'
-              name={m.month}
+              name={m.month.toString()}
               checked={m.filtered}
               onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
                 handleUpdateMonth(e)
