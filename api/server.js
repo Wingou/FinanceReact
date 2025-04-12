@@ -10,7 +10,8 @@ const {
   setObjects,
   setYears,
   addPrice,
-  setPricesTop
+  setPricesTop,
+  setPricesBySearch
 } = require('./queries')
 const {
   parsePrices,
@@ -27,43 +28,52 @@ async function connectAndCall (req, res, data) {
   const path_ = parsedUrl.pathname
   try {
     let sql
-    let params
+    let sqlparams
     if (req.method === 'GET') {
       if (path_ === '/pricesByDates') {
         // http://localhost:3001/pricesByDates?years=2025,2024&months=1,2,3
         const years_ = query_.years
         const months_ = query_.months
         sql = setPricesByDates
-        params = [years_, months_]
+        sqlparams = [years_, months_]
         parser = parsePrices
       } else if (path_ === '/pricesTop') {
         // http://localhost:3001/pricesByDates?top=10
         const top_ = query_.top
         sql = setPricesTop
-        params = [top_]
+        sqlparams = [top_]
         parser = parsePrices
       } else if (path_ === '/setCategories') {
         // http://localhost:3001/setCategories
         sql = setCategories
-        params = []
+        sqlparams = []
         parser = parseCategories
       } else if (path_ === '/setObjects') {
         // http://localhost:3001/setObjects
-        params = []
+        sqlparams = []
         sql = setObjects
         parser = parseObjects
       } else if (path_ === '/setYears') {
         // http://localhost:3001/setYears
-        params = []
+        sqlparams = []
         sql = setYears
         parser = parseYears
+      } else if (path_ === '/pricesBySearch') {
+        // http://localhost:3001/pricesBySearch?top=10&catId=11,29&years=2025,2024&months=1,2,3
+        const top_ = query_.top
+        const catId_ = query_.catId
+        const years_ = query_.years
+        const months_ = query_.months
+        sql = setPricesBySearch
+        sqlparams = [top_, catId_, years_, months_]
+        parser = parsePricesBySearch
       }
     }
     if (req.method === 'POST') {
       if (path_ === '/addPrice') {
         const { price, comment, actionDate, objId } = data
         // http://localhost:3001/addPrice
-        params = [`${price}`, `${comment}`, `${actionDate}`, objId]
+        sqlparams = [`${price}`, `${comment}`, `${actionDate}`, objId]
         sql = addPrice
         parser = parseAddPrice
       }
@@ -73,8 +83,7 @@ async function connectAndCall (req, res, data) {
       res.writeHead(200, { 'Content-Type': 'image/x-icon' })
       return res.end()
     }
-    const rows = await cnx.query(setParamInSQL(sql, params))
-
+    const rows = await cnx.query(setParamInSQL(sql, sqlparams))
     let rows_
     if (req.method === 'POST') {
       const sqlId = await cnx.query(`SELECT @@IDENTITY as id`)
@@ -82,7 +91,7 @@ async function connectAndCall (req, res, data) {
     } else {
       rows_ = rows
     }
-    const result = await parser(rows_, params)
+    const result = await parser(rows_)
     const jsonData = JSON.stringify(result)
 
     res.setHeader('Content-Type', 'application/json')

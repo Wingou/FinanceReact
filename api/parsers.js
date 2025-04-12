@@ -1,4 +1,4 @@
-function parseCategories (rows, _) {
+function parseCategories (rows) {
   return {
     cat: rows.map(rs => {
       return {
@@ -11,7 +11,7 @@ function parseCategories (rows, _) {
   }
 }
 
-function parseObjects (rows, _) {
+function parseObjects (rows) {
   return {
     obj: rows.map(rs => {
       return {
@@ -24,21 +24,37 @@ function parseObjects (rows, _) {
   }
 }
 
-function parseYears (rows, _) {
+function parseYears (rows) {
   return { years: rows.map(rs => rs.year) }
 }
 
-function parsePrices (rows, _) {
+function parseAddPrice (rows) {
+  return { rs: rows }
+}
+
+function parsePrices (rows) {
   const newRows = rows.map(rs => {
     return {
-      id: rs.id,
-      priceValue: rs.prix,
-      actionDate: rs.DateAction,
-      comment: rs.commentaire,
-      objId: rs.id_objet,
-      template: rs.template,
-      dateCreate: rs.dateCreate,
-      dateModif: rs.dateModif
+      price: {
+        id: rs.priceId,
+        priceValue: rs.prix,
+        comment: rs.commentaire,
+        actionDate: rs.DateAction,
+        dateCreate: rs.dateCreate,
+        dateModif: rs.dateModif,
+        template: rs.priceTemplate
+      },
+      obj: {
+        id: rs.objId,
+        name: rs.Objet,
+        template: rs.objTemplate
+      },
+      cat: {
+        id: rs.catId,
+        name: rs.categorie,
+        position: rs.Ordre,
+        template: rs.catTemplate
+      }
     }
   })
 
@@ -47,11 +63,6 @@ function parsePrices (rows, _) {
   }
 
   return result
-}
-
-function parseAddPrice (rows, _) {
-  console.log('Rows : ', rows)
-  return { rs: rows }
 }
 
 module.exports = {
