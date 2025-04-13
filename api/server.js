@@ -10,7 +10,7 @@ const {
   setYears,
   addPrice,
   setPricesTop,
-  setPricesBySearch
+  setPricesByDates
 } = require('./queries')
 const {
   parsePrices,
@@ -50,13 +50,12 @@ async function connectAndCall (req, res, data) {
         sqlparams = []
         sql = setYears
         parser = parseYears
-      } else if (path_ === '/pricesBySearch') {
-        // http://localhost:3001/pricesBySearch?catIds=11,29&years=2025,2024&months=1,2,3
-        const catIds_ = query_.catIds
+      } else if (path_ === '/pricesByDates') {
+        // http://localhost:3001/pricesByDates?years=2025,2024&months=1,2,3
         const years_ = query_.years
         const months_ = query_.months
-        sql = setPricesBySearch
-        sqlparams = [catIds_, years_, months_]
+        sql = setPricesByDates
+        sqlparams = [years_, months_]
         parser = parsePrices
       }
     }

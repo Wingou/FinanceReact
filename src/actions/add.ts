@@ -2,7 +2,7 @@ import { store } from '../store/store'
 import { AddPriceInput } from '../types/common'
 import { formatPriceSQL, formatTextSQL } from '../utils/helper'
 
-export const handleCatIdInput = (e : React.ChangeEvent<HTMLSelectElement>) => {
+export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const catId = e.target.value
   const action = {
     type: 'ADDPRICEINPUT_SET_CATID',
@@ -11,7 +11,7 @@ export const handleCatIdInput = (e : React.ChangeEvent<HTMLSelectElement>) => {
   store.dispatch(action)
 }
 
-export const handleObjIdInput = (e : React.ChangeEvent<HTMLSelectElement> )=> {
+export const handleObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const objId = e.target.value
   const action = {
     type: 'ADDPRICEINPUT_SET_OBJID',
@@ -50,11 +50,9 @@ export const handleCommentInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   store.dispatch(action)
 }
 
-
-
-export const handleAddPrice = async (addPriceInput : AddPriceInput ) => {
+export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
   const dataInput = {
-    price: formatPriceSQL(addPriceInput.priceValue),
+    price: formatPriceSQL(addPriceInput.amount),
     objId: addPriceInput.objId,
     actionDate: addPriceInput.actionDate,
     comment: formatTextSQL(addPriceInput.comment)

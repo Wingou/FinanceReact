@@ -1,3 +1,5 @@
+import { Categorie } from "../types/common"
+
 const date = new Date()
 
 export const CURRENT_YEAR = date.getFullYear()
@@ -24,20 +26,25 @@ export const MONTHS = [
   'Décembre'
 ]
 
-export type COY =  'CAT' | 'OBJ' | 'YEARS'
-export type VIEW = 'HOME' | 'BOARD' | 'ADD'
+export type COY = 'CAT' | 'OBJ' | 'YEARS'
+export type PAGE = 'HOME' | 'BOARD'
 
 export type SUM_TYPE = 'RECETTE' | 'DEPENSE' | 'TOTAL'
 
+const catRawNone = { id: -1, name: 'NONE' , position:99, template:0}
 
-
-export const objNone = { id: -1, catId: -1, objName: 'NONE', template: 0, catName: 'NONE' }
-
-export const catNone = {
+export const objNone = {
   id: -1,
-  catName: 'NONE',
-  position: 99,
+  name: 'NONE',
   template: 0,
-  activated: false,
-  filtered: false
+  cat: catRawNone
 }
+
+export const catNone:Categorie = {
+  ...catRawNone,
+  recette: 0,
+  depense: 0,
+  isDisplayed : false,
+  isOn: false
+}
+

@@ -1,135 +1,135 @@
 export const mockCats = [
   {
     id: 51,
-    catName: 'CC vers PEA Qiqi',
+    name: 'CC vers PEA Qiqi',
     template: 2,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 50,
-    catName: 'CC vers CC Qiqi',
+    name: 'CC vers CC Qiqi',
     template: 2,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 52,
-    catName: 'Parents',
+    name: 'Parents',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 11,
-    catName: 'Courses',
+    name: 'Courses',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 12,
-    catName: 'Restau',
+    name: 'Restau',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 16,
-    catName: 'Dépense',
+    name: 'Dépense',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 13,
-    catName: 'Facture',
+    name: 'Facture',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 29,
-    catName: 'Santé',
+    name: 'Santé',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 14,
-    catName: 'Voiture',
+    name: 'Voiture',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 33,
-    catName: 'Transport',
+    name: 'Transport',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 46,
-    catName: 'Loisirs',
+    name: 'Loisirs',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 30,
-    catName: 'Impôt',
+    name: 'Impôt',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 15,
-    catName: 'Maison',
+    name: 'Maison',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 42,
-    catName: 'VP Courses',
+    name: 'VP Courses',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 43,
-    catName: 'VP Dépense',
+    name: 'VP Dépense',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 39,
-    catName: 'VP Déjeuner',
+    name: 'VP Déjeuner',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 44,
-    catName: 'Spécial',
+    name: 'Spécial',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 49,
-    catName: 'Virement Interne',
+    name: 'Virement Interne',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   },
   {
     id: 48,
-    catName: 'Revenu',
+    name: 'Revenu',
     template: 0,
     activated: false,
-    filtered: false
+    isOn: false
   }
 ]

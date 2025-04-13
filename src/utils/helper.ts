@@ -26,8 +26,8 @@ export const getFirstObjId = (catId:number, objects:Object[]) => {
     catId === -1
       ? objects.filter(o => o.template === 0)[0].id
       : objects
-          .filter(o => o.catId === catId && o.template === 0)
-          .sort((a, b) => a.objName.localeCompare(b.objName))[0].id
+          .filter(o => o.cat.id === catId && o.template === 0)
+          .sort((a, b) => a.name.localeCompare(b.name))[0].id
 
   return objId
 }

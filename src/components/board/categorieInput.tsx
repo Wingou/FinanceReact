@@ -63,13 +63,13 @@ const InputDiv: React.FC<InputDivProps> = ({ props }) => {
           <input
             className="Checkbox"
             type="checkbox"
-            checked={c.filtered}
+            checked={c.isOn}
             name={`${c.id}`}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleFilteredCat(e)
             }
           />
-          {c.catName + ' '}
+          {c.name + ' '}
         </label>
       ))}
     </div>

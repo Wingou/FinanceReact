@@ -43,7 +43,7 @@ const HeaderLine: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
         <th key='th_obj'> OBJET </th>
         <th key='th_montant'> MONTANT </th>
         {filteredCats.map((cat, index) => {
-          return <th key={index}>{cat.catName}</th>
+          return <th key={index}>{cat.name}</th>
         })}
         <th key='th_comment'> COMMENTAIRE </th>
         <th key='th_dateCreate'> DATE CREATE </th>
@@ -75,17 +75,17 @@ const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats }) =>
         return (
           <tr key={index}>
             <td key='td_date'>{formatDateFR(p.actionDate)}</td>
-            <td key='td_obj'>{p.objName}</td>
+            <td key='td_obj'>{p.obj.name}</td>
             <td
               key={index}
               className={
-                'moneyCell ' + (p.priceValue < 0 ? 'negative' : 'positive')
+                'moneyCell ' + (p.amount < 0 ? 'negative' : 'positive')
               }
             >
-              {formatPrice(p.priceValue)}
+              {formatPrice(p.amount)}
             </td>
             {filteredCats.map((cat, index) => {
-              const price = cat.id === p.catId ? p.priceValue : 0
+              const price = cat.id === p.cat.id ? p.amount : 0
               return (
                 <td
                   key={index}
@@ -113,7 +113,7 @@ interface SumLineProps { filteredCats: Categorie[], sumType: SUM_TYPE }
 const SumLine: React.FC<SumLineProps> = ({ filteredCats, sumType }) => {
 
   const amount = filteredCats.reduce((acc, cats) => {
-    if (cats.filtered) {
+    if (cats.isOn) {
       switch (sumType) {
         case 'RECETTE':
           return acc + cats.recette

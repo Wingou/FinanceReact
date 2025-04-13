@@ -8,7 +8,7 @@ import { AddPriceInput, SearchOptions, StateType } from '../types/common'
 export const initialAddPriceInput : AddPriceInput= {
   catId: -1,
   objId: -1,
-  priceValue: '',
+  amount: '',
   actionDate: CURRENT_DATE,
   comment: ''
 }
@@ -32,10 +32,12 @@ export const initialModel:StateType = {
     return {
       name: m,
       month: index + 1,
-      filtered: index + 1 === CURRENT_MONTH
+      isOn: index + 1 === CURRENT_MONTH
     }
   }),
   searchOptions: initialSearchOptions,
   addPriceInput: initialAddPriceInput,
-  view: 'HOME'
+  view: { 
+    page :'HOME',
+    isAddOpen : false} 
 }

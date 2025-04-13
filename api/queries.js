@@ -9,19 +9,18 @@ const setYears = `SELECT distinct year(dateAction) as year FROM prix ORDER BY ye
 
 const addPrice = `INSERT INTO prix (prix, commentaire, DateAction, id_objet) VALUES ('?','?','?',?)`
 
-const setPricesBySearch = `SELECT p.id as priceId, p.prix, p.commentaire, p.DateAction, p.dateCreate, p.dateModif, p.template as priceTemplate
+const setPricesByDates = `SELECT p.id as priceId, p.prix, p.commentaire, p.DateAction, p.dateCreate, p.dateModif, p.template as priceTemplate
                             , o.id as objId, o.Objet, o.template as objTemplate
                             , c.id as catId, c.categorie, c.Ordre, c.template as catTemplate
                             FROM prix p, objet o, categorie c
-                            WHERE c.id in (?)
-                            AND o.id_categorie = c.id
+                            WHERE o.id_categorie = c.id
                             AND p.id_objet = o.id
                             AND Year(p.DateAction) in (?)
                             AND Month(p.DateAction) in (?)
                             ORDER BY p.DateAction, c.Ordre, o.Objet`
 
 module.exports = {
-  setPricesBySearch,
+  setPricesByDates,
   setPricesTop,
   setCategories,
   setObjects,

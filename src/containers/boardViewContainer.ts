@@ -17,15 +17,15 @@ const mapStateToProps = (state:RootState ):BoardViewProps => {
 
   const { searchMin, searchMax } = searchOptions
   const activatedCats = categories
-    .filter((cat:Categorie) => cat.activated)
+    .filter((cat:Categorie) => cat.isDisplayed)
     .sort((a:Categorie, b:Categorie) =>
-      a.catName.localeCompare(b.catName, 'fr', { sensitivity: 'base' })
+      a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' })
     )
   const filteredCatIds = activatedCats
-    .filter((cat:Categorie) => cat.filtered)
+    .filter((cat:Categorie) => cat.isOn)
     .map((cat:Categorie) => cat.id)
   const filteredPrices = prices
-    .filter((price:Price) => filteredCatIds.includes(price.catId))
+    .filter((price:Price) => filteredCatIds.includes(price.cat.id))
     .filter((price:Price) =>
       searchOptions.searchWord.length < 3
         ? true
@@ -35,16 +35,16 @@ const mapStateToProps = (state:RootState ):BoardViewProps => {
             .includes(
               searchOptions.searchWord.replace(/\s/g, '').toLowerCase()
             ) ||
-          price.objName
+          price.obj.name
             .replace(/\s/g, '')
             .toLowerCase()
             .includes(searchOptions.searchWord.replace(/\s/g, '').toLowerCase())
     )
-    .filter((price:Price)  => (searchMin == null ? true : price.priceValue >= searchMin))
-    .filter((price:Price)  => (searchMax == null ? true : price.priceValue <= searchMax))
-  const filteredPricesCats = [...new Set(filteredPrices.map((p:Price) => p.catId))]
+    .filter((price:Price)  => (searchMin == null ? true : price.amount >= searchMin))
+    .filter((price:Price)  => (searchMax == null ? true : price.amount <= searchMax))
+  const filteredPricesCats = [...new Set(filteredPrices.map((p:Price) => p.cat.id))]
   const filteredCats = activatedCats
-    .filter((cat:Categorie) => cat.filtered)
+    .filter((cat:Categorie) => cat.isOn)
     .filter((cat:Categorie) => filteredPricesCats.includes(cat.id))
     .map((cat:Categorie) => {
       const recette = sumPrices(filteredPrices, cat, 'RECETTE')
@@ -55,9 +55,9 @@ const mapStateToProps = (state:RootState ):BoardViewProps => {
         depense
       }
     })
-  const isAllYearsChecked = years.filter((y:Year) => !y.filtered).length === 0
-  const isAllMonthsChecked = months.filter((m:Month) => !m.filtered).length === 0
-  const isAllCatsChecked = activatedCats.filter((c:Categorie) => !c.filtered).length === 0
+  const isAllYearsChecked = years.filter((y:Year) => !y.isOn).length === 0
+  const isAllMonthsChecked = months.filter((m:Month) => !m.isOn).length === 0
+  const isAllCatsChecked = activatedCats.filter((c:Categorie) => !c.isOn).length === 0
   return {
     years,
     months,
@@ -83,8 +83,8 @@ interface IsPricePos {
 export const sumPrices = (filteredPrices:Price[], cat:Categorie, sumType:SUM_TYPE) =>
   filteredPrices.reduce((acc, price) => {
     const isPricePos = ({
-      'RECETTE': price.priceValue < 0,
-      'DEPENSE': price.priceValue > 0
+      'RECETTE': price.amount < 0,
+      'DEPENSE': price.amount > 0
     } as IsPricePos )[sumType]
-    return price.catId === cat.id   && isPricePos ? acc + price.priceValue : acc
+    return price.cat.id === cat.id   && isPricePos ? acc + price.amount : acc
   }, 0)

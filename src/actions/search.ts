@@ -3,7 +3,7 @@ import { store } from '../store/store'
 export const handleUpdateYear = (e:React.ChangeEvent<HTMLInputElement>) => {
   const action = {
     type: 'UPDATE_YEAR',
-    payload: { year: parseInt(e.target.name), filtered: e.target.checked }
+    payload: { year: parseInt(e.target.name), isOn: e.target.checked }
   }
   store.dispatch(action)
 }
@@ -11,7 +11,7 @@ export const handleUpdateYear = (e:React.ChangeEvent<HTMLInputElement>) => {
 export const handleUpdateMonth = (e:React.ChangeEvent<HTMLInputElement>) => {
   const action = {
     type: 'UPDATE_MONTH',
-    payload: { month: parseInt(e.target.name), filtered: e.target.checked }
+    payload: { month: parseInt(e.target.name), isOn: e.target.checked }
   }
   store.dispatch(action)
 }

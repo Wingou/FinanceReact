@@ -15,21 +15,17 @@ import React from 'react'
 export interface AddFormProps {
   addPriceInput : AddPriceInput,
   categories : Categorie[],
-  objects : Object[],
-  filteredPrices:Price[],
-
-   filteredCats: Categorie[]
+  objects : Object[]
 }
 
 export const AddForm:React.FC<AddFormProps> = ( addFormProps ) => {
-  
-  const {addPriceInput} = addFormProps
 
+  const {addPriceInput} = addFormProps
   const isObjetOK = addPriceInput.objId !== -1
   const isPriceOK =
-    /^-?\d*\.?\d{0,2}$/.test(addPriceInput.priceValue) &&
-    addPriceInput.priceValue !== '' &&
-    addPriceInput.priceValue !== '-'
+    /^-?\d*\.?\d{0,2}$/.test(addPriceInput.amount) &&
+    addPriceInput.amount !== '' &&
+    addPriceInput.amount !== '-'
 
   const buttonOKTitle = !isObjetOK
     ? 'Objet manquant !'
@@ -52,12 +48,9 @@ export const AddForm:React.FC<AddFormProps> = ( addFormProps ) => {
           defaultValue={CURRENT_DATE}
           onChange={e => handleDateInput(e)}
         />
-
         <SelectCat {...addFormProps} />
-
-        <SelectObj {...addFormProps} />
+        <SelectObj {...addFormProps } />
       </div>
-
       <div key={'Col2'} className='InputAdd_Col2'>
         <div key={'Col2_row1'} className='InputAdd_Col2_row1'>
           <div
@@ -70,7 +63,7 @@ export const AddForm:React.FC<AddFormProps> = ( addFormProps ) => {
               type='text'
               name='price'
               placeholder='15.50'
-              defaultValue={addPriceInput.priceValue}
+              defaultValue={addPriceInput.amount}
               onChange={e => handlePriceInput(e)}
               pattern='/^-?\d*\.?\d{0,2}$/'
             />
@@ -120,7 +113,7 @@ export const SelectCat : React.FC<AddFormProps>= ( { categories, addPriceInput }
 
   const catById = getCatById(categories, addPriceInput.catId)
   const catNameForTitle =
-    catById.id === -1 ? 'Aucune catégorie sélectionnée' : catById.catName
+    catById.id === -1 ? 'Aucune catégorie sélectionnée' : catById.name
 
   return (
     <select
@@ -141,9 +134,9 @@ export const SelectCat : React.FC<AddFormProps>= ( { categories, addPriceInput }
           <option
             key={'option_catId_' + index}
             value={cat_.id}
-            title={cat_.catName}
+            title={cat_.name}
           >
-            {cat_.catName}
+            {cat_.name}
           </option>
         )
       })}
@@ -160,26 +153,26 @@ export const SelectObj : React.FC<AddFormProps>= ({ categories, objects, addPric
   const objectsAll = objects
     .filter(o => o.template === 0)
     .sort((a, b) => {
-      return a.objName.localeCompare(b.objName)
+      return a.name.localeCompare(b.name)
     })
 
   const objectsByCatId =
     addPriceInput.catId === -1
       ? objectsAll
-      : objects.filter(o => o.catId === addPriceInput.catId && o.template === 0)
+      : objects.filter(o => o.cat.id === addPriceInput.catId && o.template === 0)
 
   const objById = getObjById(objects, addPriceInput.objId)
   const objNameForTitle =
     objById.id === -1
       ? 'aucun objet sélectionné'
-      : objById.objName +
-        (addPriceInput.catId === -1 ? ' (' + objById.catName + ')' : '')
+      : objById.name +
+        (addPriceInput.catId === -1 ? ' (' + objById.cat.name + ')' : '')
 
   const objLabel =
     '¤ OBJET ¤' +
     (addPriceInput.catId === -1
       ? ''
-      : ' (' + getCatById(categories, addPriceInput.catId).catName + ')')
+      : ' (' + getCatById(categories, addPriceInput.catId).name + ')')
 
   return (
     <select
@@ -197,8 +190,8 @@ export const SelectObj : React.FC<AddFormProps>= ({ categories, objects, addPric
       </option>
       {objectsByCatId.map((obj_, index) => {
         const objName =
-          obj_.objName +
-          (addPriceInput.catId !== -1 ? '' : ' (' + obj_.catName + ')')
+          obj_.name +
+          (addPriceInput.catId !== -1 ? '' : ' (' + obj_.name + ')')
 
         return (
           <option key={'option_objId_' + index} value={obj_.id.toString()} title={objName}>

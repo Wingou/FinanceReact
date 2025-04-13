@@ -6,81 +6,68 @@ import AddViewContainer from './containers/addViewContainer'
 import BoardViewContainer from './containers/boardViewContainer'
 import HomeViewContainer from './containers/homeViewContainer'
 import React from 'react'
-import { COY, VIEW } from './constants/constants'
+import { COY } from './constants/constants'
 import { Menu } from './components/common/menu'
 import { Dispatch } from '@reduxjs/toolkit'
-import { Categorie, Month, Object, Year } from './types/common'
+import { Month, Year } from './types/common'
 
-function App () {
-  const years = useSelector((state:RootState) => state.years)
-  const months = useSelector((state:RootState) => state.months)
-  const view:VIEW = useSelector((state:RootState):VIEW => state.view as VIEW)
-  const top = useSelector((state:RootState) => state.searchOptions.top)
-  const [isFetchConstantReady, setIsFetchConstantReady] = useState(false)
-
+function App() {
   const dispatch = useDispatch()
+  const years = useSelector((state: RootState) => state.years)
+  const months = useSelector((state: RootState) => state.months)
+  const view = useSelector((state: RootState) => state.view)
+  const [isCOYLoaded, setIsCOYLoaded] = useState(false)
+
   useEffect(() => {
     const fetchListsData = async () => {
       try {
-        await fetchConstant('CAT', dispatch)
-        await fetchConstant('OBJ', dispatch)
-        await fetchConstant('YEARS', dispatch)
-        setIsFetchConstantReady(true)
+        await fetchList('CAT', dispatch)
+        await fetchList('OBJ', dispatch)
+        await fetchList('YEARS', dispatch)
+        setIsCOYLoaded(true)
       } catch (error) {
-        console.error('error fetchListsData : ', error)
+        console.error('ERROR: fetchListsData : ', error)
       }
     }
     fetchListsData()
   }, [dispatch])
 
   useEffect(() => {
-    const fetchPricesDataByDate = async () => {
+    const fetchPricesData = async () => {
       try {
-        await fetchPricesByDate(years, months, dispatch)
+        await fetchPrices(years, months, dispatch)
       } catch (error) {
-        console.error('error fetchPricesByDate : ', error)
+        console.error('ERROR: fetchPrices', error)
       }
     }
-    if (view === 'BOARD') {
-      fetchPricesDataByDate()
+    if (view.page === 'BOARD') {
+      fetchPricesData()
     }
   }, [view, years, months, dispatch])
 
-  useEffect(() => {
-    const fetchPricesDataTop = async (top_:number) => {
-      try {
-        await fetchPricesTop(top_, dispatch)
-      } catch (error) {
-        console.error('error fetchPricesTop : ', error)
-      }
-    }
-    if (view === 'ADD') {
-      fetchPricesDataTop(top)
-    }
-  }, [top, view, dispatch])
 
-  const viewContainer = ()=> {
-  switch (view) {
-    case 'ADD':
-      return <AddViewContainer />;
-      
-    case 'BOARD':
-      return<BoardViewContainer />;
-      
-    case 'HOME':
-      return <HomeViewContainer />;
-    default:
-      throw new Error('Switch VIEW Error !')
-  }}
+  const viewContainer = () => {
+    switch (view.page) {
+      case 'BOARD':
+        return <BoardViewContainer />;
+      case 'HOME':
+        return <HomeViewContainer />;
+      default:
+        throw new Error('Switch PAGE Error !')
+    }
+  }
 
-  
+  const viewAddContainer = () => {
+      if (view.isAddOpen) {return <AddViewContainer />; }
+  }
 
   return (
     <div className='App'>
       <header className='App-header'>
         <h2 className='App-title'>FINANCE REACT</h2>
-        {isFetchConstantReady ? Menu : 'Loading...'}
+        {isCOYLoaded ? Menu : 'Loading...'}
       </header>
+      {viewAddContainer()}
       {viewContainer()}
       <footer>
         <div className='App-footer'>- FINANCE REACT - March 2025 -</div>
@@ -88,104 +75,40 @@ function App () {
     </div>
   )
 }
-
 export default App
 
-interface ApiCat {
-  cat : Categorie[]
-}
-
-interface ApiObj  {
-  obj : Object[]
-}
-
-interface ApiYears  {
-  years : number[]
-}
-
-type ApiConstant = ApiCat  | ApiObj | ApiYears 
-
-
-const fetchConstant = async (constant:COY, dispatch:Dispatch) => {
+const fetchList = async (coy_: COY, dispatch: Dispatch) => {
   try {
-    const api:string = {
-      'CAT': 'http://localhost:3001/setCategories',
-      'OBJ': 'http://localhost:3001/setObjects',
-      'YEARS': 'http://localhost:3001/setYears'
-    }[constant]
-
-    const param = (rs:ApiConstant) => {
-      switch (constant) {
-      case 'CAT' : 
-            return {
-        
-          type: 'SET_CATEGORIES',
-          payload: {
-            categories: (rs as ApiCat).cat
-        
-        }};
-        
-        case 'OBJ' : 
-        return {
-          type: 'SET_OBJECTS',
-          payload: {
-            objects: (rs as ApiObj).obj
-        
-        }
-      };
-        case 'YEARS' : 
-        return {
-          type: 'SET_YEARS',
-
-          payload: {
-            years: (rs as ApiYears).years
-          }};
-
-        default :
-            throw new Error(`Constant "${constant}" non reconnu.`)
-      }
-      
-    }
-    const resp = await fetch(api)
+    const coy = {
+      'CAT': { api: 'http://localhost:3001/setCategories', type: 'SET_CATEGORIES' },
+      'OBJ': { api: 'http://localhost:3001/setObjects', type: 'SET_OBJECTS' },
+      'YEARS': { api: 'http://localhost:3001/setYears', type: 'SET_YEARS' }
+    }[coy_]
+    const resp = await fetch(coy.api)
     const rs = await resp.json()
-    dispatch(param(rs))
-    return rs
+    dispatch({
+      type: coy.type,
+      payload: rs
+    }
+    )
   } catch (error) {
-    console.error('error get ' + constant, error)
+    console.error('ERROR: fetchSimpleList ' + coy_, error)
     throw error
   }
 }
 
-const fetchPricesByDate = async (years:Year[], months:Month[], dispatch:Dispatch) => {
+const fetchPrices = async (years: Year[], months: Month[], dispatch: Dispatch) => {
   try {
-    const filteredYears = years.filter(y => y.filtered).map(y => y.year)
-    const filteredMonths = months.filter(m => m.filtered).map(m => m.month)
-    const apiPrices = `http://localhost:3001/pricesByDates?years=${filteredYears}&months=${filteredMonths}`
-    const respPrices = await fetch(apiPrices)
-    const rsPrices = await respPrices.json()
+    const filteredYears = years.filter(y => y.isOn).map(y => y.year)
+    const filteredMonths = months.filter(m => m.isOn).map(m => m.month)
+    const api = `http://localhost:3001/pricesByDates?years=${filteredYears}&months=${filteredMonths}`
+    const resp = await fetch(api)
+    const rsPrices = await resp.json()
     dispatch({
       type: 'SET_PRICES',
-      payload: {
-        prices: rsPrices.prices
-      }
+      payload: rsPrices
     })
   } catch (error) {
-    console.error('error pricesByDates :', error)
-  }
-}
-
-const fetchPricesTop = async (top:number, dispatch:Dispatch) => {
-  try {
-    const apiPrices = `http://localhost:3001/pricesTop?top=${top}`
-    const respPrices = await fetch(apiPrices)
-    const rsPrices = await respPrices.json()
-    dispatch({
-      type: 'SET_PRICES',
-      payload: {
-        prices: rsPrices.prices
-      }
-    })
-  } catch (error) {
-    console.error('error pricesTop :', error)
+    console.error('ERROR: fetchPrices', error)
   }
 }
