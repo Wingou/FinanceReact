@@ -30,14 +30,15 @@ async function connectAndCall (req, res, data) {
     let sql
     let sqlparams
     if (req.method === 'GET') {
-      if (path_ === '/pricesByDates') {
-        // http://localhost:3001/pricesByDates?years=2025,2024&months=1,2,3
-        const years_ = query_.years
-        const months_ = query_.months
-        sql = setPricesByDates
-        sqlparams = [years_, months_]
-        parser = parsePrices
-      } else if (path_ === '/pricesTop') {
+      // if (path_ === '/pricesByDates') {
+      //   // http://localhost:3001/pricesByDates?years=2025,2024&months=1,2,3
+      //   const years_ = query_.years
+      //   const months_ = query_.months
+      //   sql = setPricesByDates
+      //   sqlparams = [years_, months_]
+      //   parser = parsePrices
+      // } else 
+      if (path_ === '/pricesTop') {
         // http://localhost:3001/pricesByDates?top=10
         const top_ = query_.top
         sql = setPricesTop
@@ -59,14 +60,13 @@ async function connectAndCall (req, res, data) {
         sql = setYears
         parser = parseYears
       } else if (path_ === '/pricesBySearch') {
-        // http://localhost:3001/pricesBySearch?top=10&catId=11,29&years=2025,2024&months=1,2,3
-        const top_ = query_.top
-        const catId_ = query_.catId
+        // http://localhost:3001/pricesBySearch?catIds=11,29&years=2025,2024&months=1,2,3
+        const catIds_ = query_.catIds
         const years_ = query_.years
         const months_ = query_.months
         sql = setPricesBySearch
-        sqlparams = [top_, catId_, years_, months_]
-        parser = parsePricesBySearch
+        sqlparams = [catIds_, years_, months_]
+        parser = parsePrices
       }
     }
     if (req.method === 'POST') {
