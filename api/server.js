@@ -5,7 +5,6 @@ const http = require('http')
 const odbc = require('odbc')
 const url = require('url')
 const {
-  setPricesByDates,
   setCategories,
   setObjects,
   setYears,
@@ -30,14 +29,6 @@ async function connectAndCall (req, res, data) {
     let sql
     let sqlparams
     if (req.method === 'GET') {
-      // if (path_ === '/pricesByDates') {
-      //   // http://localhost:3001/pricesByDates?years=2025,2024&months=1,2,3
-      //   const years_ = query_.years
-      //   const months_ = query_.months
-      //   sql = setPricesByDates
-      //   sqlparams = [years_, months_]
-      //   parser = parsePrices
-      // } else 
       if (path_ === '/pricesTop') {
         // http://localhost:3001/pricesByDates?top=10
         const top_ = query_.top
@@ -83,6 +74,7 @@ async function connectAndCall (req, res, data) {
       res.writeHead(200, { 'Content-Type': 'image/x-icon' })
       return res.end()
     }
+
     const rows = await cnx.query(setParamInSQL(sql, sqlparams))
     let rows_
     if (req.method === 'POST') {
@@ -93,7 +85,6 @@ async function connectAndCall (req, res, data) {
     }
     const result = await parser(rows_)
     const jsonData = JSON.stringify(result)
-
     res.setHeader('Content-Type', 'application/json')
     res.statusCode = 200
     await res.end(jsonData)
