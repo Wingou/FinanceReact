@@ -7,7 +7,7 @@ import {
   objNone,
   PAGE
 } from '../constants/constants'
-import { initialAddPriceInput, initialModel } from '../models/initialModel'
+import { initialModel } from '../models/initialModel'
 import { Categorie, Object, Price, StateType, Year } from '../types/common'
 import { getCatById, getObjById } from '../utils/helper'
 
@@ -257,22 +257,24 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     case 'TO_HOME': {
       return {
         ...state,
-        view: { ...state.view, page :'HOME' as PAGE}
+        view: { ...state.view, page: 'HOME' as PAGE }
       }
     }
 
     case 'TOGGLE_ADD': {
       return {
         ...state,
-        view: { ...state.view,
-                isAddOpen : !state.view.isAddOpen
+        view: {
+          ...state.view,
+          isAddOpen: !state.view.isAddOpen
+        }
       }
-    }}
+    }
 
     case 'TO_BOARD': {
       return {
         ...state,
-        view: {...state.view, page:'BOARD' as PAGE}
+        view: { ...state.view, page: 'BOARD' as PAGE }
       }
     }
 
@@ -318,7 +320,6 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     case 'SET_PRICES_AFTER_ADD': {
       const { id, objId, amount, actionDate, comment } = action.payload
       const obj = getObjById(state.objects, objId)
-
       return {
         ...state,
         prices: [
@@ -335,7 +336,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           },
           ...state.prices
         ],
-        addPriceInput: initialAddPriceInput
+        addPriceInput: {
+          ...state.addPriceInput,
+          amount: '',
+          comment: ''
+        }
       }
     }
 

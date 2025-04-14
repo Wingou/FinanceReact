@@ -10,6 +10,8 @@ import { COY } from './constants/constants'
 import { Menu } from './components/common/menu'
 import { Dispatch } from '@reduxjs/toolkit'
 import { Month, Year } from './types/common'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify'
 
 function App() {
   const dispatch = useDispatch()
@@ -45,7 +47,6 @@ function App() {
     }
   }, [view, years, months, dispatch])
 
-
   const viewContainer = () => {
     switch (view.page) {
       case 'BOARD':
@@ -58,7 +59,7 @@ function App() {
   }
 
   const viewAddContainer = () => {
-      if (view.isAddOpen) {return <AddViewContainer />; }
+    if (view.isAddOpen) { return <AddViewContainer />; }
   }
 
   return (
@@ -69,6 +70,15 @@ function App() {
       </header>
       {viewAddContainer()}
       {viewContainer()}
+      <ToastContainer position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light" />
       <footer>
         <div className='App-footer'>- FINANCE REACT - March 2025 -</div>
       </footer>

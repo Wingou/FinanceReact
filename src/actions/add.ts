@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify'
 import { store } from '../store/store'
 import { AddPriceInput } from '../types/common'
 import { formatPriceSQL, formatTextSQL } from '../utils/helper'
@@ -65,6 +66,27 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
       body: JSON.stringify(dataInput)
     })
     const rs = await resp.json()
+
+    if (resp.status === 200) {
+      toast.success(`Prix ${dataInput.price}€ ajouté !`, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        theme: "light",
+        style: {
+          fontFamily: 'Verdana',
+          fontSize: '12px',
+          width: '200px'
+        }
+      }
+      )
+    }
+    else {
+      toast.error('ERROR!')
+    }
 
     store.dispatch({
       type: 'SET_PRICES_AFTER_ADD',
