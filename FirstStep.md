@@ -123,3 +123,11 @@ npm i --save-dev @types/react-dom
 
 Ajout du toaster
 npm install react-toastify
+
+
+
+Migration Node.js vers Express
+npm install express
+
+Installer  body-parser (pour gérer le corps des requêtes POST) 
+npm install express body-parser
