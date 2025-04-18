@@ -5,9 +5,20 @@ App Finance in React - 15/02/2025
 
 EXECUTION SERVER + APPLI
 =
+# Node.JS (Express)
 > node ./api/server.js
+  Dans package.json, il faut suppimer cette ligne pour que NODE marche -> "type": "module"
 
-> npm start
+# GraphQL (TypeScript)
+> ts-node --esm .\graphQL\graphQLServer.ts
+  //-> node.Js Express GraphQL - exécution avec ts-node, car node n'exécute que du .js. Il faut transpiler le .ts en .js pour que node fonctionne... ts-node lit les .ts directement.
+  Dans package.json, il faut cette ligne pour que la commande marche -> "type": "module"
+
+# Projet principal (TypeScript)
+> npm run start
+
+# GraphQL CodeGen
+> npm run codegen
 
 
 Create REACT environment
@@ -102,9 +113,10 @@ Redux DevTools
 
 
 TypeScript :
+npm install -g typescript
 npx tsc --init
 -> cela va générer le fichier : tsconfig.json
-Vérifier que l'on a les lignes ci-dessous activées pour que les typages manquants soient signalés :
+Dans tsconfig.json Vérifier que l'on a les lignes ci-dessous activées pour que les typages manquants soient signalés :
 {
   "compilerOptions": {
     "strict": true,
@@ -117,17 +129,61 @@ Vérifier que l'on a les lignes ci-dessous activées pour que les typages manqua
   }
 }
 
-Puis installer les bibliothèques pour typescript
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",  // Indique que vous voulez des modules ES en sortie
+    "outDir": "dist",    // Le répertoire où les fichiers JavaScript seront générés
+    "esModuleInterop": true, // Important pour la compatibilité CommonJS/ES Modules
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "moduleResolution": "NodeNext"
+  },
+  "include": ["src/**/*"], // Les fichiers TypeScript à compiler
+  "exclude": ["node_modules"]
+}
+
+Insstaller ts-node, c'est node, mais pour du typescript. Comme ça, pas besoin de transpiler le .ts en .js : 
+npm install -g ts-node
+
+Dans package.json ajouter pour graphQL qui est du node, mais en ts avec les "imports" au lieu de "module" :
+"type": "module"
+
+
+
+#Puis installer les bibliothèques pour typescript
 npm install --save-dev typescript @types/node
 npm i --save-dev @types/react-dom
 
-Ajout du toaster
+#Ajout du toaster
 npm install react-toastify
 
 
-
-Migration Node.js vers Express
+#Migration Node.js vers Express
 npm install express
 
-Installer  body-parser (pour gérer le corps des requêtes POST) 
+Installer body-parser (pour gérer le corps des requêtes POST) 
 npm install express body-parser
+
+
+#Migration Node.js vers GraphQL
+npm install graphql express-graphql
+
+codeGen
+# Installez les plugins dont vous avez besoin (exemples pour TypeScript)
+npm install -D @graphql-codegen/typescript
+npm install -D @graphql-codegen/typescript-operations
+npm install -D @graphql-codegen/typescript-resolvers
+npm install -D @graphql-codegen/typed-document-node
+npm install -D @graphql-codegen/cli
+
+npm install prisma-loader
+npx graphql-codegen --config codegen.ts
+
+Créer le ficher codegen.ts à la racine
+ajouter dans config.json ceci pour faciliter la commande codegen : faire -> npm run codegen exécutera ce qu'il y a dans le script.
+"scripts": {
+  "codegen": "graphql-codegen --config codegen.ts"
+}
+
+

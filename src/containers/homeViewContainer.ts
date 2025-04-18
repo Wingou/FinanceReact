@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { HomeView } from '../components/home/homeView'
 import { RootState } from '../store/store'
+import { HomeView } from '../components/home/homeView'
 
 const mapStateToProps = (state:RootState) => {
   return {

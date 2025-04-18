@@ -2,15 +2,14 @@ require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const odbc = require('odbc')
-const url = require('url')
 const { setParamInSQL } = require('./utils.js')
 const {
-  setCategories,
-  setObjects,
-  setYears,
-  addPrice,
-  setPricesTop,
-  setPricesByDates
+  sqlCategories,
+  sqlObjects,
+  sqlYears,
+  sqlAddPrice,
+  sqlPricesTop,
+  sqlPricesByDates
 } = require('./queries')
 const {
   parsePrices,
@@ -50,7 +49,7 @@ async function connectAndQuery (sql, sqlparams) {
 
 app.get('/pricesTop', async (req, res) => {
   const { top } = req.query
-  const sql = setPricesTop
+  const sql = sqlPricesTop
   const sqlparams = [top]
   const parser = parsePrices
   try {
@@ -63,7 +62,7 @@ app.get('/pricesTop', async (req, res) => {
 })
 
 app.get('/setCategories', async (req, res) => {
-  const sql = setCategories
+  const sql = sqlCategories
   const sqlparams = []
   const parser = parseCategories
   try {
@@ -76,7 +75,7 @@ app.get('/setCategories', async (req, res) => {
 })
 
 app.get('/setObjects', async (req, res) => {
-  const sql = setObjects
+  const sql = sqlObjects
   const sqlparams = []
   const parser = parseObjects
   try {
@@ -89,7 +88,7 @@ app.get('/setObjects', async (req, res) => {
 })
 
 app.get('/setYears', async (req, res) => {
-  const sql = setYears
+  const sql = sqlYears
   const sqlparams = []
   const parser = parseYears
   try {
@@ -103,7 +102,7 @@ app.get('/setYears', async (req, res) => {
 
 app.get('/pricesByDates', async (req, res) => {
   const { years, months } = req.query
-  const sql = setPricesByDates
+  const sql = sqlPricesByDates
   const sqlparams = [years, months]
   const parser = parsePrices
   try {
@@ -117,7 +116,7 @@ app.get('/pricesByDates', async (req, res) => {
 
 app.post('/addPrice', async (req, res) => {
   const { price, comment, actionDate, objId } = req.body
-  const sql = addPrice
+  const sql = sqlAddPrice
   const sqlparams = [`${price}`, `${comment}`, `${actionDate}`, objId]
   const parser = parseAddPrice
   try {
