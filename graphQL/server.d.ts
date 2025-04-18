@@ -27,3 +27,19 @@ export interface Obj {
         id : number
     }
   }
+
+
+export interface YearRaw {
+    year : string
+}
+
+
+
+export interface Year  {
+  name : string
+}
+
+
+  
+
+  

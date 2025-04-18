@@ -19,9 +19,16 @@ type Object {
     cat : ObjCat
   }
 
-
- type Query {
-    categories: [Category!]!,
-    objects: [Object!]!
+type Year {
+    name: String!
   }
-`)
+
+
+
+type Query {
+    categories: [Category!]!,
+    objects: [Object!]!,
+    years :  [Year!]!
+  }
+
+  `)

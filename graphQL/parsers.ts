@@ -1,4 +1,4 @@
-import { Cat, CatRaw, ObjRaw } from "./server.js"
+import { Cat, CatRaw, ObjRaw, Year, YearRaw } from "./server.js"
 
 export const parseCategories = (rows: CatRaw[]): Cat[] => {
     return rows.map((rs: CatRaw): Cat => {
@@ -22,4 +22,9 @@ export const parseObjects = (rows: ObjRaw[]) => {
             }
         }
     })
+}
+
+
+export const parseYears =  (rows: YearRaw[]):Year[] => {
+  return rows.map(rs => {return { name : rs.year}})
 }

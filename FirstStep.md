@@ -186,4 +186,7 @@ ajouter dans config.json ceci pour faciliter la commande codegen : faire -> npm 
   "codegen": "graphql-codegen --config codegen.ts"
 }
 
-
+Apollo Client pour faire des requêtre GraphQL dans React
+npm install @apollo/client graphql
+Créer un fichier apollo-client.ts dans /src. Voir fichier avec son contenu.
+Ensuite, envelopper l'app avec <AppoloProvider> dans index.tsx
