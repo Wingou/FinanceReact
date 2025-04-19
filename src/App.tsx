@@ -12,6 +12,10 @@ import { Dispatch } from '@reduxjs/toolkit'
 import { Month, Year } from './types/common'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify'
+import { gql } from '@apollo/client'
+import { apolloClient } from './apollo-client'
+
+
 
 function App() {
   const dispatch = useDispatch()
@@ -90,16 +94,47 @@ export default App
 const fetchList = async (coy_: COY, dispatch: Dispatch) => {
   try {
     const coy = {
-      'CAT': { api: 'http://localhost:3001/setCategories', type: 'SET_CATEGORIES' },
-      'OBJ': { api: 'http://localhost:3001/setObjects', type: 'SET_OBJECTS' },
-      'YEARS': { api: 'http://localhost:3001/setYears', type: 'SET_YEARS' }
+      'CAT': {
+        api: gql`query GetCategories {
+                  categories {
+                    id
+                    name
+                    position
+                    template
+                  }
+                }`,
+        type: 'SET_CATEGORIES'
+      },
+      'OBJ': {
+        api: gql`query GetObjets {
+                  objects {
+                    id
+                    name
+                    template
+                    cat {
+                      id
+                    }
+                  }
+                }`,
+        type: 'SET_OBJECTS'
+      },
+      'YEARS': {
+        api: gql`query GetYears {
+                  years {
+                    name
+                  }
+                }
+                `,
+        type: 'SET_YEARS'
+      }
     }[coy_]
-    const resp = await fetch(coy.api)
-    const rs = await resp.json()
+    const {data} = await apolloClient.query({query:coy.api})
+    console.log("data", data)
     dispatch({
       type: coy.type,
-      payload: rs
-    }
+      payload: data
+
+    } 
     )
   } catch (error) {
     console.error('ERROR: fetchSimpleList ' + coy_, error)

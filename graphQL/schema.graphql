@@ -1,27 +1,33 @@
-type Category {
-  id:ID!
-  name: String!
-  position: Int
-  template: Int
-}
-
-type ObjCat {
-  id:ID!    
-}
-
-type Object {
-  id:ID!
-  name: String!
-  template: Int
-  cat : ObjCat
-}
-
-type Year {
-    year: String!
+ type CatGql {
+    id:ID!
+    name: String!
+    position: Int
+    template: Int
   }
 
-type Query {
-  categories: [Category!]!,
-  objects: [Object!]!
-  years: [Year!]!
+type ObjCatGql {
+    id:ID!    
 }
+
+type ObjGql {
+    id:ID!
+    name: String!
+    template: Int
+    cat : ObjCatGql!
+  }
+
+type YearGql {
+    name: String!
+  }
+
+
+input objectsWhereInput {
+  id: ID
+  catId : ID
+}
+
+type Query {
+    categories: [CatGql!]!
+    objects (where: objectsWhereInput): [ObjGql!]!
+    years :  [YearGql!]!
+  }

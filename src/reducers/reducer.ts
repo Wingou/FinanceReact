@@ -9,6 +9,8 @@ import {
 } from '../constants/constants'
 import { initialModel } from '../models/initialModel'
 import { Categorie, Object, Price, StateType, Year } from '../types/common'
+import { CatGql, ObjGql, YearGql } from '../types/graphql'
+import { CategoriesAPI } from '../types/reducer'
 import { getCatById, getObjById } from '../utils/helper'
 
 interface ActionType {
@@ -23,10 +25,19 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_CATEGORIES': {
-      const categories = action.payload
-        .map((c: Categorie): Categorie => {
+      const categoriesApi = action.payload.categories as CatGql[]
+      const categories = categoriesApi
+        .map((c: CatGql): Categorie => {
+          const id = parseInt(c.id)
+          const position = c.position===undefined ? 99 : c.position
+          const template = c.template===undefined || c.template===null ? 2 : c.template
           return {
             ...c,
+            id,
+            position,
+            template,
+            recette: 0,
+            depense: 0,
             isDisplayed: true,
             isOn: false
           }
@@ -37,10 +48,18 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_OBJECTS': {
-      const objects_ = action.payload.concat(objNone)
-      const objects = objects_.map((o: Object): Object => {
-        const cat = getCatById(state.categories, o.cat.id)
-        return { ...o, cat }
+      const objectsApi = action.payload.objects
+      const objects_ = objectsApi
+        .concat(objNone)
+      const objects = objects_.map((o: ObjGql): Object => {
+        const cat = getCatById(state.categories, parseInt(o.cat.id))
+        const { id, name, position, template } = cat
+        return {
+          ...o,
+          id: parseInt(o.id),
+          template: o.template===undefined || o.template===null ? 2 : o.template,
+          cat: { id, name, position, template }
+        }
       }
       )
       return {
@@ -50,11 +69,18 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_YEARS': {
-      const years = action.payload
+      const yearsApi = action.payload.years
+      const years = yearsApi
       return {
         ...state,
-        years: years.map((y: number): Year => {
-          return { year: y, name: y.toString(), isOn: y === CURRENT_YEAR }
+        years: years.map((y: YearGql): Year => {
+          const yNum = parseInt(y.name)
+          const yearNum = isNaN(yNum) ? 0 : yNum
+          return {
+            year: yearNum,
+            name: y.name,
+            isOn: yearNum === CURRENT_YEAR
+          }
         })
       }
     }

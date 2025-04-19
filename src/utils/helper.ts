@@ -37,7 +37,7 @@ export const getObjById = (objects:Object[], id:number):Object => {
   return obj.length === 0 ? objNone : obj[0]
 }
 
-export const getCatById = (categories:Categorie[], id:number) => {
+export const getCatById = (categories:Categorie[], id:number):Categorie => {
   const cat = categories.filter(c => c.id === id)
   return cat.length === 0 ? catNone : cat[0]
 }

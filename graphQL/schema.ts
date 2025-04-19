@@ -1,34 +1,38 @@
 import { buildSchema } from "graphql";
 
 export const schema = buildSchema(`
- type Category {
+ type CatGql {
     id:ID!
     name: String!
     position: Int
     template: Int
   }
 
-type ObjCat {
+type ObjCatGql {
     id:ID!    
 }
 
-type Object {
+type ObjGql {
     id:ID!
     name: String!
     template: Int
-    cat : ObjCat
+    cat : ObjCatGql!
   }
 
-type Year {
+type YearGql {
     name: String!
   }
 
 
+input objectsWhereInput {
+  id: ID
+  catId : ID
+}
 
 type Query {
-    categories: [Category!]!,
-    objects: [Object!]!,
-    years :  [Year!]!
+    categories: [CatGql!]!
+    objects (where: objectsWhereInput): [ObjGql!]!
+    years :  [YearGql!]!
   }
 
-  `)
+`)

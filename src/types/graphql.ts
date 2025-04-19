@@ -14,22 +14,22 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
-export type Category = {
-  __typename?: 'Category';
+export type CatGql = {
+  __typename?: 'CatGql';
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   position?: Maybe<Scalars['Int']['output']>;
   template?: Maybe<Scalars['Int']['output']>;
 };
 
-export type ObjCat = {
-  __typename?: 'ObjCat';
+export type ObjCatGql = {
+  __typename?: 'ObjCatGql';
   id: Scalars['ID']['output'];
 };
 
-export type Object = {
-  __typename?: 'Object';
-  cat?: Maybe<ObjCat>;
+export type ObjGql = {
+  __typename?: 'ObjGql';
+  cat: ObjCatGql;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   template?: Maybe<Scalars['Int']['output']>;
@@ -37,6 +37,22 @@ export type Object = {
 
 export type Query = {
   __typename?: 'Query';
-  categories: Array<Category>;
-  objects: Array<Object>;
+  categories: Array<CatGql>;
+  objects: Array<ObjGql>;
+  years: Array<YearGql>;
+};
+
+
+export type QueryObjectsArgs = {
+  where?: InputMaybe<ObjectsWhereInput>;
+};
+
+export type YearGql = {
+  __typename?: 'YearGql';
+  name: Scalars['String']['output'];
+};
+
+export type ObjectsWhereInput = {
+  catId?: InputMaybe<Scalars['ID']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 };

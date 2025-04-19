@@ -17,7 +17,7 @@ export interface ObjRaw {
 export interface CatRaw {
   id: number,
   name: string,
-  position: number,
+  position: number|null,
   template: number
 }
 

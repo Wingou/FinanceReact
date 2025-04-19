@@ -190,3 +190,9 @@ Apollo Client pour faire des requêtre GraphQL dans React
 npm install @apollo/client graphql
 Créer un fichier apollo-client.ts dans /src. Voir fichier avec son contenu.
 Ensuite, envelopper l'app avec <AppoloProvider> dans index.tsx
+
+
+PB Cors entre appli et GraphQL
+- Il faut :
+npm i cors
+npm i --save-dev @types/cors

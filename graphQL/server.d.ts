@@ -5,12 +5,8 @@ export interface CatRaw {
   template: number
 }
 
-export interface Cat {
-  id: number,
-  name: string,
-  position: number,
-  template: number
-}
+
+
 
 export interface ObjRaw {
     id: number,
@@ -19,14 +15,6 @@ export interface ObjRaw {
     template: number
 }
 
-export interface Obj {
-    id: number,
-    name: string,
-    template: number
-    cat: {
-        id : number
-    }
-  }
 
 
 export interface YearRaw {
@@ -35,8 +23,11 @@ export interface YearRaw {
 
 
 
-export interface Year  {
-  name : string
+export interface WhereObjets {
+  where: {
+      id: string,
+      catId: string
+  }
 }
 
 
