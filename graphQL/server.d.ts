@@ -1,3 +1,4 @@
+// Categories
 export interface CatRaw {
   id: number,
   Categorie: string,
@@ -5,32 +6,47 @@ export interface CatRaw {
   template: number
 }
 
-
-
-
+// Objects
 export interface ObjRaw {
-    id: number,
-    Objet: string,
-    id_categorie : number
-    template: number
+  id: number,
+  Objet: string,
+  id_categorie: number
+  template: number
 }
-
-
-
-export interface YearRaw {
-    year : string
-}
-
-
 
 export interface WhereObjets {
   where: {
-      id: string,
-      catId: string
+    id: string,
+    catId: string
   }
 }
 
+// Years
+export interface YearRaw {
+  year: string
+}
 
-  
+// Prices
+export interface PriceRaw {
+  priceId: number,
+  prix: number,
+  commentaire: string,
+  DateAction: string,
+  dateCreate: string,
+  dateModif: string,
+  priceTemplate: number,
+  objId: number,
+  Objet: string,
+  objTemplate: number,
+  catId: number,
+  categorie: string,
+  Ordre: number,
+  catTemplate: number
+}
 
-  
+export interface WherePricesByDates {
+  where: {
+    years: string,
+    months: string
+  }
+}

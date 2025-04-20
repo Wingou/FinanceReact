@@ -1,22 +1,16 @@
-
 import {
   catNone,
-  CURRENT_DATE_TIME,
-  CURRENT_MONTH,
-  CURRENT_YEAR,
   objNone,
+  CURRENT_DATE_TIME,
+  CURRENT_YEAR,
+  CURRENT_MONTH,
   PAGE
 } from '../constants/constants'
 import { initialModel } from '../models/initialModel'
-import { Categorie, Object, Price, StateType, Year } from '../types/common'
-import { CatGql, ObjGql, YearGql } from '../types/graphql'
-import { CategoriesAPI } from '../types/reducer'
+import { ActionType, Categorie, Month, Object, Price, StateType, Year } from '../types/common'
+import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { getCatById, getObjById } from '../utils/helper'
 
-interface ActionType {
-  type: string,
-  payload: any
-}
 
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
   switch (action.type) {
@@ -28,40 +22,37 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const categoriesApi = action.payload.categories as CatGql[]
       const categories = categoriesApi
         .map((c: CatGql): Categorie => {
-          const id = parseInt(c.id)
-          const position = c.position===undefined ? 99 : c.position
-          const template = c.template===undefined || c.template===null ? 2 : c.template
+          const { id, position, template } = c
           return {
             ...c,
-            id,
+            id: parseInt(id),
             position,
             template,
             recette: 0,
             depense: 0,
-            isDisplayed: true,
+            isDisplayed: false,
             isOn: false
           }
         })
         .concat(catNone)
-
       return { ...state, categories }
     }
 
     case 'SET_OBJECTS': {
-      const objectsApi = action.payload.objects
-      const objects_ = objectsApi
-        .concat(objNone)
-      const objects = objects_.map((o: ObjGql): Object => {
-        const cat = getCatById(state.categories, parseInt(o.cat.id))
-        const { id, name, position, template } = cat
+      const objectsApi = action.payload.objects as ObjGql[]
+      const objects = objectsApi.map((o: ObjGql): Object => {
+        const { id, template, cat } = o
+        const { id: catId } = cat
+        const cat_ = getCatById(state.categories, parseInt(catId))
         return {
           ...o,
-          id: parseInt(o.id),
-          template: o.template===undefined || o.template===null ? 2 : o.template,
-          cat: { id, name, position, template }
+          id: parseInt(id),
+          template,
+          cat: cat_
         }
       }
       )
+        .concat(objNone)
       return {
         ...state,
         objects
@@ -69,25 +60,25 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_YEARS': {
-      const yearsApi = action.payload.years
-      const years = yearsApi
+      const years = action.payload.years as YearGql[]
       return {
         ...state,
         years: years.map((y: YearGql): Year => {
-          const yNum = parseInt(y.name)
-          const yearNum = isNaN(yNum) ? 0 : yNum
+          const { name: yearStr } = y
+          const yNum = parseInt(yearStr)
+          const year = isNaN(yNum) ? 0 : yNum
           return {
-            year: yearNum,
-            name: y.name,
-            isOn: yearNum === CURRENT_YEAR
+            year,
+            name: yearStr,
+            isOn: year === CURRENT_YEAR
           }
         })
       }
     }
 
     case 'SET_PRICES': {
-      const prices = action.payload
-      const displayedCatIds = [...new Set(prices.map((p: Price): number => p.cat.id))]
+      const prices = action.payload.pricesByDates as PriceGql[]
+      const displayedCatIds = [...new Set(prices.map((p: PriceGql): number => parseInt(p.cat.id)))]
       const categories = state.categories.map(cat => {
         return {
           ...cat,
@@ -96,14 +87,30 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       })
       return {
         ...state,
-        prices,
+        prices: prices.map((p: PriceGql): Price => {
+          const { id, amount, comment, obj, cat } = p
+          return {
+            ...p,
+            id: parseInt(id),
+            amount: parseFloat(amount),
+            comment,
+            obj: {
+              ...p.obj,
+              id: parseInt(obj.id)
+            },
+            cat: {
+              ...p.cat,
+              id: parseInt(cat.id)
+            }
+          }
+        }),
         categories
       }
     }
 
     case 'UPDATE_MONTH': {
       const { months, searchOptions } = state
-      const { month, isOn } = action.payload
+      const { month, isOn } = action.payload as Month
       const { isMultiMonths } = searchOptions
       const isCheckedMonthIsOnly =
         months.filter(m => m.isOn === isOn).length === 1
@@ -127,7 +134,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'UPDATE_YEAR': {
       const { years, searchOptions } = state
-      const { year, isOn } = action.payload
+      const { year, isOn } = action.payload as Year
       const { isMultiYears } = searchOptions
       const isCheckedYearIsOnly = years.filter(y => y.isOn).length === 1
       const years_ = years.map(y => {
@@ -149,7 +156,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'UPDATE_ALL_YEARS': {
-      const { isAllYearsChecked } = action.payload
+      const { isAllYearsChecked } = action.payload as { isAllYearsChecked: boolean }
       const years = state.years.map(y => {
         return {
           ...y,
@@ -167,11 +174,12 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'UPDATE_ALL_MONTHS': {
-      const months = state.months.map(m => {
+      const { isAllMonthsChecked } = action.payload as { isAllMonthsChecked: boolean }
+      const months = state.months.map((m: Month): Month => {
         return {
           ...m,
           isOn:
-            m.month === CURRENT_MONTH ? true : action.payload.isAllMonthsChecked
+            m.month === CURRENT_MONTH ? true : isAllMonthsChecked
         }
       })
       return {
@@ -179,15 +187,16 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         months,
         searchOptions: {
           ...state.searchOptions,
-          isMultiMonths: action.payload.isAllMonthsChecked
+          isMultiMonths: isAllMonthsChecked
         }
       }
     }
 
     case 'UPDATE_FILTERED_CAT': {
-      const { checked, catId } = action.payload
-      const categories = state.categories.map(c => {
-        const { isMultiCats } = state.searchOptions
+      const { categories: stateCat, searchOptions } = state
+      const { checked, catId } = action.payload as { checked: boolean, catId: number }
+      const categories = stateCat.map((c: Categorie): Categorie => {
+        const { isMultiCats } = searchOptions
         return {
           ...c,
           isOn: isMultiCats
@@ -204,18 +213,20 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'UPDATE_ALL_CATS': {
-      const categories = state.categories.map(c => {
+      const { searchOptions, categories: statCat } = state
+      const isMultiCats_ = action.payload as boolean
+      const categories = statCat.map((c: Categorie): Categorie => {
         return {
           ...c,
-          isOn: action.payload
+          isOn: isMultiCats_
         }
       })
       return {
         ...state,
         categories,
         searchOptions: {
-          ...state.searchOptions,
-          isMultiCats: action.payload ? true : state.searchOptions.isMultiCats
+          ...searchOptions,
+          isMultiCats: isMultiCats_ ? true : searchOptions.isMultiCats
         }
       }
     }
@@ -225,7 +236,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state,
         searchOptions: {
           ...state.searchOptions,
-          isMultiYears: action.payload
+          isMultiYears: action.payload as boolean
         }
       }
     }
@@ -235,7 +246,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state,
         searchOptions: {
           ...state.searchOptions,
-          isMultiMonths: action.payload
+          isMultiMonths: action.payload as boolean
         }
       }
     }
@@ -245,7 +256,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state,
         searchOptions: {
           ...state.searchOptions,
-          isMultiCats: action.payload
+          isMultiCats: action.payload as boolean
         }
       }
     }
@@ -255,7 +266,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state,
         searchOptions: {
           ...state.searchOptions,
-          searchWord: action.payload
+          searchWord: action.payload as string
         }
       }
     }

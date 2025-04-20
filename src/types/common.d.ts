@@ -9,10 +9,15 @@ export interface StateType {
   months: Month[],
   searchOptions: SearchOptions,
   addPriceInput: AddPriceInput,
-  view: { page : PAGE,
-        isAddOpen : boolean
+  view: {
+    page: PAGE,
+    isAddOpen: boolean
   }
+}
 
+export interface ActionType {
+  type: string,
+  payload: any
 }
 
 export interface SearchOptions {
@@ -33,20 +38,20 @@ export interface AddPriceInput {
   comment: string
 }
 
-export interface Price extends PriceRaw {
-  obj: ObjRaw,
-  cat: CatRaw
+export interface Categorie extends CatRaw {
+  recette: number,
+  depense: number,
+  isDisplayed: boolean
+  isOn: boolean,
 }
 
 export interface Object extends ObjRaw {
   cat: CatRaw
 }
 
-export interface Categorie extends CatRaw {
-  recette: number,
-  depense: number,
-  isDisplayed: boolean
-  isOn: boolean,
+export interface Price extends PriceRaw {
+  obj: ObjRaw,
+  cat: CatRaw
 }
 
 export interface Year {

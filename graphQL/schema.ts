@@ -1,38 +1,62 @@
 import { buildSchema } from "graphql";
 
 export const schema = buildSchema(`
- type CatGql {
-    id:ID!
-    name: String!
-    position: Int
-    template: Int
-  }
-
-type ObjCatGql {
-    id:ID!    
+type CatGql {
+  id: ID!
+  name: String!
+  position: Int!
+  template: Int!
 }
 
 type ObjGql {
-    id:ID!
-    name: String!
-    template: Int
-    cat : ObjCatGql!
-  }
+  id: ID!
+  name: String!
+  template: Int!
+  cat: ObjCatGql!
+}
+
+type ObjCatGql {
+  id: ID!
+}
+
+input ObjectsWhereInput {
+  id: ID
+  catId: ID
+}
 
 type YearGql {
-    name: String!
-  }
+  name: String!
+}
 
+type PriceGql {
+  id: ID!
+  amount: String!
+  comment: String
+  actionDate: String!
+  dateCreate: String!
+  dateModif: String!
+  template: Int!
+  obj: PriceObjGql!
+  cat: CatGql!
+}
 
-input objectsWhereInput {
-  id: ID
-  catId : ID
+type PriceObjGql 
+{
+  id: ID!
+  name: String!
+  template: Int!
+}
+
+input PricesByDatesWhereInput
+{
+  years: String!
+  months: String!
 }
 
 type Query {
-    categories: [CatGql!]!
-    objects (where: objectsWhereInput): [ObjGql!]!
-    years :  [YearGql!]!
-  }
-
+  categories: [CatGql!]!
+  objects(where: ObjectsWhereInput): [ObjGql!]!
+  years: [YearGql!]!
+  pricesByDates(where: PricesByDatesWhereInput!): [PriceGql!]!
+}
 `)

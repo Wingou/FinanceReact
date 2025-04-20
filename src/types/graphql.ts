@@ -18,8 +18,8 @@ export type CatGql = {
   __typename?: 'CatGql';
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  position?: Maybe<Scalars['Int']['output']>;
-  template?: Maybe<Scalars['Int']['output']>;
+  position: Scalars['Int']['output'];
+  template: Scalars['Int']['output'];
 };
 
 export type ObjCatGql = {
@@ -32,13 +32,44 @@ export type ObjGql = {
   cat: ObjCatGql;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  template?: Maybe<Scalars['Int']['output']>;
+  template: Scalars['Int']['output'];
+};
+
+export type ObjectsWhereInput = {
+  catId?: InputMaybe<Scalars['ID']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type PriceGql = {
+  __typename?: 'PriceGql';
+  actionDate: Scalars['String']['output'];
+  amount: Scalars['String']['output'];
+  cat: CatGql;
+  comment?: Maybe<Scalars['String']['output']>;
+  dateCreate: Scalars['String']['output'];
+  dateModif: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  obj: PriceObjGql;
+  template: Scalars['Int']['output'];
+};
+
+export type PriceObjGql = {
+  __typename?: 'PriceObjGql';
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  template: Scalars['Int']['output'];
+};
+
+export type PricesByDatesWhereInput = {
+  months: Scalars['String']['input'];
+  years: Scalars['String']['input'];
 };
 
 export type Query = {
   __typename?: 'Query';
   categories: Array<CatGql>;
   objects: Array<ObjGql>;
+  pricesByDates: Array<PriceGql>;
   years: Array<YearGql>;
 };
 
@@ -47,12 +78,12 @@ export type QueryObjectsArgs = {
   where?: InputMaybe<ObjectsWhereInput>;
 };
 
+
+export type QueryPricesByDatesArgs = {
+  where: PricesByDatesWhereInput;
+};
+
 export type YearGql = {
   __typename?: 'YearGql';
   name: Scalars['String']['output'];
-};
-
-export type ObjectsWhereInput = {
-  catId?: InputMaybe<Scalars['ID']['input']>;
-  id?: InputMaybe<Scalars['ID']['input']>;
 };

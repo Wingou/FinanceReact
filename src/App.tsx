@@ -15,14 +15,13 @@ import { ToastContainer } from 'react-toastify'
 import { gql } from '@apollo/client'
 import { apolloClient } from './apollo-client'
 
-
-
 function App() {
   const dispatch = useDispatch()
   const years = useSelector((state: RootState) => state.years)
   const months = useSelector((state: RootState) => state.months)
   const view = useSelector((state: RootState) => state.view)
   const [isCOYLoaded, setIsCOYLoaded] = useState(false)
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     const fetchListsData = async () => {
@@ -33,6 +32,7 @@ function App() {
         setIsCOYLoaded(true)
       } catch (error) {
         console.error('ERROR: fetchListsData : ', error)
+        setIsError(true)
       }
     }
     fetchListsData()
@@ -70,7 +70,8 @@ function App() {
     <div className='App'>
       <header className='App-header'>
         <h2 className='App-title'>FINANCE REACT</h2>
-        {isCOYLoaded ? Menu : 'Loading...'}
+        {isCOYLoaded ? Menu :
+          isError ? 'Data loading error !' : 'Loading...'}
       </header>
       {viewAddContainer()}
       {viewContainer()}
@@ -128,13 +129,13 @@ const fetchList = async (coy_: COY, dispatch: Dispatch) => {
         type: 'SET_YEARS'
       }
     }[coy_]
-    const {data} = await apolloClient.query({query:coy.api})
-    console.log("data", data)
+    const { data } = await apolloClient.query({ query: coy.api })
+
     dispatch({
       type: coy.type,
       payload: data
 
-    } 
+    }
     )
   } catch (error) {
     console.error('ERROR: fetchSimpleList ' + coy_, error)
@@ -146,12 +147,33 @@ const fetchPrices = async (years: Year[], months: Month[], dispatch: Dispatch) =
   try {
     const filteredYears = years.filter(y => y.isOn).map(y => y.year)
     const filteredMonths = months.filter(m => m.isOn).map(m => m.month)
-    const api = `http://localhost:3001/pricesByDates?years=${filteredYears}&months=${filteredMonths}`
-    const resp = await fetch(api)
-    const rsPrices = await resp.json()
+    const api = gql`query GetPricesByDates {
+      pricesByDates(where: {years: "${filteredYears}", months: "${filteredMonths}"}) {
+        id
+        amount
+        comment
+        actionDate
+        dateCreate
+        dateModif
+        template
+        obj {
+          id
+          name
+          template
+        }
+        cat {
+          id
+          name
+          position
+          template
+        }
+      }
+    }`
+    const { data } = await apolloClient.query({ query: api })
+
     dispatch({
       type: 'SET_PRICES',
-      payload: rsPrices
+      payload: data
     })
   } catch (error) {
     console.error('ERROR: fetchPrices', error)

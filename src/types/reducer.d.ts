@@ -1,10 +1,7 @@
-export interface PriceRaw {
+export interface CatRaw {
   id: number,
-  amount: number,
-  comment: string,
-  actionDate: string,
-  dateCreate: string,
-  dateModif: string,
+  name: string,
+  position: number | null,
   template: number
 }
 
@@ -14,17 +11,17 @@ export interface ObjRaw {
   template: number
 }
 
-export interface CatRaw {
+export interface PriceRaw {
   id: number,
-  name: string,
-  position: number|null,
+  amount: number,
+  comment: string | null | undefined,
+  actionDate: string,
+  dateCreate: string,
+  dateModif: string,
   template: number
 }
 
-export interface PricesAPI extends PriceRaw {
-  obj: ObjRaw,
-  cat: CatRaw
-}
+export interface CategoriesAPI extends CatRaw { }
 
 export interface ObjectsAPI extends ObjRaw {
   cat: {
@@ -32,4 +29,7 @@ export interface ObjectsAPI extends ObjRaw {
   }
 }
 
-export interface CategoriesAPI extends CatRaw { }
+export interface PricesAPI extends PriceRaw {
+  obj: ObjRaw,
+  cat: CatRaw
+}
