@@ -7,7 +7,7 @@ export const sqlObjects = `SELECT id, Objet, id_categorie, template FROM objet O
 
 export const sqlYears = `SELECT distinct year(dateAction) as year FROM prix ORDER BY year(dateAction) DESC`
 
-export const sqlAddPrice = `INSERT INTO prix (prix, commentaire, DateAction, id_objet) VALUES ('?','?','?',?)`
+export const sqlAddPrice = `INSERT INTO prix (prix, commentaire, DateAction, id_objet) VALUES (?,'?','?',?)`
 
 export const sqlPricesByDates = `SELECT p.id as priceId, p.prix, p.commentaire, p.DateAction, p.dateCreate, p.dateModif, p.template as priceTemplate
                             , o.id as objId, o.Objet, o.template as objTemplate
@@ -18,3 +18,14 @@ export const sqlPricesByDates = `SELECT p.id as priceId, p.prix, p.commentaire, 
                             AND Year(p.DateAction) in (?)
                             AND Month(p.DateAction) in (?)
                             ORDER BY p.DateAction, c.Ordre, o.Objet`
+
+export const sqlPriceById = `SELECT p.id as priceId, p.prix, p.commentaire, p.DateAction, p.dateCreate, p.dateModif, p.template as priceTemplate
+                            , o.id as objId, o.Objet, o.template as objTemplate
+                            , c.id as catId, c.categorie, c.Ordre, c.template as catTemplate
+                            FROM prix p, objet o, categorie c
+                            WHERE p.id=? 
+                            AND p.id_objet = o.id                          
+                            AND o.id_categorie = c.id
+                            ORDER BY p.DateAction, c.Ordre, o.Objet`
+
+export const sqlIdent = `SELECT @@IDENTITY as id`

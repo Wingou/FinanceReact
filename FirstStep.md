@@ -196,3 +196,7 @@ PB Cors entre appli et GraphQL
 - Il faut :
 npm i cors
 npm i --save-dev @types/cors
+
+
+Lier les schemas dans GraphQL :
+npm install @graphql-tools/schema

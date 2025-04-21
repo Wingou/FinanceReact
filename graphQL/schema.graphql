@@ -48,9 +48,42 @@ input PricesByDatesWhereInput {
   months: String!
 }
 
+input PriceByIdWhereInput {
+  id: ID!
+}
+
 type Query {
-  categories: [CatGql!]!
-  objects(where: ObjectsWhereInput): [ObjGql!]!
-  years: [YearGql!]!
-  pricesByDates(where: PricesByDatesWhereInput!): [PriceGql!]!
+  categories: [CatGql!]
+  objects(where: ObjectsWhereInput): [ObjGql!]
+  years: [YearGql!]
+  pricesByDates(where: PricesByDatesWhereInput!): [PriceGql!]
+  priceById(where: PriceByIdWhereInput!): [PriceGql!]
+}
+
+input AddPriceInsertInput  {
+  amount: String!
+  comment: String!
+  actionDate: String!
+  objId: String!
+}
+
+type Mutation {
+  price (insert : AddPriceInsertInput!):PriceGql!
+}
+
+mutation AddPrice($insert: AddPriceInsertInput!) {
+  price(insert: $insert) {
+    id
+    amount
+    comment
+    actionDate
+    obj {
+      id
+      name
+    }
+    cat {
+      id
+      name
+    }
+  }
 }

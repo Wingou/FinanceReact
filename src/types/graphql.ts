@@ -14,12 +14,29 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type AddPriceInsertInput = {
+  actionDate: Scalars['String']['input'];
+  amount: Scalars['String']['input'];
+  comment: Scalars['String']['input'];
+  objId: Scalars['String']['input'];
+};
+
 export type CatGql = {
   __typename?: 'CatGql';
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   position: Scalars['Int']['output'];
   template: Scalars['Int']['output'];
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  price: PriceGql;
+};
+
+
+export type MutationPriceArgs = {
+  insert: AddPriceInsertInput;
 };
 
 export type ObjCatGql = {
@@ -38,6 +55,10 @@ export type ObjGql = {
 export type ObjectsWhereInput = {
   catId?: InputMaybe<Scalars['ID']['input']>;
   id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type PriceByIdWhereInput = {
+  id: Scalars['ID']['input'];
 };
 
 export type PriceGql = {
@@ -67,15 +88,21 @@ export type PricesByDatesWhereInput = {
 
 export type Query = {
   __typename?: 'Query';
-  categories: Array<CatGql>;
-  objects: Array<ObjGql>;
-  pricesByDates: Array<PriceGql>;
-  years: Array<YearGql>;
+  categories?: Maybe<Array<CatGql>>;
+  objects?: Maybe<Array<ObjGql>>;
+  priceById?: Maybe<Array<PriceGql>>;
+  pricesByDates?: Maybe<Array<PriceGql>>;
+  years?: Maybe<Array<YearGql>>;
 };
 
 
 export type QueryObjectsArgs = {
   where?: InputMaybe<ObjectsWhereInput>;
+};
+
+
+export type QueryPriceByIdArgs = {
+  where: PriceByIdWhereInput;
 };
 
 

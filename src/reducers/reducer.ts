@@ -355,22 +355,24 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_PRICES_AFTER_ADD': {
-      const { id, objId, amount, actionDate, comment } = action.payload
-      const obj = getObjById(state.objects, objId)
+      // const { id, objId, amount, actionDate, comment } = action.payload
+      const newPrice = action.payload
+      // const obj = getObjById(state.objects, objId)
       return {
         ...state,
         prices: [
-          {
-            id,
-            amount: Number(amount),
-            actionDate: actionDate,
-            comment,
-            template: 0,
-            dateCreate: CURRENT_DATE_TIME,
-            dateModif: CURRENT_DATE_TIME,
-            obj: { id: objId, name: obj.name },
-            cat: { id: obj.cat.id, name: obj.cat.name }
-          },
+          newPrice,
+          // {
+          //   id,
+          //   amount: Number(amount),
+          //   actionDate: actionDate,
+          //   comment,
+          //   template: 0,
+          //   dateCreate: CURRENT_DATE_TIME,
+          //   dateModif: CURRENT_DATE_TIME,
+          //   obj: { id: objId, name: obj.name },
+          //   cat: { id: obj.cat.id, name: obj.cat.name }
+          // },
           ...state.prices
         ],
         addPriceInput: {

@@ -2,6 +2,8 @@ import { toast } from 'react-toastify'
 import { store } from '../store/store'
 import { AddPriceInput } from '../types/common'
 import { formatPriceSQL, formatTextSQL } from '../utils/helper'
+import { gql } from '@apollo/client'
+import { apolloClient } from '../apollo-client'
 
 export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const catId = e.target.value
@@ -52,23 +54,39 @@ export const handleCommentInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 }
 
 export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
-  const dataInput = {
-    price: formatPriceSQL(addPriceInput.amount),
-    objId: addPriceInput.objId,
-    actionDate: addPriceInput.actionDate,
-    comment: formatTextSQL(addPriceInput.comment)
-  }
-
   try {
-    const api = `http://localhost:3001/addPrice`
-    const resp = await fetch(api, {
-      method: 'POST',
-      body: JSON.stringify(dataInput)
+    const api = gql`
+          mutation AddPrice ($insert: AddPriceInsertInput!) {
+                        price (insert : $insert) {
+                          id
+                          amount
+                          comment
+                          actionDate
+                          obj {
+                            id
+                            name
+                            }
+                          cat {
+                            id
+                            name
+                          }
+                        }
+                      }`
+    const dataInput = {
+      amount: formatPriceSQL(addPriceInput.amount),
+      objId: addPriceInput.objId.toString(),
+      actionDate: addPriceInput.actionDate,
+      comment: formatTextSQL(addPriceInput.comment)
+    }
+    const response = await apolloClient.mutate({
+      mutation: api,
+      variables: {
+        insert: dataInput
+      }
     })
-    const rs = await resp.json()
-
-    if (resp.status === 200) {
-      toast.success(`Prix ${dataInput.price}€ ajouté !`, {
+    const result = response.data?.price
+    if (result) {
+      toast.success(`Prix ${dataInput.amount}€ ajouté !`, {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -83,16 +101,16 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
         }
       }
       )
+      store.dispatch({
+        type: 'SET_PRICES_AFTER_ADD',
+        payload: { ...addPriceInput, price: result }
+      })
     }
     else {
-      toast.error('ERROR!')
+      toast.error('Erreur d\'ajout de prix')
     }
-
-    store.dispatch({
-      type: 'SET_PRICES_AFTER_ADD',
-      payload: { ...addPriceInput, id: rs.rs }
-    })
   } catch (error) {
     console.error('error addPrice :', error)
+    toast.error('Erreur réseau ou serveur')
   }
 }
