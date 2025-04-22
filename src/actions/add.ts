@@ -4,6 +4,7 @@ import { AddPriceInput } from '../types/common'
 import { formatPriceSQL, formatTextSQL } from '../utils/helper'
 import { gql } from '@apollo/client'
 import { apolloClient } from '../apollo-client'
+import { PriceGql } from '../types/graphql'
 
 export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const catId = e.target.value
@@ -84,7 +85,7 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
         insert: dataInput
       }
     })
-    const result = response.data?.price
+    const result = response.data?.price as PriceGql
     if (result) {
       toast.success(`Prix ${dataInput.amount}€ ajouté !`, {
         position: "bottom-right",
@@ -103,7 +104,7 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
       )
       store.dispatch({
         type: 'SET_PRICES_AFTER_ADD',
-        payload: { ...addPriceInput, price: result }
+        payload: result
       })
     }
     else {

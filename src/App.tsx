@@ -134,7 +134,6 @@ const fetchList = async (coy_: COY, dispatch: Dispatch) => {
     dispatch({
       type: coy.type,
       payload: data
-
     }
     )
   } catch (error) {
@@ -169,7 +168,11 @@ const fetchPrices = async (years: Year[], months: Month[], dispatch: Dispatch) =
         }
       }
     }`
-    const { data } = await apolloClient.query({ query: api })
+    const { data } = await apolloClient.query(
+      {
+        query: api,
+        fetchPolicy: 'network-only'
+      }) // fetchPolicy: 'network-only' Forcer le cache d'Apollo
 
     dispatch({
       type: 'SET_PRICES',

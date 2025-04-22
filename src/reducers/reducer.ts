@@ -355,25 +355,25 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_PRICES_AFTER_ADD': {
-      // const { id, objId, amount, actionDate, comment } = action.payload
-      const newPrice = action.payload
-      // const obj = getObjById(state.objects, objId)
+      const newPrice = action.payload as PriceGql
+      const { id, amount, comment, actionDate, obj, cat } = newPrice
+      const { id: objId, name: objName } = obj
+      const { id: catId, name: catName } = cat
       return {
         ...state,
-        prices: [
-          newPrice,
-          // {
-          //   id,
-          //   amount: Number(amount),
-          //   actionDate: actionDate,
-          //   comment,
-          //   template: 0,
-          //   dateCreate: CURRENT_DATE_TIME,
-          //   dateModif: CURRENT_DATE_TIME,
-          //   obj: { id: objId, name: obj.name },
-          //   cat: { id: obj.cat.id, name: obj.cat.name }
-          // },
-          ...state.prices
+        prices: [{
+          id: Number(id),
+          amount: Number(amount),
+          comment,
+          actionDate,
+          template: 0,
+          dateCreate: CURRENT_DATE_TIME,
+          dateModif: CURRENT_DATE_TIME,
+          obj: { id: Number(objId), name: objName, template: 0 },
+          cat: { id: Number(catId), name: catName, template: 0, position: 99 }
+        } as Price
+          ,
+        ...state.prices
         ],
         addPriceInput: {
           ...state.addPriceInput,
