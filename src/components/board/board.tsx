@@ -6,6 +6,7 @@ import {
 } from '../../utils/helper'
 import { Categorie, Price } from '../../types/common'
 import { SUM_TYPE } from '../../constants/constants'
+import { handleModif } from '../../actions/modif'
 
 interface BoardProps {
   filteredPrices: Price[],
@@ -39,6 +40,7 @@ const HeaderLine: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
   return (
     <thead>
       <tr key='tr_header'>
+        <th key='th_admin'> ADMIN </th>
         <th key='th_date'> DATE </th>
         <th key='th_obj'> OBJET </th>
         <th key='th_montant'> MONTANT </th>
@@ -74,6 +76,9 @@ const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats }) =>
       {filteredPrices.map((p, index) => {
         return (
           <tr key={index}>
+            <td key='td_admin'>
+              <button onClick={()=>handleModif(p)}>[M]</button>
+              </td>
             <td key='td_date'>{formatDateFR(p.actionDate)}</td>
             <td key='td_obj'>{p.obj.name}</td>
             <td
@@ -147,7 +152,7 @@ const SumLine: React.FC<SumLineProps> = ({ filteredCats, sumType }) => {
     sumType === 'TOTAL' ? formatPriceWithZero : formatPrice
   return (
     <tr key={'tr_' + sumType}>
-      <td key={'td_' + sumType} className='SumTitleCell' colSpan={2}>
+      <td key={'td_' + sumType} className='SumTitleCell' colSpan={3}>
         {titleAmount}
       </td>
       <td

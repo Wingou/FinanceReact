@@ -5,6 +5,18 @@ export const formatDateFR = (d:string) => {
   return new Date(d).toLocaleDateString('fr-FR')
 }
 
+export const formatCalendarDate = (d:string) => {
+  const newDate = new Date(d)
+  const yyyy = newDate.getFullYear()
+  const m_ = newDate.getMonth()+1
+  const d_ = newDate.getDate()
+
+  const mm = m_ <10 ? `0${m_}`  : m_
+  const day = d_<10 ? `0${d_}`  : d_
+
+  return  yyyy+'-'+mm+'-'+day
+}
+
 export const formatPrice = (p:number) => {
   return p === 0 || p === null ? '' : p.toFixed(2) + ' €'
 }
@@ -15,10 +27,6 @@ export const formatPriceWithZero = (p:number) => {
 
 export const formatTextSQL = (t:string) => {
   return t.replace("'", "''")
-}
-
-export const formatPriceSQL = (p:string) => {
-  return p.replace('.', ',')
 }
 
 export const getFirstObjId = (catId:number, objects:Object[]) => {

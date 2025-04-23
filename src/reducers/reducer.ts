@@ -7,9 +7,9 @@ import {
   PAGE
 } from '../constants/constants'
 import { initialModel } from '../models/initialModel'
-import { ActionType, Categorie, Month, Object, Price, StateType, Year } from '../types/common'
+import { ActionType, AddPriceInput, Categorie, Month, Object, Price, StateType, Year } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
-import { getCatById, getObjById } from '../utils/helper'
+import { formatCalendarDate, getCatById } from '../utils/helper'
 
 
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
@@ -383,7 +383,24 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       }
     }
 
+    case 'MODIFPRICEINPUT' : {
+      const p = action.payload as AddPriceInput;
+      return {
+        ...state,
+        addPriceInput: {
+          ...p ,
+          actionDate : formatCalendarDate(p.actionDate)
+        },
+        view: {
+          ...state.view,
+          isAddOpen: true
+        }
+      }
+    }
+
     default:
       return state
   }
 }
+
+

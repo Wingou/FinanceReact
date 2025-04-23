@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify'
 import { store } from '../store/store'
 import { AddPriceInput } from '../types/common'
-import { formatPriceSQL, formatTextSQL } from '../utils/helper'
+import { formatTextSQL } from '../utils/helper'
 import { gql } from '@apollo/client'
 import { apolloClient } from '../apollo-client'
 import { PriceGql } from '../types/graphql'
@@ -74,7 +74,7 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
                         }
                       }`
     const dataInput = {
-      amount: formatPriceSQL(addPriceInput.amount),
+      amount: addPriceInput.amount,
       objId: addPriceInput.objId.toString(),
       actionDate: addPriceInput.actionDate,
       comment: formatTextSQL(addPriceInput.comment)
@@ -82,7 +82,8 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
     const response = await apolloClient.mutate({
       mutation: api,
       variables: {
-        insert: dataInput
+        insert: dataInput,
+        // fetchPolicy: 'network-only'
       }
     })
     const result = response.data?.price as PriceGql
