@@ -1,3 +1,18 @@
 {
-  "type": "module"
+  "type": "module",
+  "name": "graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "scripts": {
+    "start": "node --loader ts-node/esm ./graphQLServer.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

@@ -14,7 +14,7 @@ export interface ObjRaw {
 export interface PriceRaw {
   id: number,
   amount: number,
-  comment: string | null | undefined,
+  comment: string,
   actionDate: string,
   dateCreate: string,
   dateModif: string,

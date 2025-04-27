@@ -1,27 +1,31 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "target": "ES2020",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "module": "ESNext",                                /* Specify what module code is generated. */
-    "moduleResolution": "bundler",                     /* Specify how TypeScript looks up a file from a given module specifier. */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-
-    "strict": true,                                      /* Enable all strict type-checking options. */
-    "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
-    "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
-    "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
-    "strictBindCallApply": true,                      /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
-    "noImplicitThis": true,                           /* Enable error reporting when 'this' is given the type 'any'. */
-    "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
-
-    "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
- 
+    "target": "ES2020", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "module": "ESNext", /* Specify what module code is generated. */
+    "moduleResolution": "bundler", /* Specify how TypeScript looks up a file from a given module specifier. */
+    "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
+    "strict": true, /* Enable all strict type-checking options. */
+    "noImplicitAny": true, /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+    "strictNullChecks": true, /* When type checking, take into account 'null' and 'undefined'. */
+    "strictFunctionTypes": true, /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+    "strictBindCallApply": true, /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
+    "noImplicitThis": true, /* Enable error reporting when 'this' is given the type 'any'. */
+    "alwaysStrict": true, /* Ensure 'use strict' is always emitted. */
+    "skipLibCheck": true, /* Skip type checking all .d.ts files. */
     "isolatedModules": true, // Important pour les bundlers
     "allowJs": true, // Optionnel
-    "lib": ["DOM", "DOM.Iterable", "ESNext"] // Types React
-  }
-  ,
-  "include": ["src/**/*"], // Les fichiers TypeScript à compiler
-  "exclude": ["node_modules"]
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ] // Types React
+  },
+  "include": [
+    "src/**/*"
+  ], // Les fichiers TypeScript à compiler
+  "exclude": [
+    "node_modules"
+  ]
 }

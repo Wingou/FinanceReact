@@ -66,7 +66,7 @@ export type PriceGql = {
   actionDate: Scalars['String']['output'];
   amount: Scalars['String']['output'];
   cat: CatGql;
-  comment?: Maybe<Scalars['String']['output']>;
+  comment: Scalars['String']['output'];
   dateCreate: Scalars['String']['output'];
   dateModif: Scalars['String']['output'];
   id: Scalars['ID']['output'];

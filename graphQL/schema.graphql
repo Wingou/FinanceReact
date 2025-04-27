@@ -28,7 +28,7 @@ type YearGql {
 type PriceGql {
   id: ID!
   amount: String!
-  comment: String
+  comment: String!
   actionDate: String!
   dateCreate: String!
   dateModif: String!

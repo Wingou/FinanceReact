@@ -143,7 +143,7 @@ Dans tsconfig.json Vérifier que l'on a les lignes ci-dessous activées pour que
   "exclude": ["node_modules"]
 }
 
-Insstaller ts-node, c'est node, mais pour du typescript. Comme ça, pas besoin de transpiler le .ts en .js : 
+Installer ts-node, c'est node, mais pour du typescript. Comme ça, pas besoin de transpiler le .ts en .js : 
 npm install -g ts-node
 
 Dans package.json ajouter pour graphQL qui est du node, mais en ts avec les "imports" au lieu de "module" :
