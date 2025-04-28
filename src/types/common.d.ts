@@ -9,6 +9,7 @@ export interface StateType {
   months: Month[],
   searchOptions: SearchOptions,
   addPriceInput: AddPriceInput,
+  modifPriceInput: ModifPriceInput,
   view: {
     page: PAGE,
     isAddOpen: boolean
@@ -36,6 +37,11 @@ export interface AddPriceInput {
   amount: string,
   actionDate: string,
   comment: string
+}
+
+export interface ModifPriceInput extends PriceRaw {
+  catId: number,
+  objId: number
 }
 
 export interface Categorie extends CatRaw {

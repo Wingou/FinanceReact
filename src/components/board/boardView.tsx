@@ -4,23 +4,24 @@ import { ActivatedCatsInput } from './categorieInput'
 import { DateInput } from './datesInput'
 import { SearchWordInput } from './searchInput'
 import { NoBoard } from './noBoard'
-import { Categorie, Month, Price, SearchOptions, Year } from '../../types/common'
-
+import { Categorie, ModifPriceInput, Month, Object, Price, SearchOptions, Year } from '../../types/common'
 
 export interface BoardViewProps {
-  years:Year[],
-  months:Month[],
-  filteredPrices:Price[],
-  activatedCats:Categorie[],
-  filteredCats:Categorie[],
-  isAllYearsChecked:boolean,
-  isAllMonthsChecked:boolean,
-  isAllCatsChecked:boolean,
-  searchOptions:SearchOptions
+  years: Year[],
+  months: Month[],
+  filteredPrices: Price[],
+  activatedCats: Categorie[],
+  filteredCats: Categorie[],
+  isAllYearsChecked: boolean,
+  isAllMonthsChecked: boolean,
+  isAllCatsChecked: boolean,
+  searchOptions: SearchOptions,
+  objects: Object[],
+  modifPriceInput: ModifPriceInput
 }
 
 export class BoardView extends Component<BoardViewProps, {}> {
-  render () {
+  render() {
     const {
       years,
       months,
@@ -30,7 +31,9 @@ export class BoardView extends Component<BoardViewProps, {}> {
       isAllYearsChecked,
       isAllMonthsChecked,
       isAllCatsChecked,
-      searchOptions
+      searchOptions,
+      objects,
+      modifPriceInput
     } = this.props
     const {
       isMultiYears,
@@ -40,6 +43,8 @@ export class BoardView extends Component<BoardViewProps, {}> {
       searchMin,
       searchMax
     } = searchOptions
+
+    const modifViewProps = { objects, modifPriceInput, filteredCats }
     return (
       <div>
         <DateInput
@@ -63,7 +68,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
           searchMax={searchMax}
         />
         {filteredPrices.length !== 0 ? (
-          <Board filteredPrices={filteredPrices} filteredCats={filteredCats} />
+          <Board filteredPrices={filteredPrices} filteredCats={filteredCats} modifViewProps={modifViewProps} />
         ) : (
           <NoBoard />
         )}

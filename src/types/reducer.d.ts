@@ -1,7 +1,7 @@
 export interface CatRaw {
   id: number,
   name: string,
-  position: number | null,
+  position: number,
   template: number
 }
 

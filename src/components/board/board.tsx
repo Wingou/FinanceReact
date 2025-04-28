@@ -4,30 +4,19 @@ import {
   formatPrice,
   formatPriceWithZero
 } from '../../utils/helper'
-import { Categorie, Price } from '../../types/common'
-import { SUM_TYPE } from '../../constants/constants'
+import { Categorie, ModifPriceInput, Object, Price } from '../../types/common'
 import { handleModif } from '../../actions/modif'
+import { BoardProps, SimpleLineProps, SumLineProps, TitleAmountMap } from './boardView.d'
+import { ModifForm } from '../modif/modif'
 
-interface BoardProps {
-  filteredPrices: Price[],
-  filteredCats: Categorie[]
-}
-
-export const BoardWithoutSum: React.FC<BoardProps> = ({ filteredPrices, filteredCats }) => {
-  return (
-    <table className='boardTable'>
-      <HeaderLine filteredCats={filteredCats} />
-      <BodyLines filteredPrices={filteredPrices} filteredCats={filteredCats} />
-    </table>
-  )
-}
-
-export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats }) => {
+export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats, modifViewProps }) => {
+  const { modifPriceInput, objects } = modifViewProps
   return (
     <table className='boardTable'>
       <HeaderLine filteredCats={filteredCats} />
       <SumLines filteredCats={filteredCats} />
-      <BodyLines filteredPrices={filteredPrices} filteredCats={filteredCats} />
+      <BodyLines filteredPrices={filteredPrices} filteredCats={filteredCats} modifPriceInput={modifPriceInput} objects={objects} />
+
     </table>
   )
 }
@@ -66,54 +55,54 @@ const SumLines: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
   )
 }
 
-interface FilteredProps { filteredPrices: Price[], filteredCats: Categorie[] }
+interface FilteredProps { filteredPrices: Price[], filteredCats: Categorie[], modifPriceInput: ModifPriceInput, objects: Object[] }
 
 
-const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats }) => {
+const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modifPriceInput, objects }) => {
 
   return (
     <tbody>
       {filteredPrices.map((p, index) => {
         return (
-          <tr key={index}>
-            <td key='td_admin'>
-              <button onClick={()=>handleModif(p)}>[M]</button>
-              </td>
-            <td key='td_date'>{formatDateFR(p.actionDate)}</td>
-            <td key='td_obj'>{p.obj.name}</td>
-            <td
-              key={index}
-              className={
-                'moneyCell ' + (p.amount < 0 ? 'negative' : 'positive')
-              }
-            >
-              {formatPrice(p.amount)}
-            </td>
-            {filteredCats.map((cat, index) => {
-              const price = cat.id === p.cat.id ? p.amount : 0
-              return (
-                <td
-                  key={index}
-                  className={
-                    'moneyCell ' + (price < 0 ? 'negative' : 'positive')
-                  }
-                >
-                  {formatPrice(price)}
-                </td>
-              )
-            })}
-            <td key='td_comment'>{p.comment}</td>
-            <td key='td_dateCreate'>{formatDateFR(p.dateModif)}</td>
-            <td key='td_dateModif'>{formatDateFR(p.dateCreate)}</td>
-            <td key='td_template'>{p.template}</td>
-          </tr>
+          p.id === modifPriceInput.id ?
+            <ModifForm modifPriceInput={modifPriceInput} objects={objects} filteredCats={filteredCats} /> :
+            <SimpleLine filteredCats={filteredCats} p={p} index={index} />
         )
       })}
     </tbody>
   )
 }
 
-interface SumLineProps { filteredCats: Categorie[], sumType: SUM_TYPE }
+const SimpleLine: React.FC<SimpleLineProps> = ({ filteredCats, p, index }) => {
+  return <tr key={index}>
+    <td key='td_admin'>
+      <button onClick={() => handleModif(p)}>[M]</button>
+    </td>
+    <td key='td_date'>{formatDateFR(p.actionDate)}</td>
+    <td key='td_obj'>{p.obj.name}</td>
+    <td
+      key={index}
+      className={'moneyCell ' + (p.amount < 0 ? 'negative' : 'positive')}
+    >
+      {formatPrice(p.amount)}
+    </td>
+    {filteredCats.map((cat, index) => {
+      const price = cat.id === p.cat.id ? p.amount : 0
+      return (
+        <td
+          key={index}
+          className={'moneyCell ' + (price < 0 ? 'negative' : 'positive')}
+        >
+          {formatPrice(price)}
+        </td>
+      )
+    })}
+    <td key='td_comment'>{p.comment}</td>
+    <td key='td_dateCreate'>{formatDateFR(p.dateModif)}</td>
+    <td key='td_dateModif'>{formatDateFR(p.dateCreate)}</td>
+    <td key='td_template'>{p.template}</td>
+  </tr>
+}
 
 const SumLine: React.FC<SumLineProps> = ({ filteredCats, sumType }) => {
 
@@ -134,12 +123,6 @@ const SumLine: React.FC<SumLineProps> = ({ filteredCats, sumType }) => {
     }
   }, 0)
 
-
-  interface TitleAmountMap {
-    RECETTE: string,
-    DEPENSE: string,
-    TOTAL: string
-  }
 
   const titleAmount: string =
     ({

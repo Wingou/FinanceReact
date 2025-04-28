@@ -16,9 +16,16 @@ export interface AddFormProps {
   objects: Object[]
 }
 
-export const AddForm: React.FC<AddFormProps> = (addFormProps) => {
+export interface SelectObjProps {
+  catId: number,
+  objId: number,
+  categories: Categorie[],
+  objects: Object[]
+}
 
-  const { addPriceInput } = addFormProps
+export const AddForm: React.FC<AddFormProps> = (addFormProps) => {
+  const { addPriceInput, categories, objects } = addFormProps
+  const { catId, objId } = addPriceInput
   const isObjetOK = addPriceInput.objId !== -1
   const isPriceOK =
     /^-?\d*\.?\d{0,2}$/.test(addPriceInput.amount) &&
@@ -45,7 +52,7 @@ export const AddForm: React.FC<AddFormProps> = (addFormProps) => {
         onChange={e => handleDateInput(e)}
       />
       <SelectCat {...addFormProps} />
-      <SelectObj {...addFormProps} />
+      <SelectObj categories={categories} objects={objects} catId={catId} objId={objId} />
       <div
         key={'Div_PriceAndCurrency'}
         className={`InputAdd_Div_PriceAndCurrency `}
@@ -129,10 +136,7 @@ export const SelectCat: React.FC<AddFormProps> = ({ categories, addPriceInput })
   )
 }
 
-
-
-
-export const SelectObj: React.FC<AddFormProps> = ({ categories, objects, addPriceInput }) => {
+export const SelectObj: React.FC<SelectObjProps> = ({ categories, objects, catId, objId }) => {
   const objectsAll = objects
     .filter(o => o.template === 0)
     .sort((a, b) => {
@@ -140,30 +144,30 @@ export const SelectObj: React.FC<AddFormProps> = ({ categories, objects, addPric
     })
 
   const objectsByCatId =
-    addPriceInput.catId === -1
+    catId === -1
       ? objectsAll
-      : objects.filter(o => o.cat.id === addPriceInput.catId && o.template === 0)
+      : objects.filter(o => o.cat.id === catId && o.template === 0)
 
-  const objById = getObjById(objects, addPriceInput.objId)
+  const objById = getObjById(objects, objId)
 
   const objNameForTitle =
     objById.id === -1
       ? 'aucun objet sélectionné'
       : objById.name +
-      (addPriceInput.catId === -1 ? ' (' + objById.cat.name + ')' : '')
+      (catId === -1 ? ' (' + objById.cat.name + ')' : '')
 
   const objLabel =
     '¤ OBJET ¤' +
-    (addPriceInput.catId === -1
+    (catId === -1
       ? ''
-      : ' (' + getCatById(categories, addPriceInput.catId).name + ')')
+      : ' (' + getCatById(categories, catId).name + ')')
 
-  const Red_Border_Obj = addPriceInput.objId === -1 ? 'Red_Border' : ''
+  const Red_Border_Obj = objId === -1 ? 'Red_Border' : ''
 
   return (
     <select
       className={`InputAdd_Select_Obj ${Red_Border_Obj}`}
-      value={addPriceInput.objId}
+      value={objId}
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleObjIdInput(e)}
       title={objNameForTitle}
     >
@@ -177,7 +181,7 @@ export const SelectObj: React.FC<AddFormProps> = ({ categories, objects, addPric
       {objectsByCatId.map((obj_, index) => {
         const objName =
           obj_.name +
-          (addPriceInput.catId !== -1 ? '' : ' (' + obj_.name + ')')
+          (catId !== -1 ? '' : ' (' + obj_.name + ')')
 
         return (
           <option key={'option_objId_' + index} value={obj_.id.toString()} title={objName}>

@@ -3,9 +3,21 @@ import {
   CURRENT_MONTH,
   MONTHS
 } from '../constants/constants'
-import { AddPriceInput, SearchOptions, StateType } from '../types/common'
+import { AddPriceInput, ModifPriceInput, SearchOptions, StateType, } from '../types/common'
 
-export const initialAddPriceInput : AddPriceInput= {
+export const initialModifPriceInput: ModifPriceInput = {
+  id: -1,
+  catId: -1,
+  objId: -1,
+  amount: 0,
+  actionDate: CURRENT_DATE,
+  comment: '',
+  dateCreate: CURRENT_DATE,
+  dateModif: CURRENT_DATE,
+  template: 0
+}
+
+export const initialAddPriceInput: AddPriceInput = {
   catId: -1,
   objId: -1,
   amount: '',
@@ -13,7 +25,7 @@ export const initialAddPriceInput : AddPriceInput= {
   comment: ''
 }
 
-export const initialSearchOptions:SearchOptions = {
+export const initialSearchOptions: SearchOptions = {
   isMultiYears: false,
   isMultiMonths: false,
   isMultiCats: true,
@@ -23,7 +35,7 @@ export const initialSearchOptions:SearchOptions = {
   top: 10
 }
 
-export const initialModel:StateType = {
+export const initialModel: StateType = {
   prices: [],
   objects: [],
   categories: [],
@@ -37,7 +49,9 @@ export const initialModel:StateType = {
   }),
   searchOptions: initialSearchOptions,
   addPriceInput: initialAddPriceInput,
-  view: { 
-    page :'HOME',
-    isAddOpen : false} 
+  modifPriceInput: initialModifPriceInput,
+  view: {
+    page: 'HOME',
+    isAddOpen: false
+  }
 }
