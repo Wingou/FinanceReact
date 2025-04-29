@@ -29,14 +29,28 @@ export type CatGql = {
   template: Scalars['Int']['output'];
 };
 
+export type ModifPriceUpdateInput = {
+  actionDate: Scalars['String']['input'];
+  amount: Scalars['String']['input'];
+  comment: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+  objId: Scalars['String']['input'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  price: PriceGql;
+  addPrice: PriceGql;
+  modifPrice: PriceGql;
 };
 
 
-export type MutationPriceArgs = {
+export type MutationAddPriceArgs = {
   insert: AddPriceInsertInput;
+};
+
+
+export type MutationModifPriceArgs = {
+  update: ModifPriceUpdateInput;
 };
 
 export type ObjCatGql = {

@@ -2,9 +2,10 @@ import { connect } from 'react-redux'
 import { RootState } from '../store/store'
 import { HomeView } from '../components/home/homeView'
 
-const mapStateToProps = (state:RootState) => {
+const mapStateToProps = (state: RootState) => {
+  console.log("Hello HomeContainers")
   return {
-    years : state.years
+    years: state.years
   }
 }
 const HomeViewContainer = connect(mapStateToProps)(HomeView)

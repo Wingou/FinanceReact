@@ -27,8 +27,11 @@ function App() {
     const fetchListsData = async () => {
       try {
         await fetchList('CAT', dispatch)
+        console.log("Fetch cat")
         await fetchList('OBJ', dispatch)
+        console.log("Fetch obj")
         await fetchList('YEARS', dispatch)
+        console.log("Fetch years")
         setIsCOYLoaded(true)
       } catch (error) {
         console.error('ERROR: fetchListsData : ', error)
@@ -38,10 +41,14 @@ function App() {
     fetchListsData()
   }, [dispatch])
 
+  console.log("ICIIII", view.page)
+
   useEffect(() => {
     const fetchPricesData = async () => {
       try {
+        console.log("Fetch Avant Price")
         await fetchPrices(years, months, dispatch)
+        console.log("Fetch après Price")
       } catch (error) {
         console.error('ERROR: fetchPrices', error)
       }

@@ -6,7 +6,7 @@ import {
   CURRENT_MONTH,
   PAGE
 } from '../constants/constants'
-import { initialModel } from '../models/initialModel'
+import { initialModel, initialModifPriceInput } from '../models/initialModel'
 import { ActionType, AddPriceInput, Categorie, ModifPriceInput, Month, Object, Price, StateType, Year } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
@@ -391,6 +391,63 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           ...p,
           actionDate: formatCalendarDate(p.actionDate)
         }
+      }
+    }
+
+    case 'MODIFPRICEINPUT_SET_DATE': {
+      return {
+        ...state,
+        modifPriceInput: {
+          ...state.modifPriceInput
+          , actionDate: action.payload
+        }
+      }
+    }
+
+    case 'MODIFPRICEINPUT_SET_OBJID': {
+      return {
+        ...state,
+        modifPriceInput: { ...state.modifPriceInput, objId: Number(action.payload) }
+      }
+    }
+
+    case 'MODIFPRICEINPUT_SET_PRICE': {
+      return {
+        ...state,
+        modifPriceInput: { ...state.modifPriceInput, amount: action.payload }
+      }
+    }
+
+    case 'MODIFPRICEINPUT_SET_COMMENT': {
+      return {
+        ...state,
+        modifPriceInput: { ...state.modifPriceInput, comment: action.payload }
+      }
+    }
+
+
+    case 'SET_PRICES_AFTER_MODIF': {
+      const modifPrice = action.payload as PriceGql
+      const { id, amount, comment, actionDate, obj, cat, dateCreate, dateModif } = modifPrice
+      const { id: objId, name: objName } = obj
+      const { id: catId, name: catName, position } = cat
+
+      return {
+        ...state,
+        prices: state.prices.map((p: Price): Price => {
+          return p.id === parseInt(id) ?
+            {
+              ...p,
+              amount: Number(amount),
+              comment,
+              actionDate,
+              dateModif,
+              obj: { id: Number(objId), name: objName, template: 0 },
+              cat: { id: Number(catId), name: catName, template: 0, position }
+            } as Price
+            : p
+        }),
+        modifPriceInput: initialModifPriceInput
       }
     }
 

@@ -29,3 +29,5 @@ export const sqlPriceById = `SELECT p.id as priceId, p.prix, p.commentaire, p.Da
                             ORDER BY p.DateAction, c.Ordre, o.Objet`
 
 export const sqlIdent = `SELECT @@IDENTITY as id`
+
+export const sqlModifPrice = `UPDATE prix set prix='?', commentaire='?', DateAction='?', id_objet=? WHERE id=?`

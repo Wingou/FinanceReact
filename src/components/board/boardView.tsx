@@ -44,7 +44,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
       searchMax
     } = searchOptions
 
-    const modifViewProps = { objects, modifPriceInput, filteredCats }
+    const ModifLineProps = { objects, modifPriceInput, filteredCats }
     return (
       <div>
         <DateInput
@@ -68,7 +68,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
           searchMax={searchMax}
         />
         {filteredPrices.length !== 0 ? (
-          <Board filteredPrices={filteredPrices} filteredCats={filteredCats} modifViewProps={modifViewProps} />
+          <Board filteredPrices={filteredPrices} filteredCats={filteredCats} ModifLineProps={ModifLineProps} />
         ) : (
           <NoBoard />
         )}

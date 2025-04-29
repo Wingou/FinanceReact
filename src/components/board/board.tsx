@@ -6,11 +6,11 @@ import {
 } from '../../utils/helper'
 import { Categorie, ModifPriceInput, Object, Price } from '../../types/common'
 import { handleModif } from '../../actions/modif'
-import { BoardProps, SimpleLineProps, SumLineProps, TitleAmountMap } from './boardView.d'
-import { ModifForm } from '../modif/modif'
+import { BoardProps, FilteredProps, SimpleLineProps, SumLineProps, TitleAmountMap } from './boardView.d'
+import { ModifLine } from '../modif/modif'
 
-export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats, modifViewProps }) => {
-  const { modifPriceInput, objects } = modifViewProps
+export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats, ModifLineProps }) => {
+  const { modifPriceInput, objects } = ModifLineProps
   return (
     <table className='boardTable'>
       <HeaderLine filteredCats={filteredCats} />
@@ -55,18 +55,17 @@ const SumLines: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
   )
 }
 
-interface FilteredProps { filteredPrices: Price[], filteredCats: Categorie[], modifPriceInput: ModifPriceInput, objects: Object[] }
-
 
 const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modifPriceInput, objects }) => {
-
   return (
     <tbody>
       {filteredPrices.map((p, index) => {
         return (
           p.id === modifPriceInput.id ?
-            <ModifForm modifPriceInput={modifPriceInput} objects={objects} filteredCats={filteredCats} /> :
-            <SimpleLine filteredCats={filteredCats} p={p} index={index} />
+            <ModifLine key={`ModifLine_${index}`} modifPriceInput={modifPriceInput} objects={objects} filteredCats={filteredCats} />
+            :
+            <SimpleLine key={`SimpleLine_${index}`} filteredCats={filteredCats} p={p} index={index} />
+
         )
       })}
     </tbody>
@@ -74,14 +73,15 @@ const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modi
 }
 
 const SimpleLine: React.FC<SimpleLineProps> = ({ filteredCats, p, index }) => {
-  return <tr key={index}>
-    <td key='td_admin'>
+
+  return <tr key={`tr_SimpleLine_${index}`}>
+    <td key={`td_admin_${index}`}>
       <button onClick={() => handleModif(p)}>[M]</button>
     </td>
-    <td key='td_date'>{formatDateFR(p.actionDate)}</td>
-    <td key='td_obj'>{p.obj.name}</td>
+    <td key={`td_date_${index}`}>{formatDateFR(p.actionDate)}</td>
+    <td key={`td_obj_${index}`}>{p.obj.name}</td>
     <td
-      key={index}
+      key={`td_amount_${index}`}
       className={'moneyCell ' + (p.amount < 0 ? 'negative' : 'positive')}
     >
       {formatPrice(p.amount)}
@@ -90,22 +90,21 @@ const SimpleLine: React.FC<SimpleLineProps> = ({ filteredCats, p, index }) => {
       const price = cat.id === p.cat.id ? p.amount : 0
       return (
         <td
-          key={index}
+          key={`td_price_by_${cat.id}_${index}`}
           className={'moneyCell ' + (price < 0 ? 'negative' : 'positive')}
         >
           {formatPrice(price)}
         </td>
       )
     })}
-    <td key='td_comment'>{p.comment}</td>
-    <td key='td_dateCreate'>{formatDateFR(p.dateModif)}</td>
-    <td key='td_dateModif'>{formatDateFR(p.dateCreate)}</td>
-    <td key='td_template'>{p.template}</td>
+    <td key={`td_comment_${index}`}>{p.comment}</td>
+    <td key={`td_dateCreate_${index}`}>{formatDateFR(p.dateModif)}</td>
+    <td key={`td_dateModif_${index}`}>{formatDateFR(p.dateCreate)}</td>
+    <td key={`td_template_${index}`}>{p.template}</td>
   </tr>
 }
 
 const SumLine: React.FC<SumLineProps> = ({ filteredCats, sumType }) => {
-
   const amount = filteredCats.reduce((acc, cats) => {
     if (cats.isOn) {
       switch (sumType) {

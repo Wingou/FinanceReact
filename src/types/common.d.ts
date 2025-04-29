@@ -32,14 +32,21 @@ export interface SearchOptions {
 }
 
 export interface AddPriceInput {
-  catId: number,
-  objId: number,
   amount: string,
   actionDate: string,
-  comment: string
+  comment: stringn
+  catId: number,
+  objId: number
 }
 
-export interface ModifPriceInput extends PriceRaw {
+export interface ModifPriceInput {
+  id: number,
+  amount: string,
+  actionDate: string,
+  comment: string,
+  dateCreate: string,
+  dateModif: string,
+  template: number
   catId: number,
   objId: number
 }

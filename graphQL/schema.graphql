@@ -67,12 +67,39 @@ input AddPriceInsertInput  {
   objId: String!
 }
 
+input ModifPriceUpdateInput  {
+  id: ID!
+  amount: String!
+  comment: String!
+  actionDate: String!
+  objId: String!
+}
+
 type Mutation {
-  price (insert : AddPriceInsertInput!):PriceGql!
+  addPrice (insert : AddPriceInsertInput!):PriceGql!,
+  modifPrice (  update: ModifPriceUpdateInput!):PriceGql!
 }
 
 mutation AddPrice($insert: AddPriceInsertInput!) {
-  price(insert: $insert) {
+  addPrice(insert: $insert) {
+    id
+    amount
+    comment
+    actionDate
+    obj {
+      id
+      name
+    }
+    cat {
+      id
+      name
+    }
+  }
+}
+
+
+mutation ModifPrice(  $update: ModifPriceUpdateInput!) {
+  modifPrice( update: $update) {
     id
     amount
     comment

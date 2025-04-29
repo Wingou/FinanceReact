@@ -4,7 +4,7 @@ import { SUM_TYPE } from '../../constants/constants'
 export interface BoardProps {
   filteredPrices: Price[],
   filteredCats: Categorie[],
-  modifViewProps: ModifViewProps
+  ModifLineProps: ModifLineProps
 }
 
 export interface BoardViewProps {
@@ -21,7 +21,7 @@ export interface BoardViewProps {
   modifPriceInput: ModifPriceInput
 }
 
-export interface ModifViewProps {
+export interface ModifLineProps {
   modifPriceInput: ModifPriceInput,
   objects: Object[],
   filteredCats: Categorie[]
@@ -36,3 +36,5 @@ export interface TitleAmountMap {
   DEPENSE: string,
   TOTAL: string
 }
+
+export interface FilteredProps { filteredPrices: Price[], filteredCats: Categorie[], modifPriceInput: ModifPriceInput, objects: Object[] }

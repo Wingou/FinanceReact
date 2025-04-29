@@ -31,7 +31,7 @@ export type PAGE = 'HOME' | 'BOARD'
 
 export type SUM_TYPE = 'RECETTE' | 'DEPENSE' | 'TOTAL'
 
-const catRawNone = { id: -1, name: 'NONE' , position:99, template:0}
+const catRawNone = { id: -1, name: 'NONE', position: 99, template: 0 }
 
 export const objNone = {
   id: -1,
@@ -40,11 +40,12 @@ export const objNone = {
   cat: catRawNone
 }
 
-export const catNone:Categorie = {
+export const catNone: Categorie = {
   ...catRawNone,
   recette: 0,
   depense: 0,
-  isDisplayed : false,
+  isDisplayed: false,
   isOn: false
 }
 
+export type CALLER = 'MODIF' | 'ADD'
