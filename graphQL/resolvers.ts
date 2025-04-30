@@ -52,9 +52,7 @@ export const resolvers = {
             try {
                 const rows = await cnx.query(setParamInSQL(sqlPricesByDates, [years, months]))
                 const result = parsePrices(rows as PriceRaw[])
-                console.log("SQL:", result)
                 return result as PriceGql[]
-
             }
             catch (error) {
                 console.error('Error resolver pricesByDates')
@@ -94,8 +92,6 @@ export const resolvers = {
             try {
                 const { amount, comment, actionDate, objId, id } = update
                 await cnx.query(setParamInSQL(sqlAddPrice, [amount, comment, actionDate, objId, id]))
-
-                console.log("sql back:", setParamInSQL(sqlPriceById, [id]))
                 const rows = await cnx.query(setParamInSQL(sqlPriceById, [id]))
                 const result = parsePrices(rows as PriceRaw[])
                 return result[0] as PriceGql

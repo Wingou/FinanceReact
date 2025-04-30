@@ -200,3 +200,21 @@ npm i --save-dev @types/cors
 
 Lier les schemas dans GraphQL :
 npm install @graphql-tools/schema
+
+
+#Tailwind CSS
+npm install react-scripts@5.0.1 --save-dev
+npm install typescript@4.9.5 --save-dev
+npm install tailwindcss@3.4.17 --save-dev
+
+npx tailwindcss init --> ça génère le fichier tailwind.config.js
+
+
+créér manuellement le fichier postcss.config.js --> pour fonctionner avec typescript
+
+créer manuellement le fichier src/styles/tailwind.css en ajoutant ça dans le contenu  :
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+npm install -D tailwindcss postcss autoprefixer

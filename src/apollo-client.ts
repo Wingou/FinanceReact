@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: 'http://192.168.1.109:4000/graphql',
   headers: {
     // Force une requête "simple" (évite le preflight CORS)
     'Content-Type': 'application/json',

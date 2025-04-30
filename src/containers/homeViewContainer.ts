@@ -3,7 +3,6 @@ import { RootState } from '../store/store'
 import { HomeView } from '../components/home/homeView'
 
 const mapStateToProps = (state: RootState) => {
-  console.log("Hello HomeContainers")
   return {
     years: state.years
   }

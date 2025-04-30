@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify'
 import { gql } from '@apollo/client'
 import { apolloClient } from './apollo-client'
+import './styles/tailwind.css';
 
 function App() {
   const dispatch = useDispatch()
@@ -27,11 +28,8 @@ function App() {
     const fetchListsData = async () => {
       try {
         await fetchList('CAT', dispatch)
-        console.log("Fetch cat")
         await fetchList('OBJ', dispatch)
-        console.log("Fetch obj")
         await fetchList('YEARS', dispatch)
-        console.log("Fetch years")
         setIsCOYLoaded(true)
       } catch (error) {
         console.error('ERROR: fetchListsData : ', error)
@@ -41,14 +39,10 @@ function App() {
     fetchListsData()
   }, [dispatch])
 
-  console.log("ICIIII", view.page)
-
   useEffect(() => {
     const fetchPricesData = async () => {
       try {
-        console.log("Fetch Avant Price")
         await fetchPrices(years, months, dispatch)
-        console.log("Fetch après Price")
       } catch (error) {
         console.error('ERROR: fetchPrices', error)
       }
@@ -76,7 +70,11 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>
-        <h2 className='App-title'>FINANCE REACT</h2>
+        <div className="flex justify-center items-center  bg-blue-500">
+          <h2 className="text-white text-3xl font-bold">Finance React!</h2>
+        </div>
+
+        {/* <h2 className='App-title'>FINANCE REACT</h2> */}
         {isCOYLoaded ? Menu :
           isError ? 'Data loading error !' : 'Loading...'}
       </header>
