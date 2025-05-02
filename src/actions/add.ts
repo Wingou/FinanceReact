@@ -58,7 +58,7 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
   try {
     const api = gql`
           mutation AddPrice ($insert: AddPriceInsertInput!) {
-                        price (insert : $insert) {
+                        addPrice (insert : $insert) {
                           id
                           amount
                           comment
@@ -83,10 +83,9 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
       mutation: api,
       variables: {
         insert: dataInput,
-        // fetchPolicy: 'network-only'
       }
     })
-    const result = response.data?.price as PriceGql
+    const result = response.data?.addPrice as PriceGql
     if (result) {
       toast.success(`Prix ${dataInput.amount}€ ajouté !`, {
         position: "bottom-right",

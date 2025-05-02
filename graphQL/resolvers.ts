@@ -1,6 +1,6 @@
 import odbc, { Result } from "odbc"
 import { parseCategories, parseObjects, parsePrices, parseYears } from "./parsers.js"
-import { sqlAddPrice, sqlCategories, sqlIdent, sqlObjects, sqlPriceById, sqlPricesByDates, sqlYears } from "./queries.js"
+import { sqlAddPrice, sqlCategories, sqlIdent, sqlModifPrice, sqlObjects, sqlPriceById, sqlPricesByDates, sqlYears } from "./queries.js"
 import { setParamInSQL } from "./utils.js"
 import { CatRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
 import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, YearGql, ModifPriceUpdateInput } from "../src/types/graphql.js"
@@ -91,14 +91,14 @@ export const resolvers = {
         modifPrice: async (_: any, { update }: { update: ModifPriceUpdateInput }) => {
             try {
                 const { amount, comment, actionDate, objId, id } = update
-                await cnx.query(setParamInSQL(sqlAddPrice, [amount, comment, actionDate, objId, id]))
+                await cnx.query(setParamInSQL(sqlModifPrice, [amount, comment, actionDate, objId, id]))
                 const rows = await cnx.query(setParamInSQL(sqlPriceById, [id]))
                 const result = parsePrices(rows as PriceRaw[])
                 return result[0] as PriceGql
             }
             catch (error) {
-                console.error('Error resolver addPrice')
-                throw new Error('Error resolver addPrice')
+                console.error('Error resolver modifPrice')
+                throw new Error('Error resolver modifPrice')
             }
         }
     }

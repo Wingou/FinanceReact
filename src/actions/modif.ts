@@ -71,8 +71,8 @@ export const handleModifCommentInput = (e: React.ChangeEvent<HTMLInputElement>) 
 export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
   try {
     const api = gql`
-          mutation ModifPrice ($update: ModifPriceInput!) {
-                        price (id: $id, update : $update) {
+          mutation ModifPrice ($update: ModifPriceUpdateInput!) {
+                        modifPrice (update : $update) {
                           id
                           amount
                           comment
@@ -89,6 +89,7 @@ export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
                       }`
     const { id, amount, actionDate, comment, objId } = modifPriceInput
     const dataInput = {
+      id,
       amount,
       objId: objId.toString(),
       actionDate: actionDate,
@@ -97,12 +98,10 @@ export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
     const response = await apolloClient.mutate({
       mutation: api,
       variables: {
-        id,
         update: dataInput,
-        // fetchPolicy: 'network-only'
       }
     })
-    const result = response.data?.price as PriceGql
+    const result = response.data?.modifPrice as PriceGql
     if (result) {
       toast.success(`Prix ${dataInput.amount}€ modifié !`, {
         position: "bottom-right",

@@ -5,20 +5,7 @@ import { DateInput } from './datesInput'
 import { SearchWordInput } from './searchInput'
 import { NoBoard } from './noBoard'
 import { Categorie, ModifPriceInput, Month, Object, Price, SearchOptions, Year } from '../../types/common'
-
-export interface BoardViewProps {
-  years: Year[],
-  months: Month[],
-  filteredPrices: Price[],
-  activatedCats: Categorie[],
-  filteredCats: Categorie[],
-  isAllYearsChecked: boolean,
-  isAllMonthsChecked: boolean,
-  isAllCatsChecked: boolean,
-  searchOptions: SearchOptions,
-  objects: Object[],
-  modifPriceInput: ModifPriceInput
-}
+import { BoardViewProps } from './boardView.d'
 
 export class BoardView extends Component<BoardViewProps, {}> {
   render() {
@@ -41,10 +28,16 @@ export class BoardView extends Component<BoardViewProps, {}> {
       isMultiCats,
       searchWord,
       searchMin,
-      searchMax
+      searchMax,
+      lastMutatedPriceId
     } = searchOptions
 
-    const ModifLineProps = { objects, modifPriceInput, filteredCats }
+    const modifLineProps = {
+      objects,
+      modifPriceInput,
+      filteredCats,
+      lastMutatedPriceId
+    }
     return (
       <div>
         <DateInput
@@ -68,7 +61,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
           searchMax={searchMax}
         />
         {filteredPrices.length !== 0 ? (
-          <Board filteredPrices={filteredPrices} filteredCats={filteredCats} ModifLineProps={ModifLineProps} />
+          <Board filteredPrices={filteredPrices} filteredCats={filteredCats} modifLineProps={modifLineProps} />
         ) : (
           <NoBoard />
         )}

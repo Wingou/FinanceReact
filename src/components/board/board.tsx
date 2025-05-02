@@ -9,13 +9,13 @@ import { handleModif } from '../../actions/modif'
 import { BoardProps, FilteredProps, SimpleLineProps, SumLineProps, TitleAmountMap } from './boardView.d'
 import { ModifLine } from '../modif/modif'
 
-export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats, ModifLineProps }) => {
-  const { modifPriceInput, objects } = ModifLineProps
+export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats, modifLineProps }) => {
+  const { modifPriceInput, objects, lastMutatedPriceId } = modifLineProps
   return (
     <table className='boardTable'>
       <HeaderLine filteredCats={filteredCats} />
       <SumLines filteredCats={filteredCats} />
-      <BodyLines filteredPrices={filteredPrices} filteredCats={filteredCats} modifPriceInput={modifPriceInput} objects={objects} />
+      <BodyLines filteredPrices={filteredPrices} filteredCats={filteredCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} />
 
     </table>
   )
@@ -56,26 +56,26 @@ const SumLines: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
 }
 
 
-const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modifPriceInput, objects }) => {
+const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modifPriceInput, objects, lastMutatedPriceId }) => {
   return (
     <tbody>
       {filteredPrices.map((p, index) => {
         return (
           p.id === modifPriceInput.id ?
-            <ModifLine key={`ModifLine_${index}`} modifPriceInput={modifPriceInput} objects={objects} filteredCats={filteredCats} />
+            <ModifLine key={`ModifLine_${index}`} modifPriceInput={modifPriceInput} objects={objects} filteredCats={filteredCats} lastMutatedPriceId={lastMutatedPriceId} />
             :
-            <SimpleLine key={`SimpleLine_${index}`} filteredCats={filteredCats} p={p} index={index} />
-
+            <SimpleLine key={`SimpleLine_${index}`} filteredCats={filteredCats} p={p} index={index} lastMutatedPriceId={lastMutatedPriceId} />
         )
       })}
     </tbody>
   )
 }
 
-const SimpleLine: React.FC<SimpleLineProps> = ({ filteredCats, p, index }) => {
+const SimpleLine: React.FC<SimpleLineProps> = ({ filteredCats, p, index, lastMutatedPriceId }) => {
 
   return <tr key={`tr_SimpleLine_${index}`}>
     <td key={`td_admin_${index}`}>
+      {p.id === lastMutatedPriceId ? <span className='newPrice'>*</span> : ''}
       <button onClick={() => handleModif(p)}>[M]</button>
     </td>
     <td key={`td_date_${index}`}>{formatDateFR(p.actionDate)}</td>

@@ -4,7 +4,8 @@ import {
   CURRENT_DATE_TIME,
   CURRENT_YEAR,
   CURRENT_MONTH,
-  PAGE
+  PAGE,
+  MONTHS
 } from '../constants/constants'
 import { initialModel, initialModifPriceInput } from '../models/initialModel'
 import { ActionType, AddPriceInput, Categorie, ModifPriceInput, Month, Object, Price, StateType, Year } from '../types/common'
@@ -15,7 +16,16 @@ import { formatCalendarDate, getCatById } from '../utils/helper'
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
   switch (action.type) {
     case '@@INIT': {
-      return initialModel
+      return {
+        ...initialModel,
+        months: MONTHS.map((m, index) => {
+          return {
+            name: m,
+            month: index + 1,
+            isOn: index + 1 === CURRENT_MONTH
+          }
+        })
+      }
     }
 
     case 'SET_CATEGORIES': {
@@ -359,6 +369,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const { id, amount, comment, actionDate, obj, cat } = newPrice
       const { id: objId, name: objName } = obj
       const { id: catId, name: catName } = cat
+
+      const categories = state.categories.map((c: Categorie): Categorie => {
+        return c.id === parseInt(catId) ? { ...c, isOn: true, isDisplayed: true } : c
+      })
+      const isMultiCats = categories.filter((c: Categorie): boolean => c.isOn).length > 1
       return {
         ...state,
         prices: [{
@@ -379,7 +394,13 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           ...state.addPriceInput,
           amount: '',
           comment: ''
-        }
+        },
+        searchOptions: {
+          ...state.searchOptions,
+          isMultiCats,
+          lastMutatedPriceId: parseInt(id)
+        },
+        categories
       }
     }
 
@@ -425,13 +446,16 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       }
     }
 
-
     case 'SET_PRICES_AFTER_MODIF': {
       const modifPrice = action.payload as PriceGql
       const { id, amount, comment, actionDate, obj, cat, dateCreate, dateModif } = modifPrice
       const { id: objId, name: objName } = obj
       const { id: catId, name: catName, position } = cat
 
+      const categories = state.categories.map((c: Categorie): Categorie => {
+        return c.id === parseInt(catId) ? { ...c, isOn: true, isDisplayed: true } : c
+      })
+      const isMultiCats = categories.filter((c: Categorie): boolean => c.isOn).length > 1
       return {
         ...state,
         prices: state.prices.map((p: Price): Price => {
@@ -447,7 +471,13 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
             } as Price
             : p
         }),
-        modifPriceInput: initialModifPriceInput
+        modifPriceInput: initialModifPriceInput,
+        searchOptions: {
+          ...state.searchOptions,
+          isMultiCats,
+          lastMutatedPriceId: parseInt(id)
+        },
+        categories
       }
     }
 

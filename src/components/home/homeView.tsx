@@ -3,12 +3,10 @@ import { handleToPage } from '../../actions/switchView'
 
 export class HomeView extends Component {
     render() {
-        return <div>ADD WIEW
-            <div>
-                Oui, c'est MOi !
-                <button onClick={() => handleToPage('HOME')} >{'HOME'}</button>
-                <button onClick={() => handleToPage('BOARD')} >{'BOARD'}</button>
-            </div>
+        return <div>Welcome to the Finance React App !<br />
+            Build with React, TypeScript, GraphQL and Apollo Client.
+            <br />
+            Node.JS and Express for the backend.
         </div>
     }
 }

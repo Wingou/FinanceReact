@@ -28,7 +28,8 @@ export interface SearchOptions {
   searchWord: string,
   searchMin: number | null,
   searchMax: number | null,
-  top: number
+  top: number,
+  lastMutatedPriceId: number
 }
 
 export interface AddPriceInput {
