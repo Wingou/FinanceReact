@@ -30,4 +30,4 @@ export const sqlPriceById = `SELECT p.id as priceId, p.prix, p.commentaire, p.Da
 
 export const sqlIdent = `SELECT @@IDENTITY as id`
 
-export const sqlModifPrice = `UPDATE prix set prix=?, commentaire='?', DateAction='?', id_objet=? WHERE id=?`
+export const sqlModifPrice = `UPDATE prix set prix=?, commentaire='?', DateAction='?', id_objet=?, template=?, dateModif=Date() WHERE id=?`

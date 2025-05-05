@@ -1,18 +1,16 @@
 import React from "react"
-import { Categorie, ModifPriceInput } from "../../types/common"
 import { ModifLineProps } from "../board/boardView.d"
-
-import { formatPriceWithZero } from "../../utils/helper"
 import { handleModifCommentInput, handleModifDateInput, handleModifPrice, handleModifPriceInput } from "../../actions/modif"
 import { SelectObj } from "../common/selectList"
+import { handleCancel } from "../../actions/cancel"
 
 export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
     const { modifPriceInput, objects, filteredCats } = ModifLineProps
     const { catId, objId } = modifPriceInput
-    return <tr key='tr_ModifLine' className='InputModif_Form'>
+    return <tr key='tr_ModifLine' className='trFocus'>
         <td key='td_ModifLine_OK'>
             <button
-                className={`InputModif_Button_OK`}
+                className={`btnAdminConfirm`}
                 onClick={() => {
                     handleModifPrice(modifPriceInput)
                 }}
@@ -20,7 +18,15 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
             >
                 OK
             </button>
-
+            <button
+                className={`btnAdminConfirm`}
+                onClick={() => {
+                    handleCancel()
+                }}
+                title='Cliquer pour annuler la modification'
+            >
+                BACK
+            </button>
 
         </td>
         <td key='td_ModifLine_Date'>

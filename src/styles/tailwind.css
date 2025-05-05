@@ -3,5 +3,28 @@
 @tailwind utilities;
 
 .btn {
-    @apply text-black font-normal text-sm border-emerald-800 border-spacing-1 border-2 rounded-lg bg-white hover:bg-gray-200;
+    @apply text-black font-normal text-sm border-blue-800 border-2 rounded-lg bg-white hover:bg-gray-200;
+}
+
+.btnAdmin {
+    @apply border-spacing-1 border-2 rounded w-6;
+    ;
+}
+
+.btnAdminConfirm {
+    @apply bg-white border-2 rounded w-9 border-blue-300 hover:bg-blue-300;
+    ;
+}
+
+.trFocus {
+    @apply bg-yellow-100;
+}
+
+.btnTemplate2 {
+    @apply bg-gray-300 border-gray-500 text-gray-500;
+}
+
+
+.btnTemplate {
+    @apply border-blue-800 text-black bg-white hover:bg-blue-300;
 }

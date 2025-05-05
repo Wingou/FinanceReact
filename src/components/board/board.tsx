@@ -5,9 +5,10 @@ import {
   formatPriceWithZero
 } from '../../utils/helper'
 import { Categorie, ModifPriceInput, Object, Price } from '../../types/common'
-import { handleModif } from '../../actions/modif'
+import { handleModif, handleModifPrice } from '../../actions/modif'
 import { BoardProps, FilteredProps, SimpleLineProps, SumLineProps, TitleAmountMap } from './boardView.d'
 import { ModifLine } from '../modif/modif'
+import { DelLine } from '../del/del'
 
 export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats, modifLineProps }) => {
   const { modifPriceInput, objects, lastMutatedPriceId } = modifLineProps
@@ -62,7 +63,10 @@ const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modi
       {filteredPrices.map((p, index) => {
         return (
           p.id === modifPriceInput.id ?
-            <ModifLine key={`ModifLine_${index}`} modifPriceInput={modifPriceInput} objects={objects} filteredCats={filteredCats} lastMutatedPriceId={lastMutatedPriceId} />
+            modifPriceInput.template === 2 ?
+              <DelLine key={`DelLine_${index}`} filteredCats={filteredCats} price={p} modifPriceInput={modifPriceInput} />
+              :
+              <ModifLine key={`ModifLine_${index}`} modifPriceInput={modifPriceInput} objects={objects} filteredCats={filteredCats} lastMutatedPriceId={lastMutatedPriceId} />
             :
             <SimpleLine key={`SimpleLine_${index}`} filteredCats={filteredCats} p={p} index={index} lastMutatedPriceId={lastMutatedPriceId} />
         )
@@ -73,10 +77,31 @@ const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modi
 
 const SimpleLine: React.FC<SimpleLineProps> = ({ filteredCats, p, index, lastMutatedPriceId }) => {
 
-  return <tr key={`tr_SimpleLine_${index}`}>
+  const modifPriceInputForReserve = {
+    id: p.id,
+    catId: p.cat.id,
+    objId: p.obj.id,
+    amount: p.amount.toString(),
+    actionDate: p.actionDate,
+    comment: p.comment,
+    dateCreate: p.dateCreate,
+    dateModif: p.dateModif,
+    template: 1
+  } as ModifPriceInput
+
+  const templateColor =
+    {
+      1: 'bg-orange-300',
+      2: 'bg-gray-300',
+    }[p.template] || 'bg-white-200'
+  const lineColor = p.id === lastMutatedPriceId ? `border-2 border-red-500 ${templateColor}` : templateColor
+  const btnStyleDisabled = p.template === 2 ? 'btnTemplate2' : 'btnTemplate'
+
+  return <tr key={`tr_SimpleLine_${index}`} className={lineColor}>
     <td key={`td_admin_${index}`}>
-      {p.id === lastMutatedPriceId ? <span className='newPrice'>*</span> : ''}
-      <button onClick={() => handleModif(p)}>[M]</button>
+      <button className={`btnAdmin ${btnStyleDisabled}`} disabled={p.template === 2} onClick={() => handleModifPrice(modifPriceInputForReserve)}>~</button>
+      <button className={`btnAdmin ${btnStyleDisabled}`} disabled={p.template === 2} onClick={() => handleModif(p)}>...</button>
+      <button className={`btnAdmin ${btnStyleDisabled}`} disabled={p.template === 2} onClick={() => handleModif({ ...p, template: 2 })}>X</button>
     </td>
     <td key={`td_date_${index}`}>{formatDateFR(p.actionDate)}</td>
     <td key={`td_obj_${index}`}>{p.obj.name}</td>

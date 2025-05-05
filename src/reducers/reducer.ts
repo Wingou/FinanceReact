@@ -404,6 +404,19 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       }
     }
 
+    case 'DELPRICEINPUT': {
+      const pId = action.payload.id as number;
+
+      const prices = state.prices.map((p: Price): Price => {
+        return p.id === pId ? { ...p, template: 2 } : p
+      })
+
+      return {
+        ...state,
+        prices
+      }
+    }
+
     case 'MODIFPRICEINPUT': {
       const p = action.payload as ModifPriceInput;
       return {
@@ -448,7 +461,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'SET_PRICES_AFTER_MODIF': {
       const modifPrice = action.payload as PriceGql
-      const { id, amount, comment, actionDate, obj, cat, dateCreate, dateModif } = modifPrice
+      const { id, amount, comment, actionDate, obj, cat, template, dateModif } = modifPrice
       const { id: objId, name: objName } = obj
       const { id: catId, name: catName, position } = cat
 
@@ -466,6 +479,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
               comment,
               actionDate,
               dateModif,
+              template,
               obj: { id: Number(objId), name: objName, template: 0 },
               cat: { id: Number(catId), name: catName, template: 0, position }
             } as Price
@@ -478,6 +492,13 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           lastMutatedPriceId: parseInt(id)
         },
         categories
+      }
+    }
+
+    case 'CANCELPRICEINPUT': {
+      return {
+        ...state,
+        modifPriceInput: initialModifPriceInput
       }
     }
 

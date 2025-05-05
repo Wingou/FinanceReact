@@ -73,6 +73,7 @@ input ModifPriceUpdateInput  {
   comment: String!
   actionDate: String!
   objId: String!
+  template: String!
 }
 
 type Mutation {

@@ -35,6 +35,7 @@ export type ModifPriceUpdateInput = {
   comment: Scalars['String']['input'];
   id: Scalars['ID']['input'];
   objId: Scalars['String']['input'];
+  template: Scalars['String']['input'];
 };
 
 export type Mutation = {

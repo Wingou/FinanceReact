@@ -5,6 +5,7 @@ import { formatTextSQL } from "../utils/helper"
 import { apolloClient } from "../apollo-client"
 import { PriceGql } from "../types/graphql"
 import { toast } from "react-toastify"
+import { DateInput } from "../components/board/datesInput"
 
 export const handleModif = (price: Price) => {
   const action = {
@@ -77,6 +78,9 @@ export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
                           amount
                           comment
                           actionDate
+                          template
+                          dateCreate
+                          dateModif
                           obj {
                             id
                             name
@@ -87,13 +91,14 @@ export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
                           }
                         }
                       }`
-    const { id, amount, actionDate, comment, objId } = modifPriceInput
+    const { id, amount, actionDate, comment, objId, template } = modifPriceInput
     const dataInput = {
       id,
       amount,
       objId: objId.toString(),
       actionDate: actionDate,
-      comment: formatTextSQL(comment)
+      comment: formatTextSQL(comment),
+      template: template.toString()
     }
     const response = await apolloClient.mutate({
       mutation: api,
@@ -103,7 +108,13 @@ export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
     })
     const result = response.data?.modifPrice as PriceGql
     if (result) {
-      toast.success(`Prix ${dataInput.amount}€ modifié !`, {
+
+      const msgToast = {
+        1: `Prix ${dataInput.amount}€ en réserve !`,
+        2: `Prix ${dataInput.amount}€ supprimé !`,
+      }[dataInput.template] || `Prix ${dataInput.amount}€ modifié !`
+
+      toast.success(msgToast, {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,

@@ -90,8 +90,8 @@ export const resolvers = {
         },
         modifPrice: async (_: any, { update }: { update: ModifPriceUpdateInput }) => {
             try {
-                const { amount, comment, actionDate, objId, id } = update
-                await cnx.query(setParamInSQL(sqlModifPrice, [amount, comment, actionDate, objId, id]))
+                const { amount, comment, actionDate, objId, template, id } = update
+                await cnx.query(setParamInSQL(sqlModifPrice, [amount, comment, actionDate, objId, template, id]))
                 const rows = await cnx.query(setParamInSQL(sqlPriceById, [id]))
                 const result = parsePrices(rows as PriceRaw[])
                 return result[0] as PriceGql
