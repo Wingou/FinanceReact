@@ -99,3 +99,11 @@ export const handleUpdateSearchMax = (e: React.ChangeEvent<HTMLInputElement>) =>
   }
   store.dispatch(action)
 }
+
+export const handleUpdateSearchDel = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const action = {
+    type: 'UPDATE_SEARCH_DEL',
+    payload: e.target.checked
+  }
+  store.dispatch(action)
+}

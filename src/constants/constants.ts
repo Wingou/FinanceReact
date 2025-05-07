@@ -29,7 +29,7 @@ export const MONTHS = [
 export type COY = 'CAT' | 'OBJ' | 'YEARS'
 export type PAGE = 'HOME' | 'BOARD'
 
-export type SUM_TYPE = 'RECETTE' | 'DEPENSE' | 'TOTAL'
+export type SUM_TYPE = 'RECETTE' | 'DEPENSE' | 'TOTAL' | 'RESERVE'
 
 const catRawNone = { id: -1, name: 'NONE', position: 99, template: 0 }
 
@@ -44,6 +44,7 @@ export const catNone: Categorie = {
   ...catRawNone,
   recette: 0,
   depense: 0,
+  reserve: 0,
   isDisplayed: false,
   isOn: false
 }

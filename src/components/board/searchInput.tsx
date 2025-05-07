@@ -2,21 +2,23 @@ import React from 'react'
 import {
   handleUpdateSearchWord,
   handleUpdateSearchMin,
-  handleUpdateSearchMax
+  handleUpdateSearchMax,
+  handleUpdateSearchDel
 } from '../../actions/search'
 
 
 interface SearchWordInputProps {
-  searchWord:string,
-   searchMin:number|null, 
-   searchMax:number|null
+  searchWord: string,
+  searchMin: number | null,
+  searchMax: number | null,
+  isSearchDel: boolean
 }
 
-export const SearchWordInput:React.FC<SearchWordInputProps> = ({ searchWord, searchMin, searchMax }) => (
+export const SearchWordInput: React.FC<SearchWordInputProps> = ({ searchWord, searchMin, searchMax, isSearchDel }) => (
   <div key='div_searchInput'>
     <div className='InputDiv'>
       <label key={'searchLabel'} className='InputLabel'>
-      SEARCH
+        SEARCH
         <input
           key={'searchInput'}
           className='TextInput'
@@ -34,22 +36,35 @@ export const SearchWordInput:React.FC<SearchWordInputProps> = ({ searchWord, sea
           className='NumberInput'
           type='text'
           name='searchMin'
-          defaultValue={searchMin===null? '':searchMin.toString() }
+          defaultValue={searchMin === null ? '' : searchMin.toString()}
           onChange={e => {
             handleUpdateSearchMin(e)
           }}
         />
       </label>
       <label key={'searchMaxLabel'} className='InputLabel'>
-      MAX
+        MAX
         <input
           key={'searchMaxInput'}
           className='NumberInput'
           type='text'
           name='searchMax'
-          defaultValue={searchMax===null? '':searchMax.toString() }
+          defaultValue={searchMax === null ? '' : searchMax.toString()}
           onChange={e => {
             handleUpdateSearchMax(e)
+          }}
+        />
+      </label>
+      <label key={'searchDelLabel'} className='InputLabel'>
+        DEL
+        <input
+          key={'searchDelInput'}
+          className='NumberInput'
+          type='checkbox'
+          name='isSearchDel'
+          defaultValue={isSearchDel ? 'true' : 'false'}
+          onChange={e => {
+            handleUpdateSearchDel(e)
           }}
         />
       </label>

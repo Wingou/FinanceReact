@@ -29,6 +29,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
       searchWord,
       searchMin,
       searchMax,
+      isSearchDel,
       lastMutatedPriceId
     } = searchOptions
 
@@ -59,6 +60,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
           searchWord={searchWord}
           searchMin={searchMin}
           searchMax={searchMax}
+          isSearchDel={isSearchDel}
         />
         {filteredPrices.length !== 0 ? (
           <Board filteredPrices={filteredPrices} filteredCats={filteredCats} modifLineProps={modifLineProps} />

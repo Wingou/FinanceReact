@@ -12,7 +12,6 @@ import { ActionType, AddPriceInput, Categorie, ModifPriceInput, Month, Object, P
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
 
-
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
   switch (action.type) {
     case '@@INIT': {
@@ -40,6 +39,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
             template,
             recette: 0,
             depense: 0,
+            reserve: 0,
             isDisplayed: false,
             isOn: false
           }
@@ -297,6 +297,16 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         searchOptions: {
           ...state.searchOptions,
           searchMax: action.payload === '' ? null : Number(action.payload)
+        }
+      }
+    }
+
+    case 'UPDATE_SEARCH_DEL': {
+      return {
+        ...state,
+        searchOptions: {
+          ...state.searchOptions,
+          isSearchDel: action.payload as boolean
         }
       }
     }

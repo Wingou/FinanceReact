@@ -73,7 +73,6 @@ function App() {
         <div className="flex justify-center items-center  bg-blue-500">
           <h2 className="text-white text-3xl font-bold">Finance React!</h2>
         </div>
-
         {/* <h2 className='App-title'>FINANCE REACT</h2> */}
         {isCOYLoaded ? Menu :
           isError ? 'Data loading error !' : 'Loading...'}

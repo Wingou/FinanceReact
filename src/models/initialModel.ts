@@ -33,7 +33,8 @@ export const initialSearchOptions: SearchOptions = {
   searchMin: null,
   searchMax: null,
   top: 10,
-  lastMutatedPriceId: -1
+  lastMutatedPriceId: -1,
+  isSearchDel: false
 }
 
 export const initialModel: StateType = {

@@ -29,7 +29,8 @@ export interface SearchOptions {
   searchMin: number | null,
   searchMax: number | null,
   top: number,
-  lastMutatedPriceId: number
+  lastMutatedPriceId: number,
+  isSearchDel: boolean
 }
 
 export interface AddPriceInput {
@@ -55,6 +56,7 @@ export interface ModifPriceInput {
 export interface Categorie extends CatRaw {
   recette: number,
   depense: number,
+  reserve: number,
   isDisplayed: boolean
   isOn: boolean,
 }

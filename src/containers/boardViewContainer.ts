@@ -1,8 +1,9 @@
 import { connect } from 'react-redux'
-import { BoardView, BoardViewProps } from '../components/board/boardView'
+import { BoardView } from '../components/board/boardView'
 import { Categorie, Month, Price, Year } from '../types/common'
 import { SUM_TYPE } from '../constants/constants'
 import { RootState } from '../store/store'
+import { BoardViewProps } from '../components/board/boardView.d'
 
 const mapStateToProps = (state: RootState): BoardViewProps => {
 
@@ -11,13 +12,12 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     prices,
     years,
     months,
-    // activedObjs,
     searchOptions,
     objects,
     modifPriceInput
   } = state
 
-  const { searchMin, searchMax } = searchOptions
+  const { searchMin, searchMax, isSearchDel } = searchOptions
   const activatedCats = categories
     .filter((cat: Categorie) => cat.isDisplayed)
     .sort((a: Categorie, b: Categorie) =>
@@ -44,6 +44,8 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     )
     .filter((price: Price) => (searchMin == null ? true : price.amount >= searchMin))
     .filter((price: Price) => (searchMax == null ? true : price.amount <= searchMax))
+    .filter((price: Price) => (price.template == 2 ? isSearchDel : true))
+  console.log('isSearchDel', isSearchDel)
   const filteredPricesCats = [...new Set(filteredPrices.map((p: Price) => p.cat.id))]
   const filteredCats = activatedCats
     .filter((cat: Categorie) => cat.isOn)
@@ -51,10 +53,12 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     .map((cat: Categorie) => {
       const recette = sumPrices(filteredPrices, cat, 'RECETTE')
       const depense = sumPrices(filteredPrices, cat, 'DEPENSE')
+      const reserve = sumPrices(filteredPrices, cat, 'RESERVE')
       return {
         ...cat,
         recette,
-        depense
+        depense,
+        reserve
       }
     })
   const isAllYearsChecked = years.filter((y: Year) => !y.isOn).length === 0
@@ -66,7 +70,6 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     filteredPrices,
     activatedCats,
     filteredCats,
-    // activedObjs,
     isAllYearsChecked,
     isAllMonthsChecked,
     isAllCatsChecked,
@@ -81,14 +84,22 @@ export default BoardViewContainer
 interface IsPricePos {
   'RECETTE': boolean,
   'DEPENSE': boolean,
-  'TOTAL': boolean
+  'TOTAL': boolean,
+  'RESERVE': boolean
 }
 
-export const sumPrices = (filteredPrices: Price[], cat: Categorie, sumType: SUM_TYPE) =>
-  filteredPrices.reduce((acc, price) => {
-    const isPricePos = ({
-      'RECETTE': price.amount < 0,
-      'DEPENSE': price.amount > 0
-    } as IsPricePos)[sumType]
-    return price.cat.id === cat.id && isPricePos ? acc + price.amount : acc
-  }, 0)
+const sumPrices = (filteredPrices: Price[], cat: Categorie, sumType: SUM_TYPE): number => {
+  const recettePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.amount < 0 && price.template == 0)
+  const depensePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.amount > 0 && price.template == 0)
+  const totalPrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.template == 0)
+  const reservePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.template == 1)
+
+  const prices = {
+    'RECETTE': recettePrices,
+    'DEPENSE': depensePrices,
+    'RESERVE': reservePrices,
+    'TOTAL': totalPrices
+  }[sumType as SUM_TYPE] as Price[]
+
+  return prices.reduce((acc: number, price: Price): number => acc + price.amount, 0)
+}

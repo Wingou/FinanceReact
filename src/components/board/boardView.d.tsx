@@ -35,6 +35,7 @@ export interface SimpleLineProps { filteredCats: Categorie[], p: Price, index: n
 export interface TitleAmountMap {
   RECETTE: string,
   DEPENSE: string,
+  RESERVE: string
   TOTAL: string
 }
 
@@ -44,4 +45,8 @@ export interface FilteredProps {
   modifPriceInput: ModifPriceInput,
   objects: Object[],
   lastMutatedPriceId: number
+}
+
+export interface FilteredCatsProps {
+  filteredCats: Categorie[]
 }
