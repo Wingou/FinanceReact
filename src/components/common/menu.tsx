@@ -5,15 +5,15 @@ import React from "react";
 export const Menu = (
   <div className='divMenu'>
     <button
-      className="btnMenu"
+      className="btnMenu btnEnabled"
       onClick={() => handleToPage('HOME')}
     >{`${'HOME'}`}</button>
     <button
-      className="btnMenu"
+      className="btnMenu btnEnabled"
       onClick={() => handleToggleAdd()}
     >{`${'ADD'}`}</button>
     <button
-      className="btnMenu"
+      className="btnMenu btnEnabled"
       onClick={() => handleToPage('BOARD')}
     >{`${'BOARD'}`}</button>
   </div>

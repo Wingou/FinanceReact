@@ -9,16 +9,17 @@ import { handleModif, handleModifPrice } from '../../actions/modif'
 import { BoardProps, FilteredCatsProps, FilteredProps, SimpleLineProps, SumLineProps, TitleAmountMap } from './boardView.d'
 import { ModifLine } from '../modif/modif'
 import { DelLine } from '../del/del'
-import { SimpleLine, SumLines } from './boardLines'
+import { SimpleLine, SumLines } from '../boardLines/boardLines'
 
-export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats, modifLineProps }) => {
+
+export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats, modifLineProps, addLineProps }) => {
   const { modifPriceInput, objects, lastMutatedPriceId } = modifLineProps
+  const { isAddOpen, categories, addPriceInput } = addLineProps
   return (
     <table className='boardTable'>
       <HeaderLine filteredCats={filteredCats} />
       <SumLines filteredCats={filteredCats} />
-      <BodyLines filteredPrices={filteredPrices} filteredCats={filteredCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} />
-
+      <BodyLines filteredPrices={filteredPrices} filteredCats={filteredCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} isAddOpen={isAddOpen} addPriceInput={addPriceInput} categories={categories} />
     </table>
   )
 }
@@ -46,9 +47,10 @@ const HeaderLine: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
 
 
 
-const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modifPriceInput, objects, lastMutatedPriceId }) => {
+const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modifPriceInput, objects, lastMutatedPriceId, isAddOpen, addPriceInput, categories }) => {
   return (
     <tbody>
+
       {filteredPrices.map((p, index) => {
         return (
           p.id === modifPriceInput.id ?

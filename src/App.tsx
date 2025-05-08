@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import './App.css'
 import { RootState } from './store/store'
-import AddViewContainer from './containers/addViewContainer'
 import BoardViewContainer from './containers/boardViewContainer'
 import HomeViewContainer from './containers/homeViewContainer'
 import React from 'react'
@@ -62,22 +61,15 @@ function App() {
         throw new Error('Switch PAGE Error !')
     }
   }
-
-  const viewAddContainer = () => {
-    if (view.isAddOpen) { return <AddViewContainer />; }
-  }
-
   return (
     <div className='App'>
       <header className='App-header'>
         <div className="flex justify-center items-center  bg-blue-500">
           <h2 className="text-white text-3xl font-bold">Finance React!</h2>
         </div>
-        {/* <h2 className='App-title'>FINANCE REACT</h2> */}
         {isCOYLoaded ? Menu :
           isError ? 'Data loading error !' : 'Loading...'}
       </header>
-      {viewAddContainer()}
       {viewContainer()}
       <ToastContainer position="top-right"
         autoClose={5000}

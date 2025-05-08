@@ -110,9 +110,10 @@ export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
     if (result) {
 
       const msgToast = {
-        1: `Prix ${dataInput.amount}€ en réserve !`,
-        2: `Prix ${dataInput.amount}€ supprimé !`,
-      }[dataInput.template] || `Prix ${dataInput.amount}€ modifié !`
+        0: `Prix ${result.amount}€ modifié !`,
+        1: `Prix ${result.amount}€ en réserve !`,
+        2: `Prix ${result.amount}€ supprimé !`,
+      }[result.template] || `Prix ${result.amount}€ sans template !`
 
       toast.success(msgToast, {
         position: "bottom-right",

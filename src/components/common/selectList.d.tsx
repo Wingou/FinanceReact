@@ -15,3 +15,10 @@ export interface SelectObjProps {
     categories: Categorie[],
     objects: Object[]
 }
+
+export interface AddLineProps {
+    caller: CALLER,
+    addPriceInput: AddPriceInput,
+    categories: Categorie[],
+    objects: Object[]
+}

@@ -6,6 +6,7 @@ import { SearchWordInput } from './searchInput'
 import { NoBoard } from './noBoard'
 import { Categorie, ModifPriceInput, Month, Object, Price, SearchOptions, Year } from '../../types/common'
 import { BoardViewProps } from './boardView.d'
+import { AddPriceInput } from '../add/add'
 
 export class BoardView extends Component<BoardViewProps, {}> {
   render() {
@@ -20,7 +21,10 @@ export class BoardView extends Component<BoardViewProps, {}> {
       isAllCatsChecked,
       searchOptions,
       objects,
-      modifPriceInput
+      modifPriceInput,
+      addPriceInput,
+      isAddOpen,
+      categories
     } = this.props
     const {
       isMultiYears,
@@ -38,6 +42,12 @@ export class BoardView extends Component<BoardViewProps, {}> {
       modifPriceInput,
       filteredCats,
       lastMutatedPriceId
+    }
+
+    const addLineProps = {
+      isAddOpen,
+      addPriceInput,
+      categories
     }
     return (
       <div>
@@ -62,8 +72,15 @@ export class BoardView extends Component<BoardViewProps, {}> {
           searchMax={searchMax}
           isSearchDel={isSearchDel}
         />
+
+        <AddPriceInput
+          addPriceInput={addPriceInput}
+          caller={'ADD'}
+          categories={categories}
+          objects={objects}
+        />
         {filteredPrices.length !== 0 ? (
-          <Board filteredPrices={filteredPrices} filteredCats={filteredCats} modifLineProps={modifLineProps} />
+          <Board filteredPrices={filteredPrices} filteredCats={filteredCats} modifLineProps={modifLineProps} addLineProps={addLineProps} />
         ) : (
           <NoBoard />
         )}

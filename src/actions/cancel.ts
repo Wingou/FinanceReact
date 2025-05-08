@@ -1,10 +1,11 @@
+import { CALLER } from "../constants/constants"
 import { store } from "../store/store"
 import { ModifPriceInput, Price } from "../types/common"
 
-export const handleCancel = () => {
+export const handleCancel = (caller: CALLER) => {
     const action = {
-        type: 'CANCELPRICEINPUT',
-        payload: ''
+        type: 'CANCEL_PRICEINPUT',
+        payload: caller
     }
     store.dispatch(action)
 }

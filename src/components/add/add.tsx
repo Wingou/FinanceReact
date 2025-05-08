@@ -1,23 +1,17 @@
 import {
   handleAddPrice,
-  handleCatIdInput,
-  handleCommentInput,
-  handleDateInput,
-  handleObjIdInput,
-  handlePriceInput
+  handleAddCommentInput,
+  handleAddDateInput,
+  handleAddPriceInput
 } from '../../actions/add'
-import { getCatById, getObjById } from '../../utils/helper'
-import { AddPriceInput, Categorie, Object } from '../../types/common'
 import React from 'react'
-import { CALLER } from '../../constants/constants'
-import { handleModifObjIdInput } from '../../actions/modif'
 import { SelectCat, SelectObj } from '../common/selectList'
-import { AddFormProps } from '../common/selectList.d'
+import { AddLineProps } from '../common/selectList.d'
+import { handleCancel } from '../../actions/cancel'
+import { CURRENT_DATE } from '../../constants/constants'
 
-
-
-export const AddForm: React.FC<AddFormProps> = (addFormProps) => {
-  const { addPriceInput, categories, objects } = addFormProps
+export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
+  const { addPriceInput, categories, objects } = addLineProps
   const { catId, objId } = addPriceInput
   const isObjetOK = addPriceInput.objId !== -1
   const isPriceOK =
@@ -25,68 +19,100 @@ export const AddForm: React.FC<AddFormProps> = (addFormProps) => {
     addPriceInput.amount !== '' &&
     addPriceInput.amount !== '-'
 
-  const buttonOKTitle = !isObjetOK
+  const btnOK_Title = !isObjetOK
     ? 'Objet manquant !'
     : !isPriceOK
       ? 'Prix incorrect !'
       : 'Valider'
-  const buttonOKDisabled = !(isObjetOK && isPriceOK)
-  const Red_Border_Price = !isPriceOK ? 'Red_Border' : ''
-  const Red_Border_Button = !isPriceOK || !isObjetOK ? 'Red_Border' : ''
+  const isOKBtnDisabled = !(isObjetOK && isPriceOK)
+  const InvalidRedBorder = !isPriceOK ? 'invalidValue' : ''
+  const invalidDisableBtn = !isPriceOK || !isObjetOK ? 'btnDisabled' : 'btnEnabled'
 
   return (
-    <div className='InputAdd_Form'>
+
+
+    <div key='div_Addinput' className='addInput'>
+
       <input
         key={'Input_Date'}
-        className='InputAdd_Input_Date'
+        className='addInput_Date'
         type='date'
         name='dateAction'
         value={addPriceInput.actionDate}
-        onChange={e => handleDateInput(e)}
+        onChange={e => handleAddDateInput(e)}
       />
-      <SelectCat {...addFormProps} />
+
+
+      <SelectCat {...addLineProps} /><br />
+
       <SelectObj caller='ADD' categories={categories} objects={objects} catId={catId} objId={objId} />
-      <div
-        key={'Div_PriceAndCurrency'}
-        className={`InputAdd_Div_PriceAndCurrency `}
-      >
+
+      <div className='addInput_PriceAndCurrency'>
         <input
           key={'Input_Price'}
-          className={`InputAdd_Input_Price ${Red_Border_Price}`}
+          className={`addInput_Price ${InvalidRedBorder}`}
           type='text'
           name='price'
           placeholder='Prix en'
           value={addPriceInput.amount}
-          onChange={e => handlePriceInput(e)}
+          onChange={e => handleAddPriceInput(e)}
           pattern='/^-?\d*\.?\d{0,2}$/'
         />
         <input
           key={'Currency'}
-          className={`InputAdd_Input_Currency ${Red_Border_Price}`}
+          className={`addInput_Currency ${InvalidRedBorder}`}
           type='text'
           defaultValue='€'
           disabled={true}
         />
       </div>
+
+
+
       <input
         key={'Input_Comment'}
-        className='InputAdd_Input_Comment'
+        className='addInput_Comment'
         type='text'
         name='comment'
         placeholder='Commentaire ici...'
-        onChange={e => handleCommentInput(e)}
+        onChange={e => handleAddCommentInput(e)}
         value={addPriceInput.comment}
       />
-      <button
-        className={`InputAdd_Button_OK ${Red_Border_Button}`}
-        onClick={() => {
-          handleAddPrice(addPriceInput)
-        }}
-        disabled={buttonOKDisabled}
-        title={buttonOKTitle}
-      >
-        OK
-      </button>
-    </div>
+      <div>
+        <button
+          onClick={() => {
+            handleAddPrice(addPriceInput)
+          }}
+          title={btnOK_Title}
+          disabled={isOKBtnDisabled}
+          className={`btnAdmin btnAdminSize1 ${invalidDisableBtn}`}
+        >
+          OK
+        </button>
+      </div>
+      <div className='addInput_Label'>
+        |
+      </div>
+      <div  >
+        <button
+          className={`btnAdmin btnAdminSize3 btnEnabled `}
+          onClick={() => {
+            handleCancel('ADD')
+          }}
+          title='Cliquer pour réinitaliser les valeurs'
+        >
+          ¤
+        </button>
+      </div>
+
+
+    </div >
+
+
+
   )
 }
+
+
+
+

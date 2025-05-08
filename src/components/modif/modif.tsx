@@ -10,22 +10,22 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
     return <tr key='tr_ModifLine' className='trFocus'>
         <td key='td_ModifLine_OK'>
             <button
-                className={`btnAdminConfirm`}
+                className='btnAdmin btnAdminSize2 btnEnabled'
                 onClick={() => {
                     handleModifPrice(modifPriceInput)
                 }}
                 title='Cliquer pour modifier'
             >
-                OK
+                MOD
             </button>
             <button
-                className={`btnAdminConfirm`}
+                className='btnAdmin btnAdminSize2 btnEnabled'
                 onClick={() => {
-                    handleCancel()
+                    handleCancel('MODIF')
                 }}
                 title='Cliquer pour annuler la modification'
             >
-                BACK
+                _
             </button>
 
         </td>

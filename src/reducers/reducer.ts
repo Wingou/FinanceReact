@@ -5,9 +5,10 @@ import {
   CURRENT_YEAR,
   CURRENT_MONTH,
   PAGE,
-  MONTHS
+  MONTHS,
+  CALLER
 } from '../constants/constants'
-import { initialModel, initialModifPriceInput } from '../models/initialModel'
+import { initialAddPriceInput, initialModel, initialModifPriceInput } from '../models/initialModel'
 import { ActionType, AddPriceInput, Categorie, ModifPriceInput, Month, Object, Price, StateType, Year } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
@@ -505,10 +506,13 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       }
     }
 
-    case 'CANCELPRICEINPUT': {
+    case 'CANCEL_PRICEINPUT': {
+      const caller = action.payload as CALLER
+
       return {
         ...state,
-        modifPriceInput: initialModifPriceInput
+        modifPriceInput: caller === 'MODIF' ? initialModifPriceInput : state.modifPriceInput,
+        addPriceInput: caller === 'ADD' ? initialAddPriceInput : state.addPriceInput
       }
     }
 

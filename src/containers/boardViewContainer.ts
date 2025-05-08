@@ -14,9 +14,12 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     months,
     searchOptions,
     objects,
-    modifPriceInput
+    modifPriceInput,
+    addPriceInput,
+    view
   } = state
 
+  const { isAddOpen } = view
   const { searchMin, searchMax, isSearchDel } = searchOptions
   const activatedCats = categories
     .filter((cat: Categorie) => cat.isDisplayed)
@@ -45,7 +48,6 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     .filter((price: Price) => (searchMin == null ? true : price.amount >= searchMin))
     .filter((price: Price) => (searchMax == null ? true : price.amount <= searchMax))
     .filter((price: Price) => (price.template == 2 ? isSearchDel : true))
-  console.log('isSearchDel', isSearchDel)
   const filteredPricesCats = [...new Set(filteredPrices.map((p: Price) => p.cat.id))]
   const filteredCats = activatedCats
     .filter((cat: Categorie) => cat.isOn)
@@ -64,6 +66,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
   const isAllYearsChecked = years.filter((y: Year) => !y.isOn).length === 0
   const isAllMonthsChecked = months.filter((m: Month) => !m.isOn).length === 0
   const isAllCatsChecked = activatedCats.filter((c: Categorie) => !c.isOn).length === 0
+
   return {
     years,
     months,
@@ -75,18 +78,14 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     isAllCatsChecked,
     searchOptions,
     objects,
-    modifPriceInput
+    categories,
+    modifPriceInput,
+    isAddOpen,
+    addPriceInput
   }
 }
 const BoardViewContainer = connect(mapStateToProps)(BoardView)
 export default BoardViewContainer
-
-interface IsPricePos {
-  'RECETTE': boolean,
-  'DEPENSE': boolean,
-  'TOTAL': boolean,
-  'RESERVE': boolean
-}
 
 const sumPrices = (filteredPrices: Price[], cat: Categorie, sumType: SUM_TYPE): number => {
   const recettePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.amount < 0 && price.template == 0)

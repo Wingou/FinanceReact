@@ -8,22 +8,22 @@ export const DelLine: React.FC<DelLineProps> = ({ filteredCats, price, modifPric
     return <tr key={`tr_DelLine`} className='trFocus'   >
         <td key={`td_admin`}>
             <button
-                className={`btnAdminConfirm`}
+                className='btnAdmin btnAdminSize2 btnEnabled'
                 onClick={() => {
                     handleModifPrice(modifPriceInput)
                 }}
                 title='Cliquer pour supprimer'
             >
-                OK
+                DEL
             </button>
             <button
-                className={`btnAdminConfirm`}
+                className='btnAdmin btnAdminSize2 btnEnabled'
                 onClick={() => {
-                    handleCancel()
+                    handleCancel('MODIF')
                 }}
                 title='Cliquer pour annuler la suppression'
             >
-                X
+                BACK
             </button>
         </td>
         <td key={`td_date`}>{formatDateFR(price.actionDate)}</td>

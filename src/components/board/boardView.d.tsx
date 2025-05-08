@@ -1,10 +1,11 @@
-import { Categorie, ModifPriceInput, Month, Object, Price, SearchOptions, Year } from '../../types/common'
+import { AddPriceInput, Categorie, ModifPriceInput, Month, Object, Price, SearchOptions, Year } from '../../types/common'
 import { SUM_TYPE } from '../../constants/constants'
 
 export interface BoardProps {
   filteredPrices: Price[],
   filteredCats: Categorie[],
   modifLineProps: ModifLineProps,
+  addLineProps: AddLineProps,
 }
 
 export interface BoardViewProps {
@@ -18,7 +19,10 @@ export interface BoardViewProps {
   isAllCatsChecked: boolean,
   searchOptions: SearchOptions,
   objects: Object[],
-  modifPriceInput: ModifPriceInput
+  categories: Categorie[],
+  modifPriceInput: ModifPriceInput,
+  isAddOpen: boolean,
+  addPriceInput: AddPriceInput
 }
 
 export interface ModifLineProps {
@@ -28,9 +32,14 @@ export interface ModifLineProps {
   lastMutatedPriceId: number
 }
 
+export interface AddLineProps {
+  addPriceInput: AddPriceInput,
+  categories: Categorie[],
+  isAddOpen: boolean
+}
+
 export interface SumLineProps { filteredCats: Categorie[], sumType: SUM_TYPE }
 export interface SimpleLineProps { filteredCats: Categorie[], p: Price, index: number, lastMutatedPriceId: number }
-
 
 export interface TitleAmountMap {
   RECETTE: string,
@@ -44,7 +53,10 @@ export interface FilteredProps {
   filteredCats: Categorie[],
   modifPriceInput: ModifPriceInput,
   objects: Object[],
-  lastMutatedPriceId: number
+  categories: Categorie[],
+  lastMutatedPriceId: number,
+  isAddOpen: boolean,
+  addPriceInput: AddPriceInput,
 }
 
 export interface FilteredCatsProps {

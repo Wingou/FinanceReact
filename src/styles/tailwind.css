@@ -3,28 +3,124 @@
 @tailwind utilities;
 
 .btnMenu {
-    @apply m-1 p-1 text-black font-mono border-blue-800 border-2 rounded-md bg-white hover:bg-blue-300 hover:font-bold;
+    @apply text-sm;
+    @apply border rounded-md;
+    @apply w-20;
+    @apply m-1 p-1;
 }
 
 .btnAdmin {
-    @apply border-spacing-1 border-2 rounded w-6;
-    ;
+    @apply text-xs;
+    @apply border rounded;
+    @apply px-1 mx-0.5 my-0.5;
+
 }
 
-.btnAdminConfirm {
-    @apply bg-white border-2 rounded w-9 border-blue-300 hover:bg-blue-300;
-    ;
+.btnDisabled {
+    @apply text-gray-500;
+    @apply bg-gray-300;
+    @apply border-gray-500;
+
+}
+
+.btnEnabled {
+    @apply text-black;
+    @apply bg-white;
+    @apply border-blue-800;
+    @apply hover:bg-blue-300 hover:font-bold;
+}
+
+.btnAdminSize1 {
+    @apply w-16;
+}
+
+.btnAdminSize2 {
+    @apply w-11;
+}
+
+.btnAdminSize3 {
+    @apply w-7;
 }
 
 .trFocus {
     @apply bg-yellow-100;
 }
 
-.btnTemplate2 {
-    @apply bg-gray-300 border-gray-500 text-gray-500 ps-1 pe-1 ms-0.5 me-0.5;
+.sumLine_RESERVE {
+    @apply bg-gray-400;
 }
 
+.addInput {
+    @apply bg-blue-100;
+    @apply border border-blue-800;
+    @apply flex;
+    @apply m-1 px-1;
+    @apply flex-wrap
+}
 
-.btnTemplate {
-    @apply border-blue-800 text-black bg-white hover:bg-blue-300 ps-1 pe-1 ms-0.5 me-0.5 hover:font-bold;
+.addInput_Label {
+    @apply text-xs font-bold;
+    @apply mt-1;
+    @apply whitespace-nowrap;
+    @apply mx-1;
+}
+
+.addInput_Date {
+    @apply text-xs;
+    @apply border border-blue-800 rounded-md;
+    @apply w-24;
+    @apply me-1 my-1 px-1;
+    @apply focus:outline-none;
+}
+
+.addInput_Categories {
+    @apply text-xs;
+    @apply border border-blue-800 rounded-md;
+    @apply w-auto;
+    @apply me-1 my-1 px-1;
+    @apply focus:outline-none;
+}
+
+.addInput_Objets {
+    @apply text-xs;
+    @apply border border-blue-800 rounded-md;
+    @apply w-auto;
+    @apply me-1 my-1 px-1;
+    @apply focus:outline-none;
+}
+
+.addInput_PriceAndCurrency {
+    @apply flex;
+    @apply my-1 me-1;
+    @apply border border-blue-800;
+}
+
+.addInput_Price {
+    @apply text-xs text-right;
+    @apply border-blue-800 rounded-l-sm border-l border-y;
+    @apply bg-white;
+    @apply w-16;
+    @apply ps-1;
+    @apply focus:outline-none;
+}
+
+.addInput_Currency {
+    @apply text-xs;
+    @apply bg-white;
+    @apply border-blue-800 rounded-r-sm;
+    @apply border-y border-r;
+    @apply w-4;
+    @apply px-1;
+}
+
+.addInput_Comment {
+    @apply text-xs;
+    @apply border-blue-800 rounded-sm;
+    @apply border;
+    @apply w-60;
+    @apply my-1 px-1 me-1;
+}
+
+.invalidValue {
+    @apply border-red-500 bg-red-50;
 }

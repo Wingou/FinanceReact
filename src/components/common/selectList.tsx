@@ -14,7 +14,7 @@ export const SelectCat: React.FC<AddFormProps> = ({ caller, categories, addPrice
 
     return (
         <select
-            className='InputAdd_Select_Cat'
+            className='addInput_Categories'
             value={addPriceInput.catId}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleCatIdInput(e)}
             title={catNameForTitle}
@@ -67,11 +67,11 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
             ? ''
             : ' (' + getCatById(categories, catId).name + ')')
 
-    const Red_Border_Obj = objId === -1 ? 'Red_Border' : ''
+    const Red_Border_Obj = objId === -1 ? 'invalidValue' : ''
 
     return (
         <select
-            className={`InputAdd_Select_Obj ${Red_Border_Obj}`}
+            className={`addInput_Objets ${Red_Border_Obj}`}
             value={objId}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => caller == 'MODIF' ? handleModifObjIdInput(e) : handleObjIdInput(e)}
             title={objNameForTitle}
