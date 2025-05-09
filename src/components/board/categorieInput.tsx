@@ -1,77 +1,54 @@
 import React from 'react'
 import {
-  handleFilteredCat,
+  handleSelectedCat,
   handleUpdateAllCats,
   handleUpdateMultipleCats
 } from '../../actions/search'
 import { Categorie } from '../../types/common'
-
-
-// Props du composant
-interface ActivatedCatsInputProps {
-  activatedCats: Categorie[]
-  isMultiCats: boolean
-  isAllCatsChecked: boolean
-}
+import { CheckBox } from '../common/inputForm'
+import { ActivatedCatsInputProps, SearchInputCatProps } from './boardView.d'
 
 export const ActivatedCatsInput: React.FC<ActivatedCatsInputProps> = (props) => {
-  const { activatedCats } = props
-  return activatedCats.length === 0 ? <MsgNoCat /> : <InputDiv props={props} />
+  const { displayedCats } = props
+  return displayedCats.length === 0 ? <MsgNoCat /> : <SearchInputCat {...props} />
 }
 
 const MsgNoCat: React.FC = () => (
   <div className="MsgNoCatDiv">Pas de catégorie</div>
 )
 
-interface InputDivProps {
-  props: ActivatedCatsInputProps
-}
-
-const InputDiv: React.FC<InputDivProps> = ({ props }) => {
+const SearchInputCat: React.FC<ActivatedCatsInputProps> = ({ isMultiCats, isAllCatsChecked, displayedCats }) => {
+  console.log('displayedCats', displayedCats)
   return (
-    <div className="InputDiv">
-      <label key="multipleCatsLabel" className="CheckboxLabel HeadLabel">
-        <input
-          key="multipleCatsInput"
-          className="CheckboxInput"
-          type="checkbox"
-          name="multipleCats"
-          checked={props.isMultiCats}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            handleUpdateMultipleCats(e)
-          }}
+    <div className='searchDiv' >
+      <div className='searchCheckboxAdmin'>
+        <CheckBox name='multipleCats'
+          index={0}
+          checked={isMultiCats}
+          handleFC={handleUpdateMultipleCats}
+          label='MULTI'
+          isLabelBold={true}
         />
-        MULTI
-      </label>
-
-      <label key="allCatsLabel" className="CheckboxLabel HeadLabel">
-        <input
-          key="allCatsInput"
-          className="CheckboxInput"
-          type="checkbox"
-          name="allCats"
-          checked={props.isAllCatsChecked}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            handleUpdateAllCats(e)
-          }}
+        <CheckBox name='allCats'
+          index={1}
+          checked={isAllCatsChecked}
+          handleFC={handleUpdateAllCats}
+          label='ALL'
+          isLabelBold={true}
         />
-        ALL -
-      </label>
-
-      {props.activatedCats.map((c, index) => (
-        <label key={index} className="CheckboxLabel">
-          <input
-            className="Checkbox"
-            type="checkbox"
-            checked={c.isOn}
-            name={`${c.id}`}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleFilteredCat(e)
-            }
-          />
-          {c.name + ' '}
-        </label>
-      ))}
+      </div>
+      <div className='searchCheckboxOptions'>
+        {displayedCats.map((c, index) => {
+          return (
+            <CheckBox name={`${c.id}`}
+              index={index}
+              checked={c.isOn}
+              handleFC={handleSelectedCat}
+              label={c.name}
+            />
+          )
+        })}
+      </div>
     </div>
   )
 }

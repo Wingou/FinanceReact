@@ -8,19 +8,18 @@ import {
   handleUpdateMultipleMonths
 } from '../../actions/search'
 import { Month, Year } from '../../types/common'
-
-
+import { CheckBox } from '../common/inputForm'
 
 interface DateInputProps {
-  years:Year[],
-  months:Month[],
+  years: Year[],
+  months: Month[],
   isAllYearsChecked: boolean,
   isAllMonthsChecked: boolean,
   isMultiYears: boolean,
   isMultiMonths: boolean
 }
 
-export const DateInput :React.FC<DateInputProps>= ({
+export const DateInput: React.FC<DateInputProps> = ({
   years,
   months,
   isAllYearsChecked,
@@ -29,95 +28,68 @@ export const DateInput :React.FC<DateInputProps>= ({
   isMultiMonths
 }) => (
   <div key='div_dateInput'>
-    <div className='InputDiv'>
-      <label key={'multipleYearsLabel'} className='CheckboxLabel HeadLabel'>
-        <input
-          key={'multipleYearsInput'}
-          className='CheckboxInput'
-          type='checkbox'
-          name='multipleYears'
+    <div className='searchDiv' >
+      <div className='searchCheckboxAdmin'>
+        <CheckBox name='multipleYears'
+          index={0}
           checked={isMultiYears}
-          onChange={(e : React.ChangeEvent<HTMLInputElement>)=> {
-            handleUpdateMultipleYears(e)
-          }}
+          handleFC={handleUpdateMultipleYears}
+          label='MULTI'
+          isLabelBold={true}
         />
-        MULTI
-      </label>
-      <label key={'allYearsLabel'} className='CheckboxLabel HeadLabel'>
-        <input
-          key={'allYearsInput'}
-          className='CheckboxInput'
-          type='checkbox'
-          name='allYears'
+        <CheckBox name='allYears'
+          index={1}
           checked={isAllYearsChecked}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            handleUpdateAllYears(e)
-          }}
+          handleFC={handleUpdateAllYears}
+          label='ALL'
+          isLabelBold={true}
         />
-        ALL -
-      </label>
-      {years.map((y, index) => {
-        return (
-          <label key={'yearLabel_' + index} className='CheckboxLabel'>
-            <input
-              key={'yearInput_' + index}
-              className='CheckboxInput'
-              type='checkbox'
-              name={y.name}
+      </div>
+      <div className='searchCheckboxOptions'>
+        {years.map((y, index) => {
+          return (
+            <CheckBox name={y.name}
+              index={index}
               checked={y.isOn}
-              onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
-                handleUpdateYear(e)
-              }}
+              handleFC={handleUpdateYear}
+              label={y.year.toString()}
             />
-            {y.year}
-          </label>
-        )
-      })}
+          )
+        })}
+      </div>
     </div>
-    <div className='InputDiv'>
-      <label key={'multipleMonthsLabel'} className='CheckboxLabel HeadLabel'>
-        <input
-          key={'multipleMonthsInput'}
-          className='CheckboxInput'
-          type='checkbox'
-          name='multipleMonths'
-          checked={isMultiMonths}
-          onChange={(e : React.ChangeEvent<HTMLInputElement>) => {
-            handleUpdateMultipleMonths(e)
-          }}
-        />
-        MULTI
-      </label>
-      <label key={'allMonthsLabel'} className='CheckboxLabel HeadLabel'>
-        <input
-          key={'allMonthsInput'}
-          className='CheckboxInput'
-          type='checkbox'
-          name='allMonths'
-          checked={isAllMonthsChecked}
-          onChange={(e : React.ChangeEvent<HTMLInputElement> )=> {
-            handleUpdateAllMonths(e)
-          }}
-        />
-        ALL -
-      </label>
-      {months.map((m, index) => {
-        return (
-          <label key={'monthLabel_' + index} className='CheckboxLabel'>
-            <input
-              key={'monthInput_' + index}
-              className='CheckboxInput'
-              type='checkbox'
-              name={m.month.toString()}
-              checked={m.isOn}
-              onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
-                handleUpdateMonth(e)
-              }}
-            />
-            {m.name}
-          </label>
-        )
-      })}
+
+    <div key='div_dateInput'>
+      <div className='searchDiv' >
+        <div className='searchCheckboxAdmin'>
+          <CheckBox name='multipleMonths'
+            index={0}
+            checked={isMultiMonths}
+            handleFC={handleUpdateMultipleMonths}
+            label='MULTI'
+            isLabelBold={true}
+          />
+          <CheckBox name='allMonths'
+            index={1}
+            checked={isAllMonthsChecked}
+            handleFC={handleUpdateAllMonths}
+            label='ALL'
+            isLabelBold={true}
+          />
+        </div>
+        <div className='searchCheckboxOptions'>
+          {months.map((m, index) => {
+            return (
+              <CheckBox name={m.month.toString()}
+                index={index}
+                checked={m.isOn}
+                handleFC={handleUpdateMonth}
+                label={m.name}
+              />
+            )
+          })}
+        </div>
+      </div>
     </div>
   </div>
 )

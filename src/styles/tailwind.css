@@ -28,7 +28,24 @@
     @apply bg-white;
     @apply border-blue-800;
     @apply hover:bg-blue-300 hover:font-bold;
+    @apply font-normal;
 }
+
+
+.btnSwitchOn {
+    @apply bg-blue-500;
+    @apply   hover:text-white hover:font-bold;
+    @apply border-black;
+
+}
+
+.btnSwitchOff {
+    @apply bg-white text-black;
+    @apply    hover:text-black hover:font-bold;
+    @apply border-black;
+
+}
+
 
 .btnAdminSize1 {
     @apply w-16;
@@ -54,7 +71,7 @@
     @apply bg-blue-100;
     @apply border border-blue-800;
     @apply flex;
-    @apply m-1 px-1;
+    @apply mx-1 px-1;
     @apply flex-wrap
 }
 
@@ -113,14 +130,77 @@
     @apply px-1;
 }
 
-.addInput_Comment {
+.input_Price {
+    @apply text-xs text-right;
+    @apply border-blue-800 rounded-l-sm border-l border-y;
+    @apply bg-white;
+    @apply w-16;
+    @apply ps-1;
+    @apply focus:outline-none;
+}
+
+.input_Currency {
+    @apply text-xs;
+    @apply bg-white;
+    @apply border-blue-800 rounded-r-sm;
+    @apply border-y border-r;
+    @apply w-4;
+    @apply px-1;
+}
+
+.input_Text {
+    @apply text-xs;
+    @apply border-blue-800 rounded-sm;
+    @apply border;
+    @apply my-1 px-1 me-1;
+    @apply focus:outline-none;
+}
+
+/* .addInput_Comment {
     @apply text-xs;
     @apply border-blue-800 rounded-sm;
     @apply border;
     @apply w-60;
     @apply my-1 px-1 me-1;
-}
+    @apply focus:outline-none;
+} */
 
 .invalidValue {
     @apply border-red-500 bg-red-50;
+}
+
+.searchDiv {
+    @apply flex;
+    @apply m-1 px-1;
+    @apply border border-blue-800;
+}
+
+.searchCheckboxAdmin {
+    @apply flex;
+    @apply border-e border-blue-800;    
+}   
+
+.searchCheckboxOptions 
+{
+    @apply flex;
+    @apply flex-wrap;
+    @apply px-1;
+}
+
+.checkboxWithLabel {
+    @apply flex;
+    @apply text-xs;
+    @apply h-5;
+    @apply me-1;
+}
+
+.checkbox {
+    @apply flex;
+    @apply pt-0.5 pe-0.5;
+}
+ 
+.checkboxLabel {
+    @apply flex;
+    @apply text-xs;
+    @apply pt-0.5;
 }

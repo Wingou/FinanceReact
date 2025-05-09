@@ -16,7 +16,7 @@ export const handleUpdateMonth = (e: React.ChangeEvent<HTMLInputElement>) => {
   store.dispatch(action)
 }
 
-export const handleFilteredCat = (e: React.ChangeEvent<HTMLInputElement>) => {
+export const handleSelectedCat = (e: React.ChangeEvent<HTMLInputElement>) => {
   const { name, checked } = e.target
   const action = {
     type: 'UPDATE_FILTERED_CAT',
@@ -103,6 +103,14 @@ export const handleUpdateSearchMax = (e: React.ChangeEvent<HTMLInputElement>) =>
 export const handleUpdateSearchDel = (e: React.ChangeEvent<HTMLInputElement>) => {
   const action = {
     type: 'UPDATE_SEARCH_DEL',
+    payload: e.target.checked
+  }
+  store.dispatch(action)
+}
+
+export const handleUpdateSearchReserved = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const action = {
+    type: 'UPDATE_SEARCH_RESERVED',
     payload: e.target.checked
   }
   store.dispatch(action)

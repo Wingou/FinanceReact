@@ -312,6 +312,18 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       }
     }
 
+
+    case 'UPDATE_SEARCH_RESERVED': {
+      return {
+        ...state,
+        searchOptions: {
+          ...state.searchOptions,
+          isSearchReserved: action.payload as boolean
+        }
+      }
+    }
+
+
     case 'TO_HOME': {
       return {
         ...state,
@@ -512,7 +524,13 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       return {
         ...state,
         modifPriceInput: caller === 'MODIF' ? initialModifPriceInput : state.modifPriceInput,
-        addPriceInput: caller === 'ADD' ? initialAddPriceInput : state.addPriceInput
+        addPriceInput: caller === 'ADD' ? initialAddPriceInput : state.addPriceInput,
+        searchOptions: caller === 'SEARCH' ? {
+          ...state.searchOptions,
+          searchWord: '',
+          searchMin: null,
+          searchMax: null,
+        } : state.searchOptions
       }
     }
 

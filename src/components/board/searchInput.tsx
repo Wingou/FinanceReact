@@ -3,71 +3,64 @@ import {
   handleUpdateSearchWord,
   handleUpdateSearchMin,
   handleUpdateSearchMax,
-  handleUpdateSearchDel
+  handleUpdateSearchDel,
+  handleUpdateSearchReserved
 } from '../../actions/search'
+import { CheckBox, InputPrice, InputText } from '../common/inputForm'
+import { SearchWordInputProps } from './boardView.d'
+import { handleCancel } from '../../actions/cancel'
 
+export const SearchWordInput: React.FC<SearchWordInputProps> = ({ searchWord, searchMin, searchMax, isSearchDel, isSearchReserved }) => {
+  const minPrice = searchMin === null ? '' : searchMin.toString()
+  const maxPrice = searchMax === null ? '' : searchMax.toString()
+  return <div className='searchDiv' >
+    <InputText
+      name='search'
+      placeholder='Search...'
+      handleFC={handleUpdateSearchWord}
+      value={searchWord}
+      width='w-20'
+    />
+    <InputPrice
+      name='searchMin'
+      placeholder='MIN Price'
+      handleFC={handleUpdateSearchMin}
+      value={minPrice}
+    />
+    <InputPrice
+      name='searchMax'
+      placeholder='MAX Price'
+      handleFC={handleUpdateSearchMax}
+      value={maxPrice}
+    />
+    <CheckBox
+      name='isSearchDel'
+      index={0}
+      checked={isSearchDel}
+      handleFC={handleUpdateSearchDel}
+      label='DELETED' />
 
-interface SearchWordInputProps {
-  searchWord: string,
-  searchMin: number | null,
-  searchMax: number | null,
-  isSearchDel: boolean
-}
+    <CheckBox
+      name='isSearchReserved'
+      index={0}
+      checked={isSearchReserved}
+      handleFC={handleUpdateSearchReserved}
+      label='RESERVED' />
 
-export const SearchWordInput: React.FC<SearchWordInputProps> = ({ searchWord, searchMin, searchMax, isSearchDel }) => (
-  <div key='div_searchInput'>
-    <div className='InputDiv'>
-      <label key={'searchLabel'} className='InputLabel'>
-        SEARCH
-        <input
-          key={'searchInput'}
-          className='TextInput'
-          type='text'
-          name='search'
-          defaultValue={searchWord}
-          onChange={e => {
-            handleUpdateSearchWord(e)
-          }}
-        />
-      </label>
-      <label key={'searchMinLabel'} className='InputLabel'>- MIN
-        <input
-          key={'searchMinInput'}
-          className='NumberInput'
-          type='text'
-          name='searchMin'
-          defaultValue={searchMin === null ? '' : searchMin.toString()}
-          onChange={e => {
-            handleUpdateSearchMin(e)
-          }}
-        />
-      </label>
-      <label key={'searchMaxLabel'} className='InputLabel'>
-        MAX
-        <input
-          key={'searchMaxInput'}
-          className='NumberInput'
-          type='text'
-          name='searchMax'
-          defaultValue={searchMax === null ? '' : searchMax.toString()}
-          onChange={e => {
-            handleUpdateSearchMax(e)
-          }}
-        />
-      </label>
-      <label key={'searchDelLabel'} className='InputLabel'>
-        DEL
-        <input
-          key={'searchDelInput'}
-          className='NumberInput'
-          type='checkbox'
-          name='isSearchDel'
-          defaultValue={isSearchDel ? 'true' : 'false'}
-          onChange={e => {
-            handleUpdateSearchDel(e)
-          }}
-        />
-      </label>
+    <div className='addInput_Label'>
+      |
+    </div>
+    <div  >
+      <button
+        className={`btnAdmin btnAdminSize3 btnEnabled `}
+        onClick={() => {
+          handleCancel('SEARCH')
+        }}
+        title='Cliquer pour réinitaliser les valeurs'
+      >
+        ¤
+      </button>
     </div>
   </div>
-)
+}
+

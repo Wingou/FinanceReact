@@ -3,7 +3,7 @@ import { SUM_TYPE } from '../../constants/constants'
 
 export interface BoardProps {
   filteredPrices: Price[],
-  filteredCats: Categorie[],
+  selectedCats: Categorie[],
   modifLineProps: ModifLineProps,
   addLineProps: AddLineProps,
 }
@@ -12,8 +12,8 @@ export interface BoardViewProps {
   years: Year[],
   months: Month[],
   filteredPrices: Price[],
-  activatedCats: Categorie[],
-  filteredCats: Categorie[],
+  displayedCats: Categorie[],
+  selectedCats: Categorie[],
   isAllYearsChecked: boolean,
   isAllMonthsChecked: boolean,
   isAllCatsChecked: boolean,
@@ -28,7 +28,7 @@ export interface BoardViewProps {
 export interface ModifLineProps {
   modifPriceInput: ModifPriceInput,
   objects: Object[],
-  filteredCats: Categorie[],
+  selectedCats: Categorie[],
   lastMutatedPriceId: number
 }
 
@@ -38,8 +38,8 @@ export interface AddLineProps {
   isAddOpen: boolean
 }
 
-export interface SumLineProps { filteredCats: Categorie[], sumType: SUM_TYPE }
-export interface SimpleLineProps { filteredCats: Categorie[], p: Price, index: number, lastMutatedPriceId: number }
+export interface SumLineProps { selectedCats: Categorie[], sumType: SUM_TYPE }
+export interface SimpleLineProps { selectedCats: Categorie[], p: Price, index: number, lastMutatedPriceId: number }
 
 export interface TitleAmountMap {
   RECETTE: string,
@@ -50,7 +50,7 @@ export interface TitleAmountMap {
 
 export interface FilteredProps {
   filteredPrices: Price[],
-  filteredCats: Categorie[],
+  selectedCats: Categorie[],
   modifPriceInput: ModifPriceInput,
   objects: Object[],
   categories: Categorie[],
@@ -59,6 +59,45 @@ export interface FilteredProps {
   addPriceInput: AddPriceInput,
 }
 
-export interface FilteredCatsProps {
-  filteredCats: Categorie[]
+export interface SelectedCatsProps {
+  selectedCats: Categorie[]
 }
+
+
+
+export interface ActivatedCatsInputProps {
+  displayedCats: Categorie[]
+  isMultiCats: boolean
+  isAllCatsChecked: boolean
+}
+
+export interface SearchInputCatProps {
+  props: ActivatedCatsInputProps
+}
+
+
+export interface InputTextProps {
+  name: string,
+  placeholder: string,
+  handleFC: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  value: string,
+  width?: string
+}
+
+
+export interface SearchWordInputProps {
+  searchWord: string,
+  searchMin: number | null,
+  searchMax: number | null,
+  isSearchDel: boolean,
+  isSearchReserved: boolean
+}
+
+
+export interface InputDateProps {
+  name: string,
+  value: string,
+  handleFC: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
+
+

@@ -6,10 +6,10 @@ import {
 } from '../../utils/helper'
 import { ModifPriceInput } from '../../types/common'
 import { handleModif, handleModifPrice } from '../../actions/modif'
-import { FilteredCatsProps, SimpleLineProps, SumLineProps, TitleAmountMap } from '../board/boardView.d'
+import { SelectedCatsProps, SimpleLineProps, SumLineProps, TitleAmountMap } from '../board/boardView.d'
 import { SUM_TYPE } from '../../constants/constants'
 
-export const SimpleLine: React.FC<SimpleLineProps> = ({ filteredCats, p, index, lastMutatedPriceId }) => {
+export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, lastMutatedPriceId }) => {
 
     const modifPriceInputForReserve = {
         ...p,
@@ -21,10 +21,10 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ filteredCats, p, index, 
 
     const templateColor =
         {
-            1: 'bg-orange-300',
-            2: 'bg-gray-300',
-        }[p.template] || 'bg-white-200'
-    const lineColor = p.id === lastMutatedPriceId ? `border-2 border-red-500 ${templateColor}` : templateColor
+            1: 'bg-orange-200',
+            2: 'bg-gray-200',
+        }[p.template] || 'bg-white'
+    const lineColor = p.id === lastMutatedPriceId ? `border-2 border-blue-600 font-bold ${templateColor}` : templateColor
     const btnStyleDisabled = p.template === 2 ? 'btnDisabled' : 'btnEnabled'
 
     return <tr key={`tr_SimpleLine_${index}`} className={lineColor}>
@@ -41,7 +41,7 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ filteredCats, p, index, 
         >
             {formatPrice(p.amount)}
         </td>
-        {filteredCats.map((cat, index) => {
+        {selectedCats.map((cat, index) => {
             const price = cat.id === p.cat.id ? p.amount : 0
             return (
                 <td
@@ -59,19 +59,19 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ filteredCats, p, index, 
     </tr>
 }
 
-export const SumLines: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
+export const SumLines: React.FC<SelectedCatsProps> = ({ selectedCats }) => {
     return (
         <tbody className='SumLineTBody'>
-            <SumLine filteredCats={filteredCats} sumType='RECETTE' />
-            <SumLine filteredCats={filteredCats} sumType='DEPENSE' />
-            <SumLine filteredCats={filteredCats} sumType='TOTAL' />
-            <SumLine filteredCats={filteredCats} sumType='RESERVE' />
+            <SumLine selectedCats={selectedCats} sumType='RECETTE' />
+            <SumLine selectedCats={selectedCats} sumType='DEPENSE' />
+            <SumLine selectedCats={selectedCats} sumType='TOTAL' />
+            <SumLine selectedCats={selectedCats} sumType='RESERVE' />
         </tbody>
     )
 }
 
-const SumLine: React.FC<SumLineProps> = ({ filteredCats, sumType }) => {
-    const amount = filteredCats.reduce((acc, cats) => {
+const SumLine: React.FC<SumLineProps> = ({ selectedCats, sumType }) => {
+    const amount = selectedCats.reduce((acc, cats) => {
         if (cats.isOn) {
             switch (sumType) {
                 case 'RECETTE':
@@ -111,7 +111,7 @@ const SumLine: React.FC<SumLineProps> = ({ filteredCats, sumType }) => {
             >
                 {formatPriceFunc(amount)}
             </td>
-            {filteredCats.map((cat, index) => {
+            {selectedCats.map((cat, index) => {
                 const price: number =
                     {
                         'RECETTE': cat.recette,

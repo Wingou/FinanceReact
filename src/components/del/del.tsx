@@ -4,7 +4,7 @@ import { handleModifPrice } from "../../actions/modif"
 import { DelLineProps } from "./del.d"
 import { handleCancel } from "../../actions/cancel"
 
-export const DelLine: React.FC<DelLineProps> = ({ filteredCats, price, modifPriceInput }) => {
+export const DelLine: React.FC<DelLineProps> = ({ selectedCats, price, modifPriceInput }) => {
     return <tr key={`tr_DelLine`} className='trFocus'   >
         <td key={`td_admin`}>
             <button
@@ -34,7 +34,7 @@ export const DelLine: React.FC<DelLineProps> = ({ filteredCats, price, modifPric
         >
             {formatPrice(price.amount)}
         </td>
-        {filteredCats.map((cat, index) => {
+        {selectedCats.map((cat, index) => {
             const p = cat.id === price.cat.id ? price.amount : 0
             return (
                 <td

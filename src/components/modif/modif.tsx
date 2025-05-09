@@ -5,7 +5,7 @@ import { SelectObj } from "../common/selectList"
 import { handleCancel } from "../../actions/cancel"
 
 export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
-    const { modifPriceInput, objects, filteredCats } = ModifLineProps
+    const { modifPriceInput, objects, selectedCats } = ModifLineProps
     const { catId, objId } = modifPriceInput
     return <tr key='tr_ModifLine' className='trFocus'>
         <td key='td_ModifLine_OK'>
@@ -25,7 +25,7 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
                 }}
                 title='Cliquer pour annuler la modification'
             >
-                _
+                BACK
             </button>
 
         </td>
@@ -61,7 +61,7 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
             />
 
         </td>
-        {filteredCats.map((fcat) => {
+        {selectedCats.map((fcat) => {
             return fcat.id === catId
                 ? <td key='td_ModifLine_Price'>{modifPriceInput.amount}</td>
                 : <td key={`td_ModifLine_by_${fcat.id}_blank`}></td>

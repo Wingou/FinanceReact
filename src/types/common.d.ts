@@ -30,7 +30,9 @@ export interface SearchOptions {
   searchMax: number | null,
   top: number,
   lastMutatedPriceId: number,
-  isSearchDel: boolean
+  isSearchDel: boolean,
+  isSearchReserved: boolean
+
 }
 
 export interface AddPriceInput {

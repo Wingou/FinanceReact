@@ -49,4 +49,4 @@ export const catNone: Categorie = {
   isOn: false
 }
 
-export type CALLER = 'MODIF' | 'ADD'
+export type CALLER = 'MODIF' | 'ADD' | 'SEARCH'

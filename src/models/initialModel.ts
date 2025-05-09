@@ -34,7 +34,9 @@ export const initialSearchOptions: SearchOptions = {
   searchMax: null,
   top: 10,
   lastMutatedPriceId: -1,
-  isSearchDel: false
+  isSearchDel: false,
+  isSearchReserved: false
+
 }
 
 export const initialModel: StateType = {

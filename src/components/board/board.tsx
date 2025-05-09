@@ -6,26 +6,26 @@ import {
 } from '../../utils/helper'
 import { Categorie, ModifPriceInput, Object, Price } from '../../types/common'
 import { handleModif, handleModifPrice } from '../../actions/modif'
-import { BoardProps, FilteredCatsProps, FilteredProps, SimpleLineProps, SumLineProps, TitleAmountMap } from './boardView.d'
+import { BoardProps, SelectedCatsProps, FilteredProps, SimpleLineProps, SumLineProps, TitleAmountMap } from './boardView.d'
 import { ModifLine } from '../modif/modif'
 import { DelLine } from '../del/del'
 import { SimpleLine, SumLines } from '../boardLines/boardLines'
 
 
-export const Board: React.FC<BoardProps> = ({ filteredPrices, filteredCats, modifLineProps, addLineProps }) => {
+export const Board: React.FC<BoardProps> = ({ filteredPrices, selectedCats, modifLineProps, addLineProps }) => {
   const { modifPriceInput, objects, lastMutatedPriceId } = modifLineProps
   const { isAddOpen, categories, addPriceInput } = addLineProps
   return (
     <table className='boardTable'>
-      <HeaderLine filteredCats={filteredCats} />
-      <SumLines filteredCats={filteredCats} />
-      <BodyLines filteredPrices={filteredPrices} filteredCats={filteredCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} isAddOpen={isAddOpen} addPriceInput={addPriceInput} categories={categories} />
+      <HeaderLine selectedCats={selectedCats} />
+      <SumLines selectedCats={selectedCats} />
+      <BodyLines filteredPrices={filteredPrices} selectedCats={selectedCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} isAddOpen={isAddOpen} addPriceInput={addPriceInput} categories={categories} />
     </table>
   )
 }
 
 
-const HeaderLine: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
+const HeaderLine: React.FC<SelectedCatsProps> = ({ selectedCats }) => {
   return (
     <thead>
       <tr key='tr_header'>
@@ -33,7 +33,7 @@ const HeaderLine: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
         <th key='th_date'> DATE </th>
         <th key='th_obj'> OBJET </th>
         <th key='th_montant'> MONTANT </th>
-        {filteredCats.map((cat, index) => {
+        {selectedCats.map((cat, index) => {
           return <th key={index}>{cat.name}</th>
         })}
         <th key='th_comment'> COMMENTAIRE </th>
@@ -47,7 +47,7 @@ const HeaderLine: React.FC<FilteredCatsProps> = ({ filteredCats }) => {
 
 
 
-const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modifPriceInput, objects, lastMutatedPriceId, isAddOpen, addPriceInput, categories }) => {
+const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, selectedCats, modifPriceInput, objects, lastMutatedPriceId, isAddOpen, addPriceInput, categories }) => {
   return (
     <tbody>
 
@@ -55,11 +55,11 @@ const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, filteredCats, modi
         return (
           p.id === modifPriceInput.id ?
             modifPriceInput.template === 2 ?
-              <DelLine key={`DelLine_${index}`} filteredCats={filteredCats} price={p} modifPriceInput={modifPriceInput} />
+              <DelLine key={`DelLine_${index}`} selectedCats={selectedCats} price={p} modifPriceInput={modifPriceInput} />
               :
-              <ModifLine key={`ModifLine_${index}`} modifPriceInput={modifPriceInput} objects={objects} filteredCats={filteredCats} lastMutatedPriceId={lastMutatedPriceId} />
+              <ModifLine key={`ModifLine_${index}`} modifPriceInput={modifPriceInput} objects={objects} selectedCats={selectedCats} lastMutatedPriceId={lastMutatedPriceId} />
             :
-            <SimpleLine key={`SimpleLine_${index}`} filteredCats={filteredCats} p={p} index={index} lastMutatedPriceId={lastMutatedPriceId} />
+            <SimpleLine key={`SimpleLine_${index}`} selectedCats={selectedCats} p={p} index={index} lastMutatedPriceId={lastMutatedPriceId} />
         )
       })}
     </tbody>

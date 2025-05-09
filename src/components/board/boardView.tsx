@@ -14,8 +14,8 @@ export class BoardView extends Component<BoardViewProps, {}> {
       years,
       months,
       filteredPrices,
-      activatedCats,
-      filteredCats,
+      displayedCats,
+      selectedCats,
       isAllYearsChecked,
       isAllMonthsChecked,
       isAllCatsChecked,
@@ -34,13 +34,14 @@ export class BoardView extends Component<BoardViewProps, {}> {
       searchMin,
       searchMax,
       isSearchDel,
+      isSearchReserved,
       lastMutatedPriceId
     } = searchOptions
 
     const modifLineProps = {
       objects,
       modifPriceInput,
-      filteredCats,
+      selectedCats,
       lastMutatedPriceId
     }
 
@@ -51,6 +52,24 @@ export class BoardView extends Component<BoardViewProps, {}> {
     }
     return (
       <div>
+        {isAddOpen
+          && <AddPriceInput
+            addPriceInput={addPriceInput}
+            caller={'ADD'}
+            categories={categories}
+            objects={objects}
+          />
+        }
+        <SearchWordInput
+          searchWord={searchWord}
+          searchMin={searchMin}
+          searchMax={searchMax}
+          isSearchDel={isSearchDel}
+          isSearchReserved={isSearchReserved}
+
+        />
+
+
         <DateInput
           years={years}
           months={months}
@@ -61,26 +80,15 @@ export class BoardView extends Component<BoardViewProps, {}> {
         />
 
         <ActivatedCatsInput
-          activatedCats={activatedCats}
+          displayedCats={displayedCats}
           isAllCatsChecked={isAllCatsChecked}
           isMultiCats={isMultiCats}
         />
 
-        <SearchWordInput
-          searchWord={searchWord}
-          searchMin={searchMin}
-          searchMax={searchMax}
-          isSearchDel={isSearchDel}
-        />
 
-        <AddPriceInput
-          addPriceInput={addPriceInput}
-          caller={'ADD'}
-          categories={categories}
-          objects={objects}
-        />
+
         {filteredPrices.length !== 0 ? (
-          <Board filteredPrices={filteredPrices} filteredCats={filteredCats} modifLineProps={modifLineProps} addLineProps={addLineProps} />
+          <Board filteredPrices={filteredPrices} selectedCats={selectedCats} modifLineProps={modifLineProps} addLineProps={addLineProps} />
         ) : (
           <NoBoard />
         )}
