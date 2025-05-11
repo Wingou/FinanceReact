@@ -88,7 +88,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
 
 
         {filteredPrices.length !== 0 ? (
-          <Board filteredPrices={filteredPrices} selectedCats={selectedCats} modifLineProps={modifLineProps} addLineProps={addLineProps} />
+          <Board filteredPrices={filteredPrices} selectedCats={selectedCats} modifLineProps={modifLineProps} addLineProps={addLineProps} isSearchReserved={isSearchReserved} />
         ) : (
           <NoBoard />
         )}

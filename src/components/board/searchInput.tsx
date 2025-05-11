@@ -33,20 +33,21 @@ export const SearchWordInput: React.FC<SearchWordInputProps> = ({ searchWord, se
       handleFC={handleUpdateSearchMax}
       value={maxPrice}
     />
-    <CheckBox
-      name='isSearchDel'
-      index={0}
-      checked={isSearchDel}
-      handleFC={handleUpdateSearchDel}
-      label='DELETED' />
+    <div className='searchDiv'>
+      <CheckBox
+        name='isSearchDel'
+        index={0}
+        checked={isSearchDel}
+        handleFC={handleUpdateSearchDel}
+        label='DELETED' />
 
-    <CheckBox
-      name='isSearchReserved'
-      index={0}
-      checked={isSearchReserved}
-      handleFC={handleUpdateSearchReserved}
-      label='RESERVED' />
-
+      <CheckBox
+        name='isSearchReserved'
+        index={0}
+        checked={isSearchReserved}
+        handleFC={handleUpdateSearchReserved}
+        label='RESERVED' />
+    </div>
     <div className='addInput_Label'>
       |
     </div>

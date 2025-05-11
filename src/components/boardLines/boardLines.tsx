@@ -4,10 +4,11 @@ import {
     formatPrice,
     formatPriceWithZero
 } from '../../utils/helper'
-import { ModifPriceInput } from '../../types/common'
+import { Categorie, ModifPriceInput } from '../../types/common'
 import { handleModif, handleModifPrice } from '../../actions/modif'
 import { SelectedCatsProps, SimpleLineProps, SumLineProps, TitleAmountMap } from '../board/boardView.d'
 import { SUM_TYPE } from '../../constants/constants'
+import { SumLinesProps } from './boardLines.d'
 
 export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, lastMutatedPriceId }) => {
 
@@ -59,13 +60,15 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, 
     </tr>
 }
 
-export const SumLines: React.FC<SelectedCatsProps> = ({ selectedCats }) => {
+
+
+export const SumLines: React.FC<SumLinesProps> = ({ selectedCats, isSearchReserved }) => {
     return (
         <tbody className='SumLineTBody'>
             <SumLine selectedCats={selectedCats} sumType='RECETTE' />
             <SumLine selectedCats={selectedCats} sumType='DEPENSE' />
             <SumLine selectedCats={selectedCats} sumType='TOTAL' />
-            <SumLine selectedCats={selectedCats} sumType='RESERVE' />
+            {isSearchReserved && <SumLine selectedCats={selectedCats} sumType='RESERVE' />}
         </tbody>
     )
 }

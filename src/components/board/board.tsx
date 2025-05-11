@@ -12,13 +12,13 @@ import { DelLine } from '../del/del'
 import { SimpleLine, SumLines } from '../boardLines/boardLines'
 
 
-export const Board: React.FC<BoardProps> = ({ filteredPrices, selectedCats, modifLineProps, addLineProps }) => {
+export const Board: React.FC<BoardProps> = ({ filteredPrices, selectedCats, modifLineProps, addLineProps, isSearchReserved }) => {
   const { modifPriceInput, objects, lastMutatedPriceId } = modifLineProps
   const { isAddOpen, categories, addPriceInput } = addLineProps
   return (
     <table className='boardTable'>
       <HeaderLine selectedCats={selectedCats} />
-      <SumLines selectedCats={selectedCats} />
+      <SumLines selectedCats={selectedCats} isSearchReserved={isSearchReserved} />
       <BodyLines filteredPrices={filteredPrices} selectedCats={selectedCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} isAddOpen={isAddOpen} addPriceInput={addPriceInput} categories={categories} />
     </table>
   )

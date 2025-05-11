@@ -156,15 +156,6 @@
     @apply focus:outline-none;
 }
 
-/* .addInput_Comment {
-    @apply text-xs;
-    @apply border-blue-800 rounded-sm;
-    @apply border;
-    @apply w-60;
-    @apply my-1 px-1 me-1;
-    @apply focus:outline-none;
-} */
-
 .invalidValue {
     @apply border-red-500 bg-red-50;
 }

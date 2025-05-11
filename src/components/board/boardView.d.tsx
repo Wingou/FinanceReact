@@ -6,6 +6,7 @@ export interface BoardProps {
   selectedCats: Categorie[],
   modifLineProps: ModifLineProps,
   addLineProps: AddLineProps,
+  isSearchReserved: boolean
 }
 
 export interface BoardViewProps {
