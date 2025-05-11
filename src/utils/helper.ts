@@ -1,4 +1,4 @@
-import { catNone, objNone } from '../constants/constants'
+import { catNone, objNone } from '../types/constants'
 import { Categorie, Object } from '../types/common'
 
 export const formatDateFR = (d: string) => {

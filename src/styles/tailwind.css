@@ -90,21 +90,14 @@
     @apply focus:outline-none;
 }
 
-.addInput_Categories {
+.addInput_Select {
     @apply text-xs;
     @apply border border-blue-800 rounded-md;
     @apply w-auto;
     @apply me-1 my-1 px-1;
     @apply focus:outline-none;
 }
-
-.addInput_Objets {
-    @apply text-xs;
-    @apply border border-blue-800 rounded-md;
-    @apply w-auto;
-    @apply me-1 my-1 px-1;
-    @apply focus:outline-none;
-}
+ 
 
 .addInput_PriceAndCurrency {
     @apply flex;

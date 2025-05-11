@@ -1,4 +1,4 @@
-import { PAGE } from "../constants/constants"
+import { PAGE } from "../types/constants"
 import { store } from "../store/store"
 
 interface ToView {
@@ -19,6 +19,11 @@ export const handleToPage = (view: PAGE) => {
 }
 
 export const handleToggleAdd = () => {
-    const action = { type: 'TOGGLE_ADD', payload: null}
+    const action = { type: 'TOGGLE_ADD', payload: null }
+    store.dispatch(action)
+}
+
+export const handleToggleLast = () => {
+    const action = { type: 'TOGGLE_LAST', payload: null }
     store.dispatch(action)
 }

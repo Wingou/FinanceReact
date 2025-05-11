@@ -30,14 +30,16 @@ export const DateInput: React.FC<DateInputProps> = ({
   <div key='div_dateInput'>
     <div className='searchDiv' >
       <div className='searchCheckboxAdmin'>
-        <CheckBox name='multipleYears'
+        <CheckBox key={'multipleYears'}
+          name='multipleYears'
           index={0}
           checked={isMultiYears}
           handleFC={handleUpdateMultipleYears}
           label='MULTI'
           isLabelBold={true}
         />
-        <CheckBox name='allYears'
+        <CheckBox key={'allYears'}
+          name='allYears'
           index={1}
           checked={isAllYearsChecked}
           handleFC={handleUpdateAllYears}
@@ -48,7 +50,9 @@ export const DateInput: React.FC<DateInputProps> = ({
       <div className='searchCheckboxOptions'>
         {years.map((y, index) => {
           return (
-            <CheckBox name={y.name}
+            <CheckBox
+              key={`y.name_${index}`}
+              name={y.name}
               index={index}
               checked={y.isOn}
               handleFC={handleUpdateYear}
@@ -62,14 +66,18 @@ export const DateInput: React.FC<DateInputProps> = ({
     <div key='div_dateInput'>
       <div className='searchDiv' >
         <div className='searchCheckboxAdmin'>
-          <CheckBox name='multipleMonths'
+          <CheckBox
+            key='multipleMonths'
+            name='multipleMonths'
             index={0}
             checked={isMultiMonths}
             handleFC={handleUpdateMultipleMonths}
             label='MULTI'
             isLabelBold={true}
           />
-          <CheckBox name='allMonths'
+          <CheckBox
+            key='allMonths'
+            name='allMonths'
             index={1}
             checked={isAllMonthsChecked}
             handleFC={handleUpdateAllMonths}
@@ -80,7 +88,9 @@ export const DateInput: React.FC<DateInputProps> = ({
         <div className='searchCheckboxOptions'>
           {months.map((m, index) => {
             return (
-              <CheckBox name={m.month.toString()}
+              <CheckBox
+                key={`m.name_${index}`}
+                name={m.month.toString()}
                 index={index}
                 checked={m.isOn}
                 handleFC={handleUpdateMonth}

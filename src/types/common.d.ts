@@ -1,4 +1,4 @@
-import { PAGE } from "../constants/constants";
+import { PAGE } from "./constants";
 import { CatRaw, ObjRaw, PriceRaw } from "./reducer";
 
 export interface StateType {
@@ -12,8 +12,10 @@ export interface StateType {
   modifPriceInput: ModifPriceInput,
   view: {
     page: PAGE,
-    isAddOpen: boolean
-  }
+    isAddOpen: boolean,
+    isLast: boolean
+  },
+  orderOptions: OrderOptions
 }
 
 export interface ActionType {
@@ -83,3 +85,15 @@ export interface Month {
   name: string,
   isOn: boolean
 }
+
+export interface OrderOptions {
+  orderSelectValues: OrderSelectValue[],
+}
+
+export interface OrderSelectValue {
+  name: string,
+  value: string,
+  dir: OrderDir,
+  selectedPos: number
+}
+

@@ -8,7 +8,7 @@ import React from 'react'
 import { SelectCat, SelectObj } from '../common/selectList'
 import { AddLineProps } from '../common/selectList.d'
 import { handleCancel } from '../../actions/cancel'
-import { CURRENT_DATE } from '../../constants/constants'
+import { CURRENT_DATE } from '../../types/constants'
 import { InputDate, InputPrice, InputText } from '../common/inputForm'
 
 export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {

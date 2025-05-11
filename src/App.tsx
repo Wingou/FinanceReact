@@ -5,7 +5,7 @@ import { RootState } from './store/store'
 import BoardViewContainer from './containers/boardViewContainer'
 import HomeViewContainer from './containers/homeViewContainer'
 import React from 'react'
-import { COY } from './constants/constants'
+import { COY } from './types/constants'
 import { Menu } from './components/common/menu'
 import { Dispatch } from '@reduxjs/toolkit'
 import { Month, Year } from './types/common'
@@ -39,6 +39,7 @@ function App() {
   }, [dispatch])
 
   useEffect(() => {
+    const { page, isAddOpen, isLast } = view
     const fetchPricesData = async () => {
       try {
         await fetchPrices(years, months, dispatch)
@@ -46,9 +47,18 @@ function App() {
         console.error('ERROR: fetchPrices', error)
       }
     }
-    if (view.page === 'BOARD') {
-      fetchPricesData()
+    const fetchLastData = async () => {
+      try {
+        await fetchLast(dispatch)
+      } catch (error) {
+        console.error('ERROR: fetchLast', error)
+      }
     }
+    page === 'BOARD'
+      ?
+      isLast ? fetchLastData() : fetchPricesData()
+      : console.log('No fetchPricesData')
+
   }, [view, years, months, dispatch])
 
   const viewContainer = () => {
@@ -64,8 +74,8 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>
-        <div className="flex justify-center items-center  bg-blue-500">
-          <h2 className="text-white text-3xl font-bold">Finance React!</h2>
+        <div className="flex justify-center items-center  ">
+          <h2 className="text-white text-3xl font-bold">Finance React</h2>
         </div>
         {isCOYLoaded ? <Menu view={view} /> :
           isError ? 'Data loading error !' : 'Loading...'}
@@ -172,9 +182,53 @@ const fetchPrices = async (years: Year[], months: Month[], dispatch: Dispatch) =
 
     dispatch({
       type: 'SET_PRICES',
-      payload: data
+      payload: data.pricesByDates
     })
   } catch (error) {
     console.error('ERROR: fetchPrices', error)
   }
 }
+
+
+
+const fetchLast = async (dispatch: Dispatch) => {
+  console.log('fetchLast')
+  try {
+    const api = gql`query GetLastPrices {
+      lastPrices {
+        id
+        amount
+        comment
+        actionDate
+        dateCreate
+        dateModif
+        template
+        obj {
+          id
+          name
+          template
+        }
+        cat {
+          id
+          name
+          position
+          template
+        }
+      }
+    }`
+    const { data } = await apolloClient.query(
+      {
+        query: api,
+        fetchPolicy: 'network-only'
+      }) // fetchPolicy: 'network-only' Forcer le cache d'Apollo
+    console.log('data', data)
+    dispatch({
+      type: 'SET_PRICES',
+      payload: data.lastPrices
+    })
+  } catch (error) {
+    console.error('ERROR: fetchLastPrices', error)
+  }
+}
+
+

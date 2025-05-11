@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { BoardView } from '../components/board/boardView'
 import { Categorie, Month, Price, Year } from '../types/common'
-import { SUM_TYPE } from '../constants/constants'
+import { SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
 import { BoardViewProps } from '../components/board/boardView.d'
 
@@ -16,10 +16,11 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     objects,
     modifPriceInput,
     addPriceInput,
-    view
+    view,
+    orderOptions
   } = state
 
-  const { isAddOpen } = view
+  const { isAddOpen, isLast } = view
   const { searchMin, searchMax, isSearchDel, isSearchReserved } = searchOptions
 
   const deletedPricesCatIds = [...new Set(
@@ -74,12 +75,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     .filter((price: Price) => (searchMax == null ? true : price.amount <= searchMax))
     .filter((price: Price) => (price.template == 2 ? isSearchDel : true))
     .filter((price: Price) => (price.template == 1 ? isSearchReserved : true))
-
-
-
-
   const filteredPricesCatIds = [...new Set(filteredPrices.map((p: Price) => p.cat.id))]
-  console.log('filteredPricesCatIds', filteredPricesCatIds)
   const selectedCats = displayedCats
     .filter((cat: Categorie) => cat.isOn)
     .filter((cat: Categorie) => filteredPricesCatIds.includes(cat.id))
@@ -112,7 +108,9 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     categories,
     modifPriceInput,
     isAddOpen,
-    addPriceInput
+    addPriceInput,
+    isLast,
+    orderOptions
   }
 }
 const BoardViewContainer = connect(mapStateToProps)(BoardView)

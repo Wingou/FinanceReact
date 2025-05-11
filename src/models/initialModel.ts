@@ -2,8 +2,8 @@ import {
   CURRENT_DATE,
   CURRENT_MONTH,
   MONTHS
-} from '../constants/constants'
-import { AddPriceInput, ModifPriceInput, SearchOptions, StateType, } from '../types/common'
+} from '../types/constants'
+import { AddPriceInput, ModifPriceInput, OrderOptions, SearchOptions, StateType, } from '../types/common'
 
 export const initialModifPriceInput: ModifPriceInput = {
   id: -1,
@@ -39,6 +39,18 @@ export const initialSearchOptions: SearchOptions = {
 
 }
 
+const initialOrderOptions: OrderOptions = {
+  orderSelectValues: [
+    { name: 'DATE', value: 'dateAction', dir: 'DESC', selectedPos: -1 },
+    { name: 'OBJET', value: 'obj', dir: 'DESC', selectedPos: -1 },
+    { name: 'MONTANT', value: 'price', dir: 'DESC', selectedPos: -1 },
+    { name: 'CATEGORIE', value: 'cat', dir: 'DESC', selectedPos: -1 },
+    { name: 'DATE CREATE', value: 'dateCreate', dir: 'DESC', selectedPos: -1 },
+    { name: 'DATE MODIF', value: 'dateModif', dir: 'DESC', selectedPos: -1 },
+    { name: 'TYPE', value: 'template', dir: 'DESC', selectedPos: -1 },
+  ]
+}
+
 export const initialModel: StateType = {
   prices: [],
   objects: [],
@@ -50,6 +62,9 @@ export const initialModel: StateType = {
   modifPriceInput: initialModifPriceInput,
   view: {
     page: 'HOME',
-    isAddOpen: false
-  }
+    isAddOpen: false,
+    isLast: false
+  },
+  orderOptions: initialOrderOptions
 }
+

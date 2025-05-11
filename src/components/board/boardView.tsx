@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Board } from './board'
-import { ActivatedCatsInput } from './categorieInput'
-import { DateInput } from './datesInput'
-import { SearchWordInput } from './searchInput'
+import { ActivatedCatsInput } from '../inputs/categorieInput'
+import { DateInput } from '../inputs/datesInput'
+import { SearchWordInput } from '../inputs/searchInput'
 import { NoBoard } from './noBoard'
 import { Categorie, ModifPriceInput, Month, Object, Price, SearchOptions, Year } from '../../types/common'
 import { BoardViewProps } from './boardView.d'
 import { AddPriceInput } from '../add/add'
+import { OrderInput } from '../inputs/orderInput'
 
 export class BoardView extends Component<BoardViewProps, {}> {
   render() {
@@ -24,7 +25,9 @@ export class BoardView extends Component<BoardViewProps, {}> {
       modifPriceInput,
       addPriceInput,
       isAddOpen,
-      categories
+      categories,
+      isLast,
+      orderOptions
     } = this.props
     const {
       isMultiYears,
@@ -70,14 +73,14 @@ export class BoardView extends Component<BoardViewProps, {}> {
         />
 
 
-        <DateInput
+        {!isLast && <DateInput
           years={years}
           months={months}
           isAllYearsChecked={isAllYearsChecked}
           isAllMonthsChecked={isAllMonthsChecked}
           isMultiYears={isMultiYears}
           isMultiMonths={isMultiMonths}
-        />
+        />}
 
         <ActivatedCatsInput
           displayedCats={displayedCats}
@@ -85,7 +88,8 @@ export class BoardView extends Component<BoardViewProps, {}> {
           isMultiCats={isMultiCats}
         />
 
-
+        <OrderInput orderOptions={orderOptions}
+        />
 
         {filteredPrices.length !== 0 ? (
           <Board filteredPrices={filteredPrices} selectedCats={selectedCats} modifLineProps={modifLineProps} addLineProps={addLineProps} isSearchReserved={isSearchReserved} />

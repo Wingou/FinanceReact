@@ -7,7 +7,7 @@ import {
   handleUpdateSearchReserved
 } from '../../actions/search'
 import { CheckBox, InputPrice, InputText } from '../common/inputForm'
-import { SearchWordInputProps } from './boardView.d'
+import { SearchWordInputProps } from '../board/boardView.d'
 import { handleCancel } from '../../actions/cancel'
 
 export const SearchWordInput: React.FC<SearchWordInputProps> = ({ searchWord, searchMin, searchMax, isSearchDel, isSearchReserved }) => {

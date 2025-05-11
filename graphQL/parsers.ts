@@ -34,7 +34,7 @@ export const parsePrices = (rows: PriceRaw[]): PriceGql[] => {
     return {
       id: rs.priceId.toString(),
       amount: rs.prix.toString(),
-      comment: rs.commentaire,
+      comment: rs.commentaire ? rs.commentaire : '',
       actionDate: rs.DateAction,
       dateCreate: rs.dateCreate,
       dateModif: rs.dateModif,

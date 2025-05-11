@@ -7,11 +7,12 @@ import {
   PAGE,
   MONTHS,
   CALLER
-} from '../constants/constants'
+} from '../types/constants'
 import { initialAddPriceInput, initialModel, initialModifPriceInput } from '../models/initialModel'
-import { ActionType, AddPriceInput, Categorie, ModifPriceInput, Month, Object, Price, StateType, Year } from '../types/common'
+import { ActionType, AddPriceInput, Categorie, ModifPriceInput, Month, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
+import { OrderInput } from '../components/inputs/orderInput'
 
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
   switch (action.type) {
@@ -88,7 +89,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_PRICES': {
-      const prices = action.payload.pricesByDates as PriceGql[]
+      const prices = action.payload as PriceGql[]
       const displayedCatIds = [...new Set(prices.map((p: PriceGql): number => parseInt(p.cat.id)))]
       const categories = state.categories.map(cat => {
         return {
@@ -327,7 +328,12 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     case 'TO_HOME': {
       return {
         ...state,
-        view: { ...state.view, page: 'HOME' as PAGE }
+        view: {
+          ...state.view,
+          isAddOpen: false,
+          isLast: false,
+          page: 'HOME' as PAGE
+        }
       }
     }
 
@@ -336,7 +342,19 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state,
         view: {
           ...state.view,
-          isAddOpen: !state.view.isAddOpen
+          isAddOpen: !state.view.isAddOpen,
+          page: 'BOARD' as PAGE
+        }
+      }
+    }
+    case 'TOGGLE_LAST': {
+      return {
+        ...state,
+        view: {
+          ...state.view,
+          isLast: !state.view.isLast,
+          page: 'BOARD' as PAGE
+
         }
       }
     }
@@ -531,6 +549,45 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           searchMin: null,
           searchMax: null,
         } : state.searchOptions
+      }
+    }
+
+    case 'UPDATE_ORDER_INPUT': {
+
+      const { value, index } = action.payload as { value: string, index: number }
+      const cols = state.orderOptions.orderSelectValues
+
+      const orderSelectValuesReinit = cols
+        .map((c: OrderSelectValue): OrderSelectValue => {
+          console.log("c.selectedPos :", c.selectedPos)
+          console.log("index :", index)
+          console.log("c.selectedPos == index :", c.selectedPos == index)
+          const selectedPos = c.selectedPos == index ? -1 : c.selectedPos
+          return {
+            ...c,
+            selectedPos
+          }
+        })
+      console.log("list:", ...orderSelectValuesReinit)
+      const posNew = Math.max(...orderSelectValuesReinit.map(
+        (c: OrderSelectValue): number => c.selectedPos
+      )) + 1
+      console.log("posNew:", posNew)
+
+      const orderSelectValues = orderSelectValuesReinit
+        .map((c: OrderSelectValue): OrderSelectValue => {
+          return {
+            ...c,
+            selectedPos: c.value === value ? posNew : c.selectedPos,
+          }
+        })
+
+      return {
+        ...state,
+        orderOptions: {
+          ...state.orderOptions,
+          orderSelectValues
+        }
       }
     }
 

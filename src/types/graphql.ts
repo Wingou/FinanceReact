@@ -104,6 +104,7 @@ export type PricesByDatesWhereInput = {
 export type Query = {
   __typename?: 'Query';
   categories?: Maybe<Array<CatGql>>;
+  lastPrices?: Maybe<Array<PriceGql>>;
   objects?: Maybe<Array<ObjGql>>;
   priceById?: Maybe<Array<PriceGql>>;
   pricesByDates?: Maybe<Array<PriceGql>>;

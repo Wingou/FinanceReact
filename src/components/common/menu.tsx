@@ -1,17 +1,18 @@
-import { handleToggleAdd, handleToPage } from '../../actions/switchView'
+import { handleToggleAdd, handleToggleLast, handleToPage } from '../../actions/switchView'
 
 import React from "react";
-import { PAGE } from '../../constants/constants';
+import { PAGE } from '../../types/constants';
 
 interface MenuProps {
   view: {
     page: PAGE,
-    isAddOpen: boolean
+    isAddOpen: boolean,
+    isLast: boolean
   }
 }
 
 export const Menu: React.FC<MenuProps> = ({ view }) => {
-  const { page, isAddOpen } = view
+  const { page, isAddOpen, isLast } = view
   return <div className='divMenu'>
     <button
       className={`btnMenu ${page === 'HOME' ? 'btnSwitchOn' : 'btnSwitchOff'}`}
@@ -25,6 +26,9 @@ export const Menu: React.FC<MenuProps> = ({ view }) => {
       className={`btnMenu  ${isAddOpen ? 'btnSwitchOn' : 'btnSwitchOff'}`}
       onClick={() => handleToggleAdd()}
     >{`${'ADD'}`}</button>
-
+    <button
+      className={`btnMenu  ${isLast ? 'btnSwitchOn' : 'btnSwitchOff'}`}
+      onClick={() => handleToggleLast()}
+    >{`${'LAST'}`}</button>
   </div>
 }

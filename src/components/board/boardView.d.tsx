@@ -1,5 +1,5 @@
-import { AddPriceInput, Categorie, ModifPriceInput, Month, Object, Price, SearchOptions, Year } from '../../types/common'
-import { SUM_TYPE } from '../../constants/constants'
+import { AddPriceInput, Categorie, ModifPriceInput, Month, Object, OrderOptions, Price, SearchOptions, Year } from '../../types/common'
+import { SUM_TYPE } from '../../types/constants'
 
 export interface BoardProps {
   filteredPrices: Price[],
@@ -23,7 +23,9 @@ export interface BoardViewProps {
   categories: Categorie[],
   modifPriceInput: ModifPriceInput,
   isAddOpen: boolean,
-  addPriceInput: AddPriceInput
+  addPriceInput: AddPriceInput,
+  isLast: boolean,
+  orderOptions: OrderOptions
 }
 
 export interface ModifLineProps {
@@ -101,4 +103,6 @@ export interface InputDateProps {
   handleFC: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-
+export interface OrderInputProps {
+  orderOptions: OrderOptions
+}

@@ -1,4 +1,4 @@
-import { CALLER } from "../../constants/constants"
+import { CALLER } from "../../types/constants"
 import { AddPriceInput, Categorie, Object } from "../../types/common"
 
 export interface AddFormProps {

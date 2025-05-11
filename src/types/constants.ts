@@ -1,4 +1,4 @@
-import { Categorie } from "../types/common"
+import { Categorie } from "./common"
 
 const date = new Date()
 
@@ -49,4 +49,6 @@ export const catNone: Categorie = {
   isOn: false
 }
 
-export type CALLER = 'MODIF' | 'ADD' | 'SEARCH'
+export type CALLER = 'MODIF' | 'ADD' | 'SEARCH' | 'LAST' | 'ORDER'
+
+export type OrderDir = 'ASC' | 'DESC'  

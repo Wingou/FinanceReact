@@ -5,7 +5,7 @@ import { formatTextSQL } from "../utils/helper"
 import { apolloClient } from "../apollo-client"
 import { PriceGql } from "../types/graphql"
 import { toast } from "react-toastify"
-import { DateInput } from "../components/board/datesInput"
+import { DateInput } from "../components/inputs/datesInput"
 
 export const handleModif = (price: Price) => {
   const action = {

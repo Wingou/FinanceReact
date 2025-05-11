@@ -28,7 +28,7 @@ type YearGql {
 type PriceGql {
   id: ID!
   amount: String!
-  comment: String!
+  comment: String
   actionDate: String!
   dateCreate: String!
   dateModif: String!
@@ -58,6 +58,7 @@ type Query {
   years: [YearGql!]
   pricesByDates(where: PricesByDatesWhereInput!): [PriceGql!]
   priceById(where: PriceByIdWhereInput!): [PriceGql!]
+  lastPrices : [PriceGql!]
 }
 
 input AddPriceInsertInput  {

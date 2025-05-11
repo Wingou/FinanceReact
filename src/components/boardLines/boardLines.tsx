@@ -7,7 +7,7 @@ import {
 import { Categorie, ModifPriceInput } from '../../types/common'
 import { handleModif, handleModifPrice } from '../../actions/modif'
 import { SelectedCatsProps, SimpleLineProps, SumLineProps, TitleAmountMap } from '../board/boardView.d'
-import { SUM_TYPE } from '../../constants/constants'
+import { SUM_TYPE } from '../../types/constants'
 import { SumLinesProps } from './boardLines.d'
 
 export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, lastMutatedPriceId }) => {

@@ -6,7 +6,7 @@ import {
 } from '../../actions/search'
 import { Categorie } from '../../types/common'
 import { CheckBox } from '../common/inputForm'
-import { ActivatedCatsInputProps, SearchInputCatProps } from './boardView.d'
+import { ActivatedCatsInputProps, SearchInputCatProps } from '../board/boardView.d'
 
 export const ActivatedCatsInput: React.FC<ActivatedCatsInputProps> = (props) => {
   const { displayedCats } = props
@@ -14,22 +14,25 @@ export const ActivatedCatsInput: React.FC<ActivatedCatsInputProps> = (props) => 
 }
 
 const MsgNoCat: React.FC = () => (
-  <div className="MsgNoCatDiv">Pas de catégorie</div>
+  <div className="MsgNoCatDiv">No category</div>
 )
 
 const SearchInputCat: React.FC<ActivatedCatsInputProps> = ({ isMultiCats, isAllCatsChecked, displayedCats }) => {
-  console.log('displayedCats', displayedCats)
   return (
     <div className='searchDiv' >
       <div className='searchCheckboxAdmin'>
-        <CheckBox name='multipleCats'
+        <CheckBox
+          key={`multipleCats`}
+          name='multipleCats'
           index={0}
           checked={isMultiCats}
           handleFC={handleUpdateMultipleCats}
           label='MULTI'
           isLabelBold={true}
         />
-        <CheckBox name='allCats'
+        <CheckBox
+          key={`allcats`}
+          name='allCats'
           index={1}
           checked={isAllCatsChecked}
           handleFC={handleUpdateAllCats}
@@ -40,7 +43,9 @@ const SearchInputCat: React.FC<ActivatedCatsInputProps> = ({ isMultiCats, isAllC
       <div className='searchCheckboxOptions'>
         {displayedCats.map((c, index) => {
           return (
-            <CheckBox name={`${c.id}`}
+            <CheckBox
+              key={`${c.id}`}
+              name={`${c.id}`}
               index={index}
               checked={c.isOn}
               handleFC={handleSelectedCat}

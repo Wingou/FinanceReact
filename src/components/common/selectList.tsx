@@ -4,7 +4,7 @@ import { handleModifObjIdInput } from "../../actions/modif"
 import { getCatById, getObjById } from "../../utils/helper"
 import { AddFormProps, SelectObjProps } from "./selectList.d"
 
-export const SelectCat: React.FC<AddFormProps> = ({ caller, categories, addPriceInput }) => {
+export const SelectCat: React.FC<AddFormProps> = ({ categories, addPriceInput }) => {
     const cat = categories
         .filter(c => c.template === 0 && c.id > 0 && c.position !== null)
         .sort((a, b) => a.id - b.id)
@@ -14,7 +14,7 @@ export const SelectCat: React.FC<AddFormProps> = ({ caller, categories, addPrice
 
     return (
         <select
-            className='addInput_Categories'
+            className='addInput_Select'
             value={addPriceInput.catId}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleCatIdInput(e)}
             title={catNameForTitle}
@@ -71,7 +71,7 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
 
     return (
         <select
-            className={`addInput_Objets ${Red_Border_Obj}`}
+            className={`addInput_Select ${Red_Border_Obj}`}
             value={objId}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => caller == 'MODIF' ? handleModifObjIdInput(e) : handleObjIdInput(e)}
             title={objNameForTitle}
