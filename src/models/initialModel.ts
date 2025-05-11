@@ -39,9 +39,9 @@ export const initialSearchOptions: SearchOptions = {
 
 }
 
-const initialOrderOptions: OrderOptions = {
+export const initialOrderOptions: OrderOptions = {
   orderSelectValues: [
-    { name: 'DATE', value: 'dateAction', dir: 'DESC', selectedPos: -1 },
+    { name: 'DATE', value: 'dateAction', dir: 'DESC', selectedPos: 0 },
     { name: 'OBJET', value: 'obj', dir: 'DESC', selectedPos: -1 },
     { name: 'MONTANT', value: 'price', dir: 'DESC', selectedPos: -1 },
     { name: 'CATEGORIE', value: 'cat', dir: 'DESC', selectedPos: -1 },

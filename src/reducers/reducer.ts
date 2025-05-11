@@ -8,7 +8,7 @@ import {
   MONTHS,
   CALLER
 } from '../types/constants'
-import { initialAddPriceInput, initialModel, initialModifPriceInput } from '../models/initialModel'
+import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions, initialSearchOptions } from '../models/initialModel'
 import { ActionType, AddPriceInput, Categorie, ModifPriceInput, Month, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
@@ -536,7 +536,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       }
     }
 
-    case 'CANCEL_PRICEINPUT': {
+    case 'CANCEL_INPUT': {
       const caller = action.payload as CALLER
 
       return {
@@ -548,7 +548,8 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           searchWord: '',
           searchMin: null,
           searchMax: null,
-        } : state.searchOptions
+        } : state.searchOptions,
+        orderOptions: caller == 'ORDER' ? initialOrderOptions : state.orderOptions
       }
     }
 
@@ -559,20 +560,25 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
       const orderSelectValuesReinit = cols
         .map((c: OrderSelectValue): OrderSelectValue => {
-          console.log("c.selectedPos :", c.selectedPos)
-          console.log("index :", index)
-          console.log("c.selectedPos == index :", c.selectedPos == index)
           const selectedPos = c.selectedPos == index ? -1 : c.selectedPos
           return {
             ...c,
             selectedPos
           }
         })
-      console.log("list:", ...orderSelectValuesReinit)
+        .map((c: OrderSelectValue) => {
+          const selectedPos = c.selectedPos > index ? c.selectedPos - 1 : c.selectedPos
+
+          return {
+            ...c,
+            selectedPos
+          }
+        })
+
+
       const posNew = Math.max(...orderSelectValuesReinit.map(
         (c: OrderSelectValue): number => c.selectedPos
       )) + 1
-      console.log("posNew:", posNew)
 
       const orderSelectValues = orderSelectValuesReinit
         .map((c: OrderSelectValue): OrderSelectValue => {

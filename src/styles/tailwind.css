@@ -98,29 +98,10 @@
     @apply focus:outline-none;
 }
  
-
 .addInput_PriceAndCurrency {
     @apply flex;
     @apply my-1 me-1;
     @apply border border-blue-800;
-}
-
-.addInput_Price {
-    @apply text-xs text-right;
-    @apply border-blue-800 rounded-l-sm border-l border-y;
-    @apply bg-white;
-    @apply w-16;
-    @apply ps-1;
-    @apply focus:outline-none;
-}
-
-.addInput_Currency {
-    @apply text-xs;
-    @apply bg-white;
-    @apply border-blue-800 rounded-r-sm;
-    @apply border-y border-r;
-    @apply w-4;
-    @apply px-1;
 }
 
 .input_Price {
@@ -157,6 +138,11 @@
     @apply flex;
     @apply m-1 px-1;
     @apply border border-blue-800;
+}
+
+.searchDivWrap {
+    @apply searchDiv;
+    @apply flex-wrap;
 }
 
 .searchCheckboxAdmin {

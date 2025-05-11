@@ -4,7 +4,7 @@ import { ModifPriceInput, Price } from "../types/common"
 
 export const handleCancel = (caller: CALLER) => {
     const action = {
-        type: 'CANCEL_PRICEINPUT',
+        type: 'CANCEL_INPUT',
         payload: caller
     }
     store.dispatch(action)

@@ -1,43 +1,24 @@
 import React from 'react'
-import {
-  handleUpdateSearchWord,
-  handleUpdateSearchMin,
-  handleUpdateSearchMax,
-  handleUpdateSearchDel,
-  handleUpdateSearchReserved
-} from '../../actions/search'
-import { CheckBox, InputPrice, InputText } from '../common/inputForm'
-import { OrderInputProps, SearchWordInputProps } from '../board/boardView.d'
+import { OrderInputProps } from '../board/boardView.d'
 import { handleCancel } from '../../actions/cancel'
-import { OrderOptions, OrderSelectValue } from '../../types/common'
+import { OrderSelectValue } from '../../types/common'
 import { handleOrderInput } from '../../actions/order'
+import { OrderSelectProps } from './input'
 
 export const OrderInput: React.FC<OrderInputProps> = (props) => {
-
   const { orderOptions } = props
   const { orderSelectValues } = orderOptions
-
   const orderSelectValuesSelected = orderSelectValues.filter((o) => o.selectedPos !== -1)
     .sort((a, b) => a.selectedPos - b.selectedPos)
-
-  console.log("orderSelectValuesSelected:", orderSelectValuesSelected)
-  return <div className='searchDiv' >
-    <SelectOrder key='selectOrder_0' orderSelectValues={orderSelectValues} index={0} />
-
+  const orderSelectValuesNb = orderSelectValuesSelected.length
+  return <div className='searchDivWrap' >
     {
-
       orderSelectValuesSelected.map((_c, index) => {
-        console.log("index:::", index)
-        return <SelectOrder key={`selectOrder_${index}`} orderSelectValues={orderSelectValues} index={index + 1} />
+        return <SelectOrder key={`selectOrder_${index}`} orderSelectValues={orderSelectValues} index={index} />
       }
       )
     }
-
-
-
-
-
-
+    <SelectOrder key={`selectOrder_${orderSelectValuesNb}`} orderSelectValues={orderSelectValues} index={orderSelectValuesNb} />
     <div className='addInput_Label'>
       |
     </div>
@@ -47,7 +28,7 @@ export const OrderInput: React.FC<OrderInputProps> = (props) => {
         onClick={() => {
           handleCancel('ORDER')
         }}
-        title='Cliquer pour réinitaliser les valeurs'
+        title='Cliquer pour réinitaliser les critères'
       >
         ¤
       </button>
@@ -55,30 +36,21 @@ export const OrderInput: React.FC<OrderInputProps> = (props) => {
   </div>
 }
 
-interface OrderSelectProps {
-  orderSelectValues: OrderSelectValue[]
-  index: number
-}
-
-
-
 const SelectOrder: React.FC<OrderSelectProps> = ({ orderSelectValues, index }) => {
-
-
+  const selectedValue = orderSelectValues.find((o: OrderSelectValue): boolean => o.selectedPos == index)?.value as string
   return (
     <select
       key={`selectOrder_${index}`}
       className='addInput_Select'
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleOrderInput(e, index)}
+      value={selectedValue}
     >
       <option
         key={`selectOption_${index}_NONE`}
         value='NONE'
-
       >
-        ¤ TRI ¤
+        {selectedValue ? `¤ erase ¤` : `¤ +criteria ¤`}
       </option>
-
       {orderSelectValues
         .map((col, i) => {
           return (
