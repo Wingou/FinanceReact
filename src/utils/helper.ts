@@ -1,6 +1,12 @@
 import { catNone, objNone } from '../types/constants'
 import { Categorie, Object } from '../types/common'
 
+export const formatDateYYYYMMDD = (d: string): string => {
+  const [dayA, monthA, yearA] = d.split('/');
+  const dateA = `${yearA}${monthA}${dayA}`;
+  return dateA;
+}
+
 export const formatDateFR = (d: string) => {
   return new Date(d).toLocaleDateString('fr-FR')
 }

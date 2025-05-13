@@ -1,9 +1,10 @@
 import { connect } from 'react-redux'
 import { BoardView } from '../components/board/boardView'
-import { Categorie, Month, Price, Year } from '../types/common'
-import { SUM_TYPE } from '../types/constants'
+import { Categorie, Month, OrderSelectValue, Price, Year } from '../types/common'
+import { OrderDir, SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
 import { BoardViewProps } from '../components/board/boardView.d'
+import { formatDateFR, formatDateYYYYMMDD } from '../utils/helper'
 
 const mapStateToProps = (state: RootState): BoardViewProps => {
 
@@ -22,7 +23,9 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
 
   const { isAddOpen, isLast } = view
   const { searchMin, searchMax, isSearchDel, isSearchReserved } = searchOptions
-
+  const { orderSelectValues } = orderOptions
+  const orderRefs = orderSelectValues.filter((v) => v.selectedPos >= 0)
+    .sort((a, b) => a.selectedPos - b.selectedPos)
   const deletedPricesCatIds = [...new Set(
     prices.filter((price: Price) => price.template === 2)
       .map((price: Price) => price.cat.id))]
@@ -75,6 +78,18 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     .filter((price: Price) => (searchMax == null ? true : price.amount <= searchMax))
     .filter((price: Price) => (price.template == 2 ? isSearchDel : true))
     .filter((price: Price) => (price.template == 1 ? isSearchReserved : true))
+    .sort((a: Price, b: Price) => {
+      if (orderRefs.length === 0) {
+        return a.dateCreate.localeCompare(b.dateModif)
+      }
+      else {
+        return orderRefs.reduce((acc, ref) => {
+          console.log("ref.value:", ref.value)
+          return acc !== 0 ? acc : compareValue(ref.value, ref.dir, a, b)
+        }, 0)
+      }
+    })
+
   const filteredPricesCatIds = [...new Set(filteredPrices.map((p: Price) => p.cat.id))]
   const selectedCats = displayedCats
     .filter((cat: Categorie) => cat.isOn)
@@ -130,4 +145,19 @@ const sumPrices = (filteredPrices: Price[], cat: Categorie, sumType: SUM_TYPE): 
   }[sumType as SUM_TYPE] as Price[]
 
   return prices.reduce((acc: number, price: Price): number => acc + price.amount, 0)
+}
+
+const compareValue = (sortCriteria: string, dir: OrderDir, a: Price, b: Price): number => {
+  const critA = dir === 'ASC' ? a : b
+  const critB = dir === 'ASC' ? b : a
+  const sortDates = (a_: string, b_: string): number => formatDateYYYYMMDD(a_).localeCompare(formatDateYYYYMMDD(b_))
+  return {
+    'dateAction': sortDates(critA.actionDate, critB.actionDate),
+    'obj': critA.obj.name.localeCompare(critB.obj.name),
+    'price': critB.amount - critA.amount,
+    'cat': critA.cat.name.localeCompare(critB.cat.name),
+    'dateCreate': sortDates(critA.dateCreate, critB.dateCreate),
+    'dateModif': sortDates(critA.dateCreate, critB.dateModif),
+    'template': critA.template - critB.template
+  }[sortCriteria] || 0
 }

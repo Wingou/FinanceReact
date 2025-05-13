@@ -9,7 +9,7 @@ import {
   CALLER
 } from '../types/constants'
 import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions, initialSearchOptions } from '../models/initialModel'
-import { ActionType, AddPriceInput, Categorie, ModifPriceInput, Month, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
+import { ActionType, AddPriceInput, Categorie, ModifPriceInput, Month, Object, OrderOptions, OrderSelectValue, Price, StateType, Year } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
 import { OrderInput } from '../components/inputs/orderInput'
@@ -555,39 +555,36 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'UPDATE_ORDER_INPUT': {
 
-      const { value, index } = action.payload as { value: string, index: number }
+      const { value, index: selectedPosCurrent } = action.payload as { value: string, index: number }
       const cols = state.orderOptions.orderSelectValues
-
       const orderSelectValuesReinit = cols
         .map((c: OrderSelectValue): OrderSelectValue => {
-          const selectedPos = c.selectedPos == index ? -1 : c.selectedPos
+          const selectedPos = c.selectedPos == selectedPosCurrent ? -1 : c.selectedPos
           return {
             ...c,
             selectedPos
           }
         })
         .map((c: OrderSelectValue) => {
-          const selectedPos = c.selectedPos > index ? c.selectedPos - 1 : c.selectedPos
+          const selectedPos = c.selectedPos > selectedPosCurrent && c.value === 'NONE' ? c.selectedPos - 1 : c.selectedPos
 
           return {
             ...c,
             selectedPos
           }
         })
-
-
-      const posNew = Math.max(...orderSelectValuesReinit.map(
-        (c: OrderSelectValue): number => c.selectedPos
-      )) + 1
-
-      const orderSelectValues = orderSelectValuesReinit
+      const orderSelectValues_ = orderSelectValuesReinit
         .map((c: OrderSelectValue): OrderSelectValue => {
           return {
             ...c,
-            selectedPos: c.value === value ? posNew : c.selectedPos,
+            selectedPos: c.value === value ? selectedPosCurrent : c.selectedPos,
           }
         })
-
+      const orderNeg = orderSelectValues_.filter((o) => o.selectedPos === -1)
+      const orderPos = orderSelectValues_.filter((o) => o.selectedPos >= 0)
+        .sort((a, b) => a.selectedPos - b.selectedPos)
+        .map((o, i) => { return { ...o, selectedPos: i } })
+      const orderSelectValues = [...orderPos, ...orderNeg]
       return {
         ...state,
         orderOptions: {
@@ -596,6 +593,19 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         }
       }
     }
+
+    case 'TOGGLE_ORDER_DIR':
+      const newOrderSelectValue = action.payload as OrderSelectValue
+      const orderSelectValues = state.orderOptions.orderSelectValues.map(
+        (o: OrderSelectValue) =>
+          o.value === newOrderSelectValue.value ? newOrderSelectValue : o
+      )
+      return {
+        ...state,
+        orderOptions: {
+          orderSelectValues
+        }
+      }
 
     default:
       return state
