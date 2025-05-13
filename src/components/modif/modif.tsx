@@ -3,6 +3,8 @@ import { ModifLineProps } from "../board/boardView.d"
 import { handleModifCommentInput, handleModifDateInput, handleModifPrice, handleModifPriceInput } from "../../actions/modif"
 import { SelectObj } from "../common/selectList"
 import { handleCancel } from "../../actions/cancel"
+import { InputDate, InputPrice, InputText } from "../common/inputForm"
+import { formatDateFR, formatTemplate } from "../../utils/helper"
 
 export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
     const { modifPriceInput, objects, selectedCats } = ModifLineProps
@@ -30,36 +32,20 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
 
         </td>
         <td key='td_ModifLine_Date'>
-            <input
-                key={'Input_Date'}
-                className='InputModif_Input_Date'
-                type='date'
+            <InputDate
                 name='dateAction'
                 value={modifPriceInput.actionDate}
-                onChange={e => handleModifDateInput(e)}
+                handleFC={e => handleModifDateInput(e)}
             />
         </td>
         <td key='td_ModifLine_Objects'>
             <SelectObj caller='MODIF' catId={-1} objId={objId} categories={[]} objects={objects} />
         </td>
         <td key='td_ModifLine_Amount'>
-            <input
-                key={'Input_Price'}
-                type='text'
-                name='price'
+            <InputPrice name='price'
                 placeholder='Prix en'
                 value={modifPriceInput.amount}
-                onChange={e => handleModifPriceInput(e)}
-                pattern='/^-?\d*\.?\d{0,2}$/'
-            />
-            <input
-                key={'Currency'}
-                // className={`InputModif_Input_Currency ${Red_Border_Price}`}
-                type='text'
-                defaultValue='€'
-                disabled={true}
-            />
-
+                handleFC={e => handleModifPriceInput(e)} />
         </td>
         {selectedCats.map((fcat) => {
             return fcat.id === catId
@@ -67,19 +53,16 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
                 : <td key={`td_ModifLine_by_${fcat.id}_blank`}></td>
         })}
         <td key='td_ModifLine_Comment'>
-            <input
-                key={'Input_Comment'}
-                className='InputModif_Input_Comment'
-                type='text'
+            <InputText
                 name='comment'
                 placeholder='Commentaire ici...'
-                onChange={e => handleModifCommentInput(e)}
+                handleFC={e => handleModifCommentInput(e)}
                 value={modifPriceInput.comment}
-            />
+                width='w-60' />
         </td>
-        <td key='td_ModifLine_DateCreate'>{modifPriceInput.dateCreate}</td>
-        <td key='td_ModifLine_DateModif'>{modifPriceInput.dateModif}</td>
-        <td key='td_ModifLine_Template'>{modifPriceInput.template}</td>
+        <td key='td_ModifLine_DateCreate'>{formatDateFR(modifPriceInput.dateCreate)}</td>
+        <td key='td_ModifLine_DateModif'>{formatDateFR(modifPriceInput.dateModif)}</td>
+        <td key='td_ModifLine_Template'>{formatTemplate(modifPriceInput.template)}</td>
     </tr >
 
 

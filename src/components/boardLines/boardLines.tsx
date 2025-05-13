@@ -2,7 +2,8 @@ import React from 'react'
 import {
     formatDateFR,
     formatPrice,
-    formatPriceWithZero
+    formatPriceWithZero,
+    formatTemplate
 } from '../../utils/helper'
 import { Categorie, ModifPriceInput } from '../../types/common'
 import { handleModif, handleModifPrice } from '../../actions/modif'
@@ -20,15 +21,20 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, 
         template: p.template === 0 ? 1 : 0
     } as ModifPriceInput
 
-    const templateColor =
+    const simpleLineStyleByTemplate =
         {
-            1: 'bg-orange-200',
-            2: 'bg-gray-200',
-        }[p.template] || 'bg-white'
-    const lineColor = p.id === lastMutatedPriceId ? `border-2 border-blue-600 font-bold ${templateColor}` : templateColor
+            0: 'SimpleLineActivated',
+            1: 'SimpleLineReserved',
+            2: 'SimpleLineDeleted',
+        }[p.template]
+    const trSimpleLine = p.id === lastMutatedPriceId
+        ? 'FocusedLine'
+        : ''
+
     const btnStyleDisabled = p.template === 2 ? 'btnDisabled' : 'btnEnabled'
 
-    return <tr key={`tr_SimpleLine_${index}`} className={lineColor}>
+    return <tr key={`tr_SimpleLine_${index}`}
+        className={trSimpleLine + ' ' + simpleLineStyleByTemplate} >
         <td key={`td_admin_${index}`}>
             <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2} onClick={() => handleModifPrice(modifPriceInputForReserve)}>~</button>
             <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2} onClick={() => handleModif(p)}>...</button>
@@ -42,22 +48,24 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, 
         >
             {formatPrice(p.amount)}
         </td>
-        {selectedCats.map((cat, index) => {
-            const price = cat.id === p.cat.id ? p.amount : 0
-            return (
-                <td
-                    key={`td_price_by_${cat.id}_${index}`}
-                    className={'moneyCell ' + (price < 0 ? 'negative' : 'positive')}
-                >
-                    {formatPrice(price)}
-                </td>
-            )
-        })}
+        {
+            selectedCats.map((cat, index) => {
+                const price = cat.id === p.cat.id ? p.amount : 0
+                return (
+                    <td
+                        key={`td_price_by_${cat.id}_${index}`}
+                        className={'moneyCell ' + (price < 0 ? 'negative' : 'positive')}
+                    >
+                        {formatPrice(price)}
+                    </td>
+                )
+            })
+        }
         <td key={`td_comment_${index}`}>{p.comment}</td>
         <td key={`td_dateCreate_${index}`}>{formatDateFR(p.dateCreate)}</td>
         <td key={`td_dateModif_${index}`}>{formatDateFR(p.dateModif)}</td>
-        <td key={`td_template_${index}`}>{p.template}</td>
-    </tr>
+        <td key={`td_template_${index}`}>{formatTemplate(p.template)}</td>
+    </tr >
 }
 
 
@@ -131,10 +139,7 @@ const SumLine: React.FC<SumLineProps> = ({ selectedCats, sumType }) => {
                     </td>
                 )
             })}
-            <td key={'td_comment_' + sumType}> </td>
-            <td key={'td_dateCreate_' + sumType}> </td>
-            <td key={'td_dateModif_' + sumType}> </td>
-            <td key={'td_template_' + sumType}> </td>
+            <td key={'td_empty_' + sumType} colSpan={4}></td>
         </tr>
     )
 }

@@ -30,17 +30,16 @@ const HeaderLine: React.FC<SelectedCatsProps> = ({ selectedCats }) => {
     <thead>
       <tr key='tr_header'>
         <th key='th_admin'> ADMIN </th>
-        <th key='th_date'> DATE </th>
+        <th key='th_date'> DATE<br />ACTION</th>
         <th key='th_obj'> OBJET </th>
-        <th key='th_montant' className='whitespace-nowrap'> MONTANT<br />
-          ASC | DESC </th>
+        <th key='th_montant' >MONTANT</th>
         {selectedCats.map((cat, index) => {
           return <th key={index}>{cat.name}</th>
         })}
         <th key='th_comment'> COMMENTAIRE </th>
-        <th key='th_dateCreate'> DATE CREATE </th>
-        <th key='th_dateModif'> DATE MODIF </th>
-        <th key='th_template'> TEMPLATE </th>
+        <th key='th_dateCreate'> DATE<br />CREATE </th>
+        <th key='th_dateModif'> DATE<br />MODIF </th>
+        <th key='th_template'> TYPE </th>
       </tr>
     </thead>
   )

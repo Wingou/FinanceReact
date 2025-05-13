@@ -29,44 +29,7 @@
   color: #61dafb;
 }
 
-/* ------ TABLE BOARD ----------- */
-
-.boardTable {
-  border: 1px solid black;
-  margin: 5px;
-  border-spacing: 0px;
-  font-family: verdana;
-  font-size: 10px;
-}
-
-td {
-  padding: 2px;
-  border: 1px solid black;
-  white-space: nowrap;
-  text-align: left;
-}
-
-th {
-  padding: 2px;
-  border: 1px solid black;
-  text-align: center;
-  background-color: lightskyblue;
-  text-transform: capitalize;
-  text-transform: uppercase;
-}
-
-.SumTitleCell {
-  padding: 2px;
-  border: 1px solid black;
-  text-align: right;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.SumLineTBody {
-  background-color: lightcyan;
-}
-
+ 
 /* ------ DISPLAY ----------- */
 
 .moneyCell {

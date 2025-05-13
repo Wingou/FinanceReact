@@ -1,4 +1,4 @@
-import { catNone, objNone } from '../types/constants'
+import { catNone, objNone, TEMPLATE } from '../types/constants'
 import { Categorie, Object } from '../types/common'
 
 export const formatDateYYYYMMDD = (d: string): string => {
@@ -9,6 +9,14 @@ export const formatDateYYYYMMDD = (d: string): string => {
 
 export const formatDateFR = (d: string) => {
   return new Date(d).toLocaleDateString('fr-FR')
+}
+
+export const formatTemplate = (t: number): TEMPLATE => {
+  return {
+    0: 'ACTIVATED',
+    1: 'RESERVED',
+    2: 'DELETED',
+  }[t] as TEMPLATE || 'ACTIVATED'
 }
 
 export const formatCalendarDate = (d: string) => {

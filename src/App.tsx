@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import './App.css'
 import { RootState } from './store/store'
 import BoardViewContainer from './containers/boardViewContainer'
 import HomeViewContainer from './containers/homeViewContainer'
@@ -9,11 +8,12 @@ import { COY } from './types/constants'
 import { Menu } from './components/common/menu'
 import { Dispatch } from '@reduxjs/toolkit'
 import { Month, Year } from './types/common'
-import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify'
 import { gql } from '@apollo/client'
 import { apolloClient } from './apollo-client'
+import './styles/app.css'
 import './styles/tailwind.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const dispatch = useDispatch()
