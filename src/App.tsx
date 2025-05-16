@@ -11,8 +11,6 @@ import { Month, Year } from './types/common'
 import { ToastContainer } from 'react-toastify'
 import { gql } from '@apollo/client'
 import { apolloClient } from './apollo-client'
-import './styles/app.css'
-import './styles/tailwind.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -39,7 +37,7 @@ function App() {
   }, [dispatch])
 
   useEffect(() => {
-    const { page, isAddOpen, isLast } = view
+    const { page, isLast } = view
     const fetchPricesData = async () => {
       try {
         await fetchPrices(years, months, dispatch)
@@ -74,8 +72,8 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>
-        <div className="flex justify-center items-center  ">
-          <h2 className="text-white text-3xl font-bold">Finance React</h2>
+        <div className="HeaderTitle">
+          Finance React
         </div>
         {isCOYLoaded ? <Menu view={view} /> :
           isError ? 'Data loading error !' : 'Loading...'}
@@ -178,7 +176,7 @@ const fetchPrices = async (years: Year[], months: Month[], dispatch: Dispatch) =
       {
         query: api,
         fetchPolicy: 'network-only'
-      }) // fetchPolicy: 'network-only' Forcer le cache d'Apollo
+      })
 
     dispatch({
       type: 'SET_PRICES',
@@ -192,7 +190,6 @@ const fetchPrices = async (years: Year[], months: Month[], dispatch: Dispatch) =
 
 
 const fetchLast = async (dispatch: Dispatch) => {
-  console.log('fetchLast')
   try {
     const api = gql`query GetLastPrices {
       lastPrices {
@@ -220,8 +217,7 @@ const fetchLast = async (dispatch: Dispatch) => {
       {
         query: api,
         fetchPolicy: 'network-only'
-      }) // fetchPolicy: 'network-only' Forcer le cache d'Apollo
-    console.log('data', data)
+      })
     dispatch({
       type: 'SET_PRICES',
       payload: data.lastPrices

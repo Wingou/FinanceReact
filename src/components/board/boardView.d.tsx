@@ -1,12 +1,15 @@
-import { AddPriceInput, Categorie, ModifPriceInput, Month, Object, OrderOptions, Price, SearchOptions, Year } from '../../types/common'
+import { AddPriceInput, Categorie, ModifPriceInput, Month, Object, OrderOptions, Price, SearchOptions, ViewOptions, Year } from '../../types/common'
 import { SUM_TYPE } from '../../types/constants'
 
 export interface BoardProps {
   filteredPrices: Price[],
   selectedCats: Categorie[],
-  modifLineProps: ModifLineProps,
+  modifPriceInput: ModifPriceInput,
+  objects: Object[],
+  lastMutatedPriceId: number,
   addLineProps: AddLineProps,
-  isSearchReserved: boolean
+  isSearchReserved: boolean,
+  view: ViewOptions
 }
 
 export interface BoardViewProps {
@@ -25,14 +28,16 @@ export interface BoardViewProps {
   isAddOpen: boolean,
   addPriceInput: AddPriceInput,
   isLast: boolean,
-  orderOptions: OrderOptions
+  orderOptions: OrderOptions,
+  view: ViewOptions
 }
 
 export interface ModifLineProps {
   modifPriceInput: ModifPriceInput,
   objects: Object[],
   selectedCats: Categorie[],
-  lastMutatedPriceId: number
+  lastMutatedPriceId: number,
+  view: ViewOptions
 }
 
 export interface AddLineProps {
@@ -41,8 +46,8 @@ export interface AddLineProps {
   isAddOpen: boolean
 }
 
-export interface SumLineProps { selectedCats: Categorie[], sumType: SUM_TYPE }
-export interface SimpleLineProps { selectedCats: Categorie[], p: Price, index: number, lastMutatedPriceId: number }
+export interface SumLineProps { selectedCats: Categorie[], sumType: SUM_TYPE, view: ViewOptions }
+export interface SimpleLineProps { selectedCats: Categorie[], p: Price, index: number, lastMutatedPriceId: number, view: ViewOptions }
 
 export interface TitleAmountMap {
   RECETTE: string,
@@ -51,7 +56,7 @@ export interface TitleAmountMap {
   TOTAL: string
 }
 
-export interface FilteredProps {
+export interface BodyLineProps {
   filteredPrices: Price[],
   selectedCats: Categorie[],
   modifPriceInput: ModifPriceInput,
@@ -60,13 +65,14 @@ export interface FilteredProps {
   lastMutatedPriceId: number,
   isAddOpen: boolean,
   addPriceInput: AddPriceInput,
+  // modifPriceInput: ModifLineProps,
+  view: ViewOptions
 }
 
-export interface SelectedCatsProps {
-  selectedCats: Categorie[]
+export interface HeaderLineProps {
+  selectedCats: Categorie[],
+  view: ViewOptions
 }
-
-
 
 export interface ActivatedCatsInputProps {
   displayedCats: Categorie[]
@@ -77,7 +83,6 @@ export interface ActivatedCatsInputProps {
 export interface SearchInputCatProps {
   props: ActivatedCatsInputProps
 }
-
 
 export interface InputTextProps {
   name: string,
@@ -92,10 +97,8 @@ export interface SearchWordInputProps {
   searchWord: string,
   searchMin: number | null,
   searchMax: number | null,
-  isSearchDel: boolean,
-  isSearchReserved: boolean
+  isPricesFound: boolean
 }
-
 
 export interface InputDateProps {
   name: string,
@@ -105,4 +108,12 @@ export interface InputDateProps {
 
 export interface OrderInputProps {
   orderOptions: OrderOptions
+}
+
+export interface DisplayInputProps {
+  searchWord: string,
+  isSearchDel: boolean,
+  isSearchReserved: boolean,
+  view: ViewOptions,
+  isPricesFound: boolean
 }

@@ -8,11 +8,10 @@ import {
   MONTHS,
   CALLER
 } from '../types/constants'
-import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions, initialSearchOptions } from '../models/initialModel'
-import { ActionType, AddPriceInput, Categorie, ModifPriceInput, Month, Object, OrderOptions, OrderSelectValue, Price, StateType, Year } from '../types/common'
+import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions } from '../models/initialModel'
+import { ActionType, Categorie, ModifPriceInput, Month, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
-import { OrderInput } from '../components/inputs/orderInput'
 
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
   switch (action.type) {
@@ -43,7 +42,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
             depense: 0,
             reserve: 0,
             isDisplayed: false,
-            isOn: false
+            isOn: true
           }
         })
         .concat(catNone)
@@ -101,11 +100,12 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state,
         prices: prices.map((p: PriceGql): Price => {
           const { id, amount, comment, obj, cat } = p
+          const comment_ = comment == undefined ? '' : comment
           return {
             ...p,
             id: parseInt(id),
             amount: parseFloat(amount),
-            comment,
+            comment: comment_,
             obj: {
               ...p.obj,
               id: parseInt(obj.id)
@@ -225,9 +225,9 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'UPDATE_ALL_CATS': {
-      const { searchOptions, categories: statCat } = state
+      const { searchOptions, categories: cat } = state
       const isMultiCats_ = action.payload as boolean
-      const categories = statCat.map((c: Categorie): Categorie => {
+      const categories = cat.map((c: Categorie): Categorie => {
         return {
           ...c,
           isOn: isMultiCats_
@@ -466,6 +466,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           ...p,
           actionDate: formatCalendarDate(p.actionDate)
         }
+        , view: {
+          ...state.view,
+          isColComment: true,
+          isColAmount: true
+        }
       }
     }
 
@@ -505,7 +510,6 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const { id, amount, comment, actionDate, obj, cat, template, dateModif } = modifPrice
       const { id: objId, name: objName } = obj
       const { id: catId, name: catName, position } = cat
-
       const categories = state.categories.map((c: Categorie): Categorie => {
         return c.id === parseInt(catId) ? { ...c, isOn: true, isDisplayed: true } : c
       })
@@ -538,7 +542,6 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'CANCEL_INPUT': {
       const caller = action.payload as CALLER
-
       return {
         ...state,
         modifPriceInput: caller === 'MODIF' ? initialModifPriceInput : state.modifPriceInput,
@@ -554,7 +557,6 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'UPDATE_ORDER_INPUT': {
-
       const { value, index: selectedPosCurrent } = action.payload as { value: string, index: number }
       const cols = state.orderOptions.orderSelectValues
       const orderSelectValuesReinit = cols
@@ -607,9 +609,22 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         }
       }
 
+    case 'TOGGLE_DISPLAY_COL':
+      const colName = action.payload as string
+      const sView = state.view
+      return {
+        ...state,
+        view: {
+          ...sView,
+          isColAmount: colName == 'isColAmount' ? !sView.isColAmount : sView.isColAmount,
+          isColComment: colName == 'isColComment' ? !sView.isColComment : sView.isColComment,
+          isColDateCreate: colName == 'isColDateCreate' ? !sView.isColDateCreate : sView.isColDateCreate,
+          isColDateModif: colName == 'isColDateModif' ? !sView.isColDateModif : sView.isColDateModif,
+          isColTemplate: colName == 'isColTemplate' ? !sView.isColTemplate : sView.isColTemplate
+        }
+      }
+
     default:
       return state
   }
 }
-
-

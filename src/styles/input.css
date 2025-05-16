@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.btnAdmin {
+    @apply text-xs;
+    @apply border rounded;
+    @apply px-1 mx-0.5 my-0.5;
+}
+
+.btnDisabled {
+    @apply text-gray-500;
+    @apply bg-gray-300;
+    @apply border-gray-500;
+
+}
+
+.btnEnabled {
+    @apply text-black;
+    @apply bg-white;
+    @apply border-blue-800;
+    @apply hover:bg-blue-300 hover:font-bold;
+    @apply font-normal;
+}
+
+
+.btnSwitchOn {
+    @apply bg-blue-500;
+    @apply   hover:text-white hover:font-bold;
+    @apply border-black;
+
+}
+
+.btnSwitchOff {
+    @apply bg-white text-black;
+    @apply    hover:text-black hover:font-bold;
+    @apply border-black;
+
+}
+
+.btnAdminSize0 {
+    @apply w-32;
+}
+
+.btnAdminSize1 {
+    @apply w-16;
+}
+
+.btnAdminSize2 {
+    @apply w-11;
+}
+
+.btnAdminSize3 {
+    @apply w-7;
+}
+
+
+.addInput {
+    @apply bg-blue-100;
+    @apply border border-blue-800;
+    @apply flex;
+    @apply mx-1 px-1;
+    @apply flex-wrap
+}
+
+.addInput_Label {
+    @apply text-xs font-bold;
+    @apply mt-1;
+    @apply whitespace-nowrap;
+    @apply mx-1;
+}
+
+.addInput_Date {
+    @apply text-xs;
+    @apply border border-blue-800 rounded-md;
+    @apply w-28;
+    @apply me-1 my-1 px-1;
+    @apply focus:outline-none;
+}
+
+.addInput_Select {
+    @apply text-xs;
+    @apply border border-blue-800 rounded-md;
+    @apply w-auto;
+    @apply me-1 my-1 px-1;
+    @apply focus:outline-none;
+}
+ 
+.addInput_PriceAndCurrency {
+    @apply flex;
+    @apply my-1 me-1;
+}
+
+.input_Price {
+    @apply text-xs text-right;
+    @apply border-blue-800 rounded-l-sm border-l border-y;
+    @apply bg-white;
+    @apply w-16;
+    @apply ps-1;
+    @apply focus:outline-none;
+}
+
+.input_Currency {
+    @apply text-xs;
+    @apply bg-white;
+    @apply border-blue-800 rounded-r-sm;
+    @apply border-y border-r;
+    @apply w-4;
+    @apply px-1;
+}
+
+.input_Text {
+    @apply text-xs;
+    @apply border-blue-800 rounded-sm;
+    @apply border;
+    @apply my-1 px-1 me-1;
+    @apply focus:outline-none;
+}
+
+.invalidValue {
+    @apply border-red-500 bg-red-50;
+}
+
+.searchDiv {
+    @apply flex;
+    @apply m-1 px-1;
+    @apply border border-blue-800;
+}
+
+.searchCheckDiv
+{
+    @apply flex;
+    @apply border-r border-blue-800;
+    @apply px-0 me-0.5;
+}
+
+.searchDivWrap {
+    @apply searchDiv;
+    @apply flex-wrap;
+}
+
+.searchCheckboxAdmin {
+    @apply flex;
+    @apply border-e border-blue-800;    
+}   
+
+.searchCheckboxOptions 
+{
+    @apply flex;
+    @apply flex-wrap;
+    @apply px-1;
+}
+
+.checkboxWithLabel {
+    @apply flex;
+    @apply text-xs;
+    @apply h-5;
+    @apply me-1;
+}
+
+.checkbox {
+    @apply flex;
+    @apply pt-0.5 pe-0.5;
+}
+ 
+.checkboxLabel {
+    @apply flex;
+    @apply text-xs uppercase;
+    @apply pt-0.5;
+}
+
+.checkboxLabelBold {
+    @apply checkboxLabel font-bold;
+}
+
+.orderByLabel {
+    @apply flex;
+    @apply text-xs uppercase;
+    @apply pt-1.5 pe-1;
+    @apply font-bold;
+
+}
+
+.btnOrderDir {
+    @apply text-xs;
+    @apply bg-white;
+    @apply border-blue-800 rounded-sm;
+    @apply border;
+    @apply w-4;
+    @apply p-0 ;   
+}
+
+.orderInput_Select
+{
+  @apply text-xs;
+    @apply border-blue-800 rounded-sm border;
+    @apply bg-white;
+    @apply me-1 my-1 px-1;
+    @apply focus:outline-none;
+}
+
+

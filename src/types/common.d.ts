@@ -10,12 +10,19 @@ export interface StateType {
   searchOptions: SearchOptions,
   addPriceInput: AddPriceInput,
   modifPriceInput: ModifPriceInput,
-  view: {
-    page: PAGE,
-    isAddOpen: boolean,
-    isLast: boolean
-  },
+  view: ViewOptions,
   orderOptions: OrderOptions
+}
+
+export interface ViewOptions {
+  page: PAGE,
+  isAddOpen: boolean,
+  isLast: boolean,
+  isColAmount: boolean,
+  isColComment: boolean,
+  isColDateCreate: boolean,
+  isColDateModif: boolean,
+  isColTemplate: boolean,
 }
 
 export interface ActionType {

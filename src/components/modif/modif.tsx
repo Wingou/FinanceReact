@@ -7,8 +7,9 @@ import { InputDate, InputPrice, InputText } from "../common/inputForm"
 import { formatDateFR, formatTemplate } from "../../utils/helper"
 
 export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
-    const { modifPriceInput, objects, selectedCats } = ModifLineProps
+    const { modifPriceInput, objects, selectedCats, view } = ModifLineProps
     const { catId, objId } = modifPriceInput
+    const { isColAmount, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     return <tr key='tr_ModifLine' className='trFocus'>
         <td key='td_ModifLine_OK'>
             <button
@@ -29,7 +30,6 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
             >
                 BACK
             </button>
-
         </td>
         <td key='td_ModifLine_Date'>
             <InputDate
@@ -41,28 +41,28 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
         <td key='td_ModifLine_Objects'>
             <SelectObj caller='MODIF' catId={-1} objId={objId} categories={[]} objects={objects} />
         </td>
-        <td key='td_ModifLine_Amount'>
+        {isColAmount && <td key='td_ModifLine_Amount'>
             <InputPrice name='price'
                 placeholder='Prix en'
                 value={modifPriceInput.amount}
                 handleFC={e => handleModifPriceInput(e)} />
-        </td>
+        </td>}
         {selectedCats.map((fcat) => {
             return fcat.id === catId
                 ? <td key='td_ModifLine_Price'>{modifPriceInput.amount}</td>
                 : <td key={`td_ModifLine_by_${fcat.id}_blank`}></td>
         })}
-        <td key='td_ModifLine_Comment'>
+        {isColComment && <td key='td_ModifLine_Comment'>
             <InputText
                 name='comment'
                 placeholder='Commentaire ici...'
                 handleFC={e => handleModifCommentInput(e)}
                 value={modifPriceInput.comment}
                 width='w-60' />
-        </td>
-        <td key='td_ModifLine_DateCreate'>{formatDateFR(modifPriceInput.dateCreate)}</td>
-        <td key='td_ModifLine_DateModif'>{formatDateFR(modifPriceInput.dateModif)}</td>
-        <td key='td_ModifLine_Template'>{formatTemplate(modifPriceInput.template)}</td>
+        </td>}
+        {isColDateCreate && <td key='td_ModifLine_DateCreate'>{formatDateFR(modifPriceInput.dateCreate)}</td>}
+        {isColDateModif && <td key='td_ModifLine_DateModif'>{formatDateFR(modifPriceInput.dateModif)}</td>}
+        {isColTemplate && <td key='td_ModifLine_Template'>{formatTemplate(modifPriceInput.template)}</td>}
     </tr >
 
 

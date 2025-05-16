@@ -3,8 +3,7 @@ import { parseCategories, parseObjects, parsePrices, parseYears } from "./parser
 import { sqlAddPrice, sqlCategories, sqlIdent, sqlLastPrices, sqlModifPrice, sqlObjects, sqlPriceById, sqlPricesByDates, sqlYears } from "./queries.js"
 import { setParamInSQL } from "./utils.js"
 import { CatRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
-import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, YearGql, ModifPriceUpdateInput } from "../src/types/graphql.js"
-
+import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, YearGql, ModifPriceUpdateInput } from "./types/graphql.js"
 const cnx = await odbc.connect('DSN=financereact')
 
 export const resolvers = {
@@ -72,13 +71,9 @@ export const resolvers = {
             }
         },
         lastPrices: async () => {
-            console.log('lastPrices')
             try {
-                console.log('sqlLastPrices', sqlLastPrices)
                 const rows = await cnx.query(setParamInSQL(sqlLastPrices, []))
-                console.log('rows', rows)
                 const result = parsePrices(rows as PriceRaw[])
-                console.log('result', result)
                 return result as PriceGql[]
             }
             catch (error) {

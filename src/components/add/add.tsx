@@ -8,7 +8,6 @@ import React from 'react'
 import { SelectCat, SelectObj } from '../common/selectList'
 import { AddLineProps } from '../common/selectList.d'
 import { handleCancel } from '../../actions/cancel'
-import { CURRENT_DATE } from '../../types/constants'
 import { InputDate, InputPrice, InputText } from '../common/inputForm'
 
 export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
@@ -19,7 +18,6 @@ export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
     /^-?\d*\.?\d{0,2}$/.test(addPriceInput.amount) &&
     addPriceInput.amount !== '' &&
     addPriceInput.amount !== '-'
-
   const btnOK_Title = !isObjetOK
     ? 'Objet manquant !'
     : !isPriceOK
@@ -27,43 +25,27 @@ export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
       : 'Valider'
   const isOKBtnDisabled = !(isObjetOK && isPriceOK)
   const invalidDisableBtn = !isPriceOK || !isObjetOK ? 'btnDisabled' : 'btnEnabled'
-
   return (
-
-
     <div key='div_Addinput' className='addInput'>
-
-
-
-      <InputDate
-        name='dateAction'
-        value={addPriceInput.actionDate}
-        handleFC={handleAddDateInput}
-      />
-
-      <SelectCat {...addLineProps} /><br />
-
-      <SelectObj caller='ADD' categories={categories} objects={objects} catId={catId} objId={objId} />
-
       <InputPrice
         name='price'
         placeholder='Prix en'
         handleFC={handleAddPriceInput}
         value={addPriceInput.amount}
       />
-
-
-
-
+      <InputDate
+        name='dateAction'
+        value={addPriceInput.actionDate}
+        handleFC={handleAddDateInput}
+      />
+      <SelectCat {...addLineProps} /><br />
+      <SelectObj caller='ADD' categories={categories} objects={objects} catId={catId} objId={objId} />
       <InputText
-
         name='comment'
         placeholder='Commentaire ici...'
         handleFC={handleAddCommentInput}
         value={addPriceInput.comment}
         width='w-60' />
-
-
       <div>
         <button
           onClick={() => {
@@ -71,13 +53,10 @@ export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
           }}
           title={btnOK_Title}
           disabled={isOKBtnDisabled}
-          className={`btnAdmin btnAdminSize1 ${invalidDisableBtn}`}
+          className={`btnAdmin btnAdminSize0 ${invalidDisableBtn}`}
         >
           OK
         </button>
-      </div>
-      <div className='addInput_Label'>
-        |
       </div>
       <div  >
         <button
@@ -90,12 +69,7 @@ export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
           ¤
         </button>
       </div>
-
-
     </div >
-
-
-
   )
 }
 

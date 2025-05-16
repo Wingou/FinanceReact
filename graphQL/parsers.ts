@@ -1,4 +1,4 @@
-import { CatGql, ObjGql, PriceGql, YearGql } from "../src/types/graphql.js"
+import { CatGql, ObjGql, PriceGql, YearGql } from "./types/graphql.js"
 import { CatRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
 
 export const parseCategories = (rows: CatRaw[]): CatGql[] => {

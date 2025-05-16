@@ -9,7 +9,8 @@
     "@types/node": "^20.0.0"
   },
   "scripts": {
-    "start": "node --loader ts-node/esm ./graphQLServer.ts"
+    "start": "node --loader ts-node/esm ./graphQLServer.ts",
+    "build:prod": "npx tsc --project tsconfig.prod.json"
   },
   "keywords": [],
   "author": "",

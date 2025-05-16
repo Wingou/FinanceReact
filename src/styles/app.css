@@ -1,237 +1,35 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    @apply text-center;
+    @apply font-verdana ;
 }
 
 .App-header {
-  background-color: blue;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(5px + 2vmin);
-  color: white;
-  margin-bottom: 10px;
+    @apply bg-blue-700;
+    @apply flex;
+    @apply flex-col;
+    @apply items-center;
+    @apply text-lg;
+    @apply text-white;
+    @apply mb-2;
 }
 
 .App-footer {
-  text-align: center;
-  font-family: verdana;
-  font-size: 10px;
-  margin: 10px;
+    @apply text-center;
+    @apply font-verdana;
+    @apply text-xs;
+    @apply m-3;
 }
-
-.App-link {
-  color: #61dafb;
-}
-
- 
-/* ------ DISPLAY ----------- */
-
-.moneyCell {
-  border: 1px solid black;
-  text-align: right;
-  padding-right: 5px;
-  padding: 2px;
-  width: 60px;
-  white-space: nowrap;
-}
-
-.positive {
-  color: blue;
-}
-
-.negative {
-  color: red;
-}
-
-.NoDataFound {
-  font-family: verdana;
-  font-size: 20px;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin: 5px;
-  padding: 50px;
-  border: 1px solid red;
-}
-
-/* ------ MENU ----------- */
-
-.Checkbox {
-  vertical-align: middle;
-}
-
-.DateInput {
-  border: 1px solid blue;
-  padding: 2px;
-  border-radius: 5px;
-  font-family: verdana;
-  font-size: 10px;
-}
-
-.SearchInputCat {
-  border: 1px solid blue;
-  margin: 5px;
-  border-spacing: 0px;
-  text-align: left;
-}
-
-.MsgNoCatDiv {
-  border: 1px solid red;
-  font-family: verdana;
-  font-size: 12px;
-  white-space: nowrap;
-  margin: 5px;
-  text-align: left;
-  padding: 2px;
-}
-
-.CheckboxLabel {
-  font-family: verdana;
-  font-size: 10px;
-  white-space: nowrap;
-}
-
-.HeadLabel {
-  font-weight: bold;
-}
-
-.CheckboxInput {
-  vertical-align: middle;
-}
-
-.InputLabel {
-  font-family: verdana;
-  font-size: 10px;
-  padding: 2px;
-  white-space: nowrap;
-}
-
-.TextInput {
-  width: 100px;
-  font-family: verdana;
-  font-size: 10px;
-  margin: 2px;
-}
-
-.NumberInput {
-  width: 30px;
-  font-family: verdana;
-  font-size: 10px;
-  margin: 2px;
-}
-
-/* ------ MENU ----------- */
 
 .divMenu {
-  border: 1px solid blue;
-  text-align: center;
-  background-color: white;
-  width: 100%;
+  @apply border border-black;
+  @apply text-center;
+  @apply bg-white;
+  @apply w-full;
 }
-
-.buttonMenu {
-  font-family: verdana;
-  font-size: 10px;
-  text-transform: uppercase;
-  width: 100px;
-  margin: 5px;
-}
-
-/* ------ ADD ----------- */
-
-.ViewAdd_Div {
-  margin: 5px;
-  border-spacing: 0px;
-  padding-bottom: 15px;
-}
-
-.InputAdd_Form {
-  margin: 5px;
-  text-align: left;
-}
-
-.InputAdd_Input_Date {
-  border: 1px solid darkblue;
-  border-radius: 3px;
-  font-family: verdana;
-  font-size: 12px;
-  text-align: center;
-  width: 100px;
-  margin-right: 5px;
-}
-
-.InputAdd_Select_Cat {
-  border: 1px solid darkblue;
-  border-radius: 3px;
-  font-family: verdana;
-  font-size: 12px;
-  width: 150px;
-  margin-right: 5px;
-}
-
-.InputAdd_Select_Obj {
-  border: 1px solid darkblue;
-  border-radius: 3px;
-  font-family: verdana;
-  font-size: 12px;
-  width: 200px;
-  margin-right: 5px;
-}
-
-.InputAdd_Div_PriceAndCurrency {
-  white-space: nowrap;
-  display: inline;
-}
-
-.InputAdd_Input_Price {
-
-  border: 1px solid darkblue;
-  border-right: none;
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  text-align: right;
-  width: 83px;
-  font-family: verdana;
-  font-size: 12px;
-  outline: none;
-  margin-right: 0;
-}
-
-.InputAdd_Input_Currency {
-  border: 1px solid darkblue;
-  border-left: none;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  text-align: center;
-  width: 10px;
-  font-family: verdana;
-  font-size: 12px;
-  margin-right: 5px;
-}
-
-.InputAdd_Input_Comment {
-  border: 1px solid darkblue;
-  border-radius: 3px;
-  font-family: verdana;
-  font-size: 12px;
-  width: 294px;
-  margin-right: 5px;
-
-}
-
-.InputAdd_Button_OK {
-  border: 1px solid darkblue;
-  border-radius: 3px;
-  font-family: verdana;
-  font-size: 12px;
-  width: 50px;
-}
-
-.invalidValue {
-  border-color: red;
+ 
+ .btnMenu {
+    @apply text-sm;
+    @apply border rounded-md;
+    @apply w-20;
+    @apply m-1 p-1;
 }

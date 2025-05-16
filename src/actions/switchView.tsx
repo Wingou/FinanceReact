@@ -6,9 +6,9 @@ interface ToView {
     payload: PAGE
 }
 
-export const handleToPage = (view: PAGE) => {
+export const handleToPage = (page: PAGE) => {
     const action = (): ToView => {
-        switch (view) {
+        switch (page) {
             case 'HOME': return { type: 'TO_HOME', payload: 'HOME' };
             case 'BOARD': return { type: 'TO_BOARD', payload: 'BOARD' };
             default:

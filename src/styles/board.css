@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.boardTable {
+  @apply border-black;
+  @apply m-1;
+  @apply text-xs;
+}
+
+.trFocus {
+    @apply bg-yellow-100;
+}
+
+@layer base {
+tr {     
+    @apply  hover:border-2 hover:border-green-300;
+    }
+
+td {
+    @apply p-0.5;
+    @apply border border-black;
+    @apply whitespace-nowrap;
+    @apply text-left;
+    }
+
+th {
+    @apply p-0.5;
+    @apply border border-black;
+    @apply text-center;
+    @apply bg-sky-400;
+    @apply uppercase;
+    }
+}
+
+.thAdmin {
+    @apply w-fit ;
+}
+
+.thActionDate {
+    @apply w-fit;
+}
+
+.thObj {
+    @apply w-fit
+}
+
+.thAmount {
+    @apply min-w-20
+}
+
+.thCat {
+    @apply min-w-20
+}
+
+.thComment {
+    @apply w-screen
+}
+
+.thDateCreate {
+    @apply w-fit
+}
+
+.thDateModif {
+    @apply w-fit
+}
+
+.thTemplate {
+    @apply w-fit
+}
+
+.HeaderTitle {
+    @apply flex items-center; 
+    @apply text-white text-3xl font-bold py-1;
+}
+
+.FocusedLine {
+    @apply border-2 border-green-300;
+}
+
+.SumTitleCell {
+    @apply p-0.5;
+    @apply border border-black;
+    @apply text-right;
+    @apply font-bold;
+    @apply uppercase;
+}
+
+.SumLineTBody {
+    @apply bg-cyan-200;
+}
+
+.SimpleLineActivated {
+    @apply bg-white;
+}
+
+
+.SimpleLineReserved {
+    @apply bg-orange-200;
+}
+
+.SimpleLineDeleted {
+    @apply bg-gray-300;
+}
+
+.sumLine_RESERVE {
+    @apply bg-orange-400;
+}
+
+.moneyCell {
+    @apply border border-black;
+    @apply text-right;
+    @apply px-1;
+    @apply whitespace-nowrap;
+}
+
+.positive {
+    @apply text-blue-600;
+}
+
+.negative {
+    @apply text-red-600;
+}
+
+.disabledDiv {
+    @apply bg-gray-300 pointer-events-none opacity-40  cursor-not-allowed
+}
+
+.NoDataFound {
+    @apply font-verdana;
+    @apply text-lg;
+    @apply font-bold;
+    @apply uppercase text-red-500;
+    @apply m-1;
+    @apply p-12;
+    @apply border border-red-500 bg-red-100;
+}
+ 
+.MsgNoCatDiv {
+    @apply border border-red-500;
+    @apply font-verdana;
+    @apply text-sm font-bold;
+    @apply whitespace-nowrap;
+    @apply mx-1;
+    @apply text-left;
+    @apply p-0.5;
+}

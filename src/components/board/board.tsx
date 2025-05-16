@@ -1,65 +1,54 @@
 import React from 'react'
-import {
-  formatDateFR,
-  formatPrice,
-  formatPriceWithZero
-} from '../../utils/helper'
-import { Categorie, ModifPriceInput, Object, Price } from '../../types/common'
-import { handleModif, handleModifPrice } from '../../actions/modif'
-import { BoardProps, SelectedCatsProps, FilteredProps, SimpleLineProps, SumLineProps, TitleAmountMap } from './boardView.d'
+import { BoardProps, HeaderLineProps, BodyLineProps } from './boardView.d'
 import { ModifLine } from '../modif/modif'
 import { DelLine } from '../del/del'
 import { SimpleLine, SumLines } from '../boardLines/boardLines'
 
-
-export const Board: React.FC<BoardProps> = ({ filteredPrices, selectedCats, modifLineProps, addLineProps, isSearchReserved }) => {
-  const { modifPriceInput, objects, lastMutatedPriceId } = modifLineProps
+export const Board: React.FC<BoardProps> = ({ filteredPrices, selectedCats, modifPriceInput, objects, lastMutatedPriceId, addLineProps, isSearchReserved, view }) => {
   const { isAddOpen, categories, addPriceInput } = addLineProps
   return (
     <table className='boardTable'>
-      <HeaderLine selectedCats={selectedCats} />
-      <SumLines selectedCats={selectedCats} isSearchReserved={isSearchReserved} />
-      <BodyLines filteredPrices={filteredPrices} selectedCats={selectedCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} isAddOpen={isAddOpen} addPriceInput={addPriceInput} categories={categories} />
+      <HeaderLine selectedCats={selectedCats} view={view} />
+      <SumLines selectedCats={selectedCats} isSearchReserved={isSearchReserved} view={view} />
+      <BodyLines filteredPrices={filteredPrices} selectedCats={selectedCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} isAddOpen={isAddOpen} addPriceInput={addPriceInput} categories={categories} view={view} />
     </table>
   )
 }
 
-
-const HeaderLine: React.FC<SelectedCatsProps> = ({ selectedCats }) => {
+const HeaderLine: React.FC<HeaderLineProps> = ({ selectedCats, view }) => {
+  const { isColAmount, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
   return (
     <thead>
       <tr key='tr_header'>
-        <th key='th_admin'> ADMIN </th>
-        <th key='th_date'> DATE<br />ACTION</th>
-        <th key='th_obj'> OBJET </th>
-        <th key='th_montant' >MONTANT</th>
+        <th key='th_admin' className='thAdmin'> ADMIN </th>
+        <th key='th_date' className='thActionDate'> DATE<br />ACTION</th>
+        <th key='th_obj' className='thObj'> OBJET </th>
+        {isColAmount && <th key='th_montant' className='thAmount'>MONTANT</th>}
         {selectedCats.map((cat, index) => {
-          return <th key={index}>{cat.name}</th>
+          return <th key={index} className='thCat'>{cat.name}</th>
         })}
-        <th key='th_comment'> COMMENTAIRE </th>
-        <th key='th_dateCreate'> DATE<br />CREATE </th>
-        <th key='th_dateModif'> DATE<br />MODIF </th>
-        <th key='th_template'> TYPE </th>
+        {isColComment && <th key='th_comment' className='thComment'> COMMENTAIRE </th>}
+        {isColDateCreate && <th key='th_dateCreate' className='thDateCreate'> DATE<br />CREATE </th>}
+        {isColDateModif && <th key='th_dateModif' className='thDateModif'> DATE<br />MODIF </th>}
+        {isColTemplate && <th key='th_template' className='thTemplate'> TYPE </th>}
       </tr>
     </thead>
   )
 }
 
+const BodyLines: React.FC<BodyLineProps> = ({ filteredPrices, selectedCats, modifPriceInput, objects, lastMutatedPriceId, view }) => {
 
-
-const BodyLines: React.FC<FilteredProps> = ({ filteredPrices, selectedCats, modifPriceInput, objects, lastMutatedPriceId, isAddOpen, addPriceInput, categories }) => {
   return (
     <tbody>
-
       {filteredPrices.map((p, index) => {
         return (
           p.id === modifPriceInput.id ?
             modifPriceInput.template === 2 ?
               <DelLine key={`DelLine_${index}`} selectedCats={selectedCats} price={p} modifPriceInput={modifPriceInput} />
               :
-              <ModifLine key={`ModifLine_${index}`} modifPriceInput={modifPriceInput} objects={objects} selectedCats={selectedCats} lastMutatedPriceId={lastMutatedPriceId} />
+              <ModifLine key={`ModifLine_${index}`} selectedCats={selectedCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} view={view} />
             :
-            <SimpleLine key={`SimpleLine_${index}`} selectedCats={selectedCats} p={p} index={index} lastMutatedPriceId={lastMutatedPriceId} />
+            <SimpleLine key={`SimpleLine_${index}`} selectedCats={selectedCats} p={p} index={index} lastMutatedPriceId={lastMutatedPriceId} view={view} />
         )
       })}
     </tbody>

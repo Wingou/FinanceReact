@@ -6,14 +6,15 @@ import { handleOrderInput, handleToggleOrderDir } from '../../actions/order'
 import { OrderSelectProps } from './input'
 
 export const OrderInput: React.FC<OrderInputProps> = (props) => {
-  // console.log("props:", props)
   const { orderOptions } = props
   const { orderSelectValues } = orderOptions
 
   const orderSelectValuesSelected = orderSelectValues.filter((o) => o.selectedPos !== -1)
     .sort((a, b) => a.selectedPos - b.selectedPos)
   const orderSelectValuesNb = orderSelectValuesSelected.length
+
   return <div className='searchDivWrap' >
+    <div className='orderByLabel'>ORDER BY</div>
     {
       orderSelectValuesSelected.map((_c, index) => {
         return <SelectOrder key={`selectOrder_${index}`} orderSelectValues={orderSelectValues} index={index} />
@@ -21,9 +22,7 @@ export const OrderInput: React.FC<OrderInputProps> = (props) => {
       )
     }
     <SelectOrder key={`selectOrder_${orderSelectValuesNb}`} orderSelectValues={orderSelectValues} index={orderSelectValuesNb} />
-    <div className='addInput_Label'>
-      |
-    </div>
+
     <div  >
       <button
         className={`btnAdmin btnAdminSize3 btnEnabled `}

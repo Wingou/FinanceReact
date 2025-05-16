@@ -1,9 +1,10 @@
 import {
   CURRENT_DATE,
   CURRENT_MONTH,
-  MONTHS
+  MONTHS,
+  PAGE
 } from '../types/constants'
-import { AddPriceInput, ModifPriceInput, OrderOptions, SearchOptions, StateType, } from '../types/common'
+import { AddPriceInput, ModifPriceInput, OrderOptions, SearchOptions, StateType, ViewOptions, } from '../types/common'
 
 export const initialModifPriceInput: ModifPriceInput = {
   id: -1,
@@ -51,6 +52,17 @@ export const initialOrderOptions: OrderOptions = {
   ]
 }
 
+const initialView: ViewOptions = {
+  page: 'HOME' as PAGE,
+  isAddOpen: false,
+  isLast: false,
+  isColAmount: true,
+  isColComment: false,
+  isColDateCreate: false,
+  isColDateModif: true,
+  isColTemplate: false
+}
+
 export const initialModel: StateType = {
   prices: [],
   objects: [],
@@ -60,11 +72,7 @@ export const initialModel: StateType = {
   searchOptions: initialSearchOptions,
   addPriceInput: initialAddPriceInput,
   modifPriceInput: initialModifPriceInput,
-  view: {
-    page: 'HOME',
-    isAddOpen: false,
-    isLast: false
-  },
+  view: initialView,
   orderOptions: initialOrderOptions
 }
 

@@ -16,7 +16,8 @@ interface DateInputProps {
   isAllYearsChecked: boolean,
   isAllMonthsChecked: boolean,
   isMultiYears: boolean,
-  isMultiMonths: boolean
+  isMultiMonths: boolean,
+  isLast: boolean
 }
 
 export const DateInput: React.FC<DateInputProps> = ({
@@ -25,10 +26,12 @@ export const DateInput: React.FC<DateInputProps> = ({
   isAllYearsChecked,
   isAllMonthsChecked,
   isMultiYears,
-  isMultiMonths
-}) => (
-  <div key='div_dateInput'>
-    <div className='searchDiv' >
+  isMultiMonths,
+  isLast
+}) => {
+  const disabledDiv = isLast ? 'disabledDiv' : ''
+  return <div key='div_dateInput' title={isLast ? 'Dates cannot be changed when LAST mode is activated' : 'Select years and months to filter'}>
+    <div className={`searchDiv ${disabledDiv}`} >
       <div className='searchCheckboxAdmin'>
         <CheckBox key={'multipleYears'}
           name='multipleYears'
@@ -64,7 +67,7 @@ export const DateInput: React.FC<DateInputProps> = ({
     </div>
 
     <div key='div_dateInput'>
-      <div className='searchDiv' >
+      <div className={`searchDiv ${disabledDiv}`} >
         <div className='searchCheckboxAdmin'>
           <CheckBox
             key='multipleMonths'
@@ -102,4 +105,4 @@ export const DateInput: React.FC<DateInputProps> = ({
       </div>
     </div>
   </div>
-)
+}

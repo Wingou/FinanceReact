@@ -84,7 +84,6 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
       }
       else {
         return orderRefs.reduce((acc, ref) => {
-          console.log("ref.value:", ref.value)
           return acc !== 0 ? acc : compareValue(ref.value, ref.dir, a, b)
         }, 0)
       }
@@ -125,7 +124,8 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     isAddOpen,
     addPriceInput,
     isLast,
-    orderOptions
+    orderOptions,
+    view
   }
 }
 const BoardViewContainer = connect(mapStateToProps)(BoardView)

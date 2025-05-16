@@ -111,9 +111,11 @@ export type Query = {
   years?: Maybe<Array<YearGql>>;
 };
 
+
 export type QueryObjectsArgs = {
   where?: InputMaybe<ObjectsWhereInput>;
 };
+
 
 export type QueryPriceByIdArgs = {
   where: PriceByIdWhereInput;

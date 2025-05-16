@@ -1,8 +1,5 @@
-
-
 import React from 'react'
 import { InputDateProps, InputTextProps } from '../board/boardView.d'
-
 
 interface CheckBoxProps {
     name: string,
@@ -13,7 +10,7 @@ interface CheckBoxProps {
 }
 
 export const CheckBox: React.FC<CheckBoxProps> = ({ name, index, checked, handleFC, label, isLabelBold }) => {
-    const labelStyle = isLabelBold ? 'font-bold' : ''
+    const checkboxLabelStyle = isLabelBold ? 'checkboxLabelBold' : 'checkboxLabel'
     return <div className='checkboxWithLabel' >
         <div key={`${name}Label_${index}`} className='checkbox'>
             <input
@@ -26,7 +23,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({ name, index, checked, handle
                 }}
             />
         </div>
-        <div className={`checkboxLabel ${labelStyle}`}>{label}</div>
+        <div className={checkboxLabelStyle}>{label}</div>
     </div>
 }
 
@@ -41,7 +38,6 @@ export const InputText: React.FC<InputTextProps> = ({ name, placeholder, handleF
         value={value}
     />
 }
-
 
 export interface InputPriceProps {
     name: string,

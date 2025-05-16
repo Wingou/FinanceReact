@@ -1,7 +1,8 @@
 
-import { Categorie } from "../../types/common";
+import { Categorie, ViewOptions } from "../../types/common";
 
 export interface SumLinesProps {
     selectedCats: Categorie[],
-    isSearchReserved: boolean
+    isSearchReserved: boolean,
+    view: ViewOptions
 }

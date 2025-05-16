@@ -4,9 +4,8 @@ import {
   handleUpdateAllCats,
   handleUpdateMultipleCats
 } from '../../actions/search'
-import { Categorie } from '../../types/common'
 import { CheckBox } from '../common/inputForm'
-import { ActivatedCatsInputProps, SearchInputCatProps } from '../board/boardView.d'
+import { ActivatedCatsInputProps } from '../board/boardView.d'
 
 export const ActivatedCatsInput: React.FC<ActivatedCatsInputProps> = (props) => {
   const { displayedCats } = props

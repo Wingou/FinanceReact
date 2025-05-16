@@ -4,10 +4,10 @@ import { ActivatedCatsInput } from '../inputs/categorieInput'
 import { DateInput } from '../inputs/datesInput'
 import { SearchWordInput } from '../inputs/searchInput'
 import { NoBoard } from './noBoard'
-import { Categorie, ModifPriceInput, Month, Object, Price, SearchOptions, Year } from '../../types/common'
 import { BoardViewProps } from './boardView.d'
 import { AddPriceInput } from '../add/add'
 import { OrderInput } from '../inputs/orderInput'
+import { DisplayInput } from '../inputs/displayInput'
 
 export class BoardView extends Component<BoardViewProps, {}> {
   render() {
@@ -27,7 +27,8 @@ export class BoardView extends Component<BoardViewProps, {}> {
       isAddOpen,
       categories,
       isLast,
-      orderOptions
+      orderOptions,
+      view
     } = this.props
     const {
       isMultiYears,
@@ -41,18 +42,13 @@ export class BoardView extends Component<BoardViewProps, {}> {
       lastMutatedPriceId
     } = searchOptions
 
-    const modifLineProps = {
-      objects,
-      modifPriceInput,
-      selectedCats,
-      lastMutatedPriceId
-    }
-
     const addLineProps = {
       isAddOpen,
       addPriceInput,
       categories
     }
+
+    const isPricesFound = filteredPrices.length !== 0
     return (
       <div>
         {isAddOpen
@@ -67,32 +63,40 @@ export class BoardView extends Component<BoardViewProps, {}> {
           searchWord={searchWord}
           searchMin={searchMin}
           searchMax={searchMax}
-          isSearchDel={isSearchDel}
-          isSearchReserved={isSearchReserved}
-
+          isPricesFound={isPricesFound}
         />
-
-
-        {!isLast && <DateInput
+        <DateInput
           years={years}
           months={months}
           isAllYearsChecked={isAllYearsChecked}
           isAllMonthsChecked={isAllMonthsChecked}
           isMultiYears={isMultiYears}
           isMultiMonths={isMultiMonths}
-        />}
-
+          isLast={isLast}
+        />
         <ActivatedCatsInput
           displayedCats={displayedCats}
           isAllCatsChecked={isAllCatsChecked}
           isMultiCats={isMultiCats}
         />
-
-        <OrderInput orderOptions={orderOptions}
+        <DisplayInput
+          searchWord={searchWord}
+          isSearchDel={isSearchDel}
+          isSearchReserved={isSearchReserved}
+          view={view}
+          isPricesFound={isPricesFound}
         />
-
+        <OrderInput orderOptions={orderOptions} />
         {filteredPrices.length !== 0 ? (
-          <Board filteredPrices={filteredPrices} selectedCats={selectedCats} modifLineProps={modifLineProps} addLineProps={addLineProps} isSearchReserved={isSearchReserved} />
+          <Board
+            filteredPrices={filteredPrices}
+            selectedCats={selectedCats}
+            modifPriceInput={modifPriceInput}
+            objects={objects}
+            lastMutatedPriceId={lastMutatedPriceId}
+            addLineProps={addLineProps}
+            isSearchReserved={isSearchReserved}
+            view={view} />
         ) : (
           <NoBoard />
         )}
