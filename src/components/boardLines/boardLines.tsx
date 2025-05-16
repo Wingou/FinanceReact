@@ -10,6 +10,7 @@ import { handleModif, handleModifPrice } from '../../actions/modif'
 import { SimpleLineProps, SumLineProps, TitleAmountMap } from '../board/boardView.d'
 import { SUM_TYPE } from '../../types/constants'
 import { SumLinesProps } from './boardLines.d'
+import { handleSearchObj } from '../../actions/search'
 
 export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, lastMutatedPriceId, view }) => {
     const { isColAmount, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
@@ -30,14 +31,20 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, 
         ? 'FocusedLine'
         : ''
     const btnStyleDisabled = p.template === 2 ? 'btnDisabled' : 'btnEnabled'
-    return <tr key={`tr_SimpleLine_${index}`} className={trSimpleLine + ' ' + simpleLineStyleByTemplate} title={p.comment == '' ? 'no comment' : p.comment}>
+    const commentTitle = p.comment == '' ? 'no comment' : 'commentaire:\n' + p.comment
+    const rechObjTitle = `Copier sur le champ recherche :\n${p.obj.name}`
+    return <tr key={`tr_SimpleLine_${index}`} className={trSimpleLine + ' trhover ' + simpleLineStyleByTemplate} title={commentTitle}>
         <td key={`td_admin_${index}`}>
             <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2} onClick={() => handleModifPrice(modifPriceInputForReserve)}>~</button>
             <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2} onClick={() => handleModif(p)}>...</button>
             <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2} onClick={() => handleModif({ ...p, template: 2 })}>X</button>
         </td>
         <td key={`td_date_${index}`}>{formatDateFR(p.actionDate)}</td>
-        <td key={`td_obj_${index}`}>{p.obj.name}</td>
+        <td key={`td_obj_${index}`}
+            title={rechObjTitle + '\n\n' + commentTitle}
+            onClick={()=>handleSearchObj(p.obj.name)}>
+            {p.obj.name}
+        </td>
         {isColAmount && <td key={`td_amount_${index}`} className={'moneyCell ' + (p.amount < 0 ? 'negative' : 'positive')}>
             {formatPrice(p.amount)}
         </td>}

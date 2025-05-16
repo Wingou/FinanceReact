@@ -10,8 +10,8 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
     const { modifPriceInput, objects, selectedCats, view } = ModifLineProps
     const { catId, objId } = modifPriceInput
     const { isColAmount, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
-    return <tr key='tr_ModifLine' className='trFocus'>
-        <td key='td_ModifLine_OK'>
+    return <tr key='tr_ModifLine' className='trFocus' title={modifPriceInput.comment}>
+        <td key='td_ModifLine_OK' >
             <button
                 className='btnAdmin btnAdminSize2 btnEnabled'
                 onClick={() => {

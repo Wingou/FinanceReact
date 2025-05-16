@@ -76,6 +76,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
         />
         <ActivatedCatsInput
           displayedCats={displayedCats}
+          selectedCats={selectedCats}
           isAllCatsChecked={isAllCatsChecked}
           isMultiCats={isMultiCats}
         />

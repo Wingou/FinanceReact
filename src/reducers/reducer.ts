@@ -468,7 +468,6 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         }
         , view: {
           ...state.view,
-          isColComment: true,
           isColAmount: true
         }
       }

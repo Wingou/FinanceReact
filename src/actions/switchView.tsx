@@ -19,11 +19,11 @@ export const handleToPage = (page: PAGE) => {
 }
 
 export const handleToggleAdd = () => {
-    const action = { type: 'TOGGLE_ADD', payload: null }
+    const action = { type: 'TOGGLE_ADD' }
     store.dispatch(action)
 }
 
 export const handleToggleLast = () => {
-    const action = { type: 'TOGGLE_LAST', payload: null }
+    const action = { type: 'TOGGLE_LAST' }
     store.dispatch(action)
 }

@@ -123,3 +123,16 @@ export const handleUpdateDislayCol = (e: React.ChangeEvent<HTMLInputElement>) =>
   }
   store.dispatch(action)
 }
+
+
+
+export const handleSearchObj = (obj: string) => {
+
+  const action = {
+    type: 'UPDATE_SEARCH_WORD',
+    payload: obj
+  }
+
+  store.dispatch(action)
+
+}
