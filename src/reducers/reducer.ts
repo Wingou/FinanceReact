@@ -14,8 +14,10 @@ import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
 
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
+  console.log("action.type:", action.type)
   switch (action.type) {
     case '@@INIT': {
+      console.log("months_:", CURRENT_MONTH)
       return {
         ...initialModel,
         months: MONTHS.map((m, index) => {
@@ -308,7 +310,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state,
         searchOptions: {
           ...state.searchOptions,
-          isSearchDel: action.payload as boolean
+          isSearchDeleted: action.payload as boolean
         }
       }
     }
@@ -611,11 +613,16 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     case 'TOGGLE_DISPLAY_COL':
       const colName = action.payload as string
       const sView = state.view
+
+      const isColAmount = (colName == 'isColAmount' ? !sView.isColAmount : sView.isColAmount) || (colName == 'isColCat' && !sView.isColAmount && sView.isColCat)
+      const isColCat = (colName == 'isColCat' ? !sView.isColCat : sView.isColCat) || (colName == 'isColAmount' && !sView.isColCat && sView.isColAmount)
+
       return {
         ...state,
         view: {
           ...sView,
-          isColAmount: colName == 'isColAmount' ? !sView.isColAmount : sView.isColAmount,
+          isColAmount,
+          isColCat,
           isColComment: colName == 'isColComment' ? !sView.isColComment : sView.isColComment,
           isColDateCreate: colName == 'isColDateCreate' ? !sView.isColDateCreate : sView.isColDateCreate,
           isColDateModif: colName == 'isColDateModif' ? !sView.isColDateModif : sView.isColDateModif,

@@ -17,18 +17,18 @@ export const Menu: React.FC<MenuProps> = ({ view }) => {
     <button
       className={`btnMenu ${page === 'HOME' ? 'btnSwitchOn' : 'btnSwitchOff'}`}
       onClick={() => handleToPage('HOME')}
-    >{`${'HOME'}`}</button>
+    >HOME</button>
     <button
       className={`btnMenu ${page === 'BOARD' ? 'btnSwitchOn' : 'btnSwitchOff'}`}
       onClick={() => handleToPage('BOARD')}
-    >{`${'BOARD'}`}</button>
+    >BOARD</button>
     <button
       className={`btnMenu  ${isAddOpen ? 'btnSwitchOn' : 'btnSwitchOff'}`}
       onClick={() => handleToggleAdd()}
-    >{`${'ADD'}`}</button>
+    >ADD</button>
     <button
       className={`btnMenu  ${isLast ? 'btnSwitchOn' : 'btnSwitchOff'}`}
       onClick={() => handleToggleLast()}
-    >{`${'LAST'}`}</button>
+    >LAST</button>
   </div>
 }

@@ -3,12 +3,12 @@ import { InputDateProps, InputTextProps } from '../board/boardView.d'
 
 interface CheckBoxProps {
     name: string,
-    index: number, checked: boolean,
+    index: number,
+    checked: boolean,
     handleFC: (e: React.ChangeEvent<HTMLInputElement>) => void,
     label: string,
     isLabelBold?: boolean
 }
-
 export const CheckBox: React.FC<CheckBoxProps> = ({ name, index, checked, handleFC, label, isLabelBold }) => {
     const checkboxLabelStyle = isLabelBold ? 'checkboxLabelBold' : 'checkboxLabel'
     return <div className='checkboxWithLabel' >
@@ -26,6 +26,7 @@ export const CheckBox: React.FC<CheckBoxProps> = ({ name, index, checked, handle
         <div className={checkboxLabelStyle}>{label}</div>
     </div>
 }
+
 
 export const InputText: React.FC<InputTextProps> = ({ name, placeholder, handleFC, value, width }) => {
     return <input

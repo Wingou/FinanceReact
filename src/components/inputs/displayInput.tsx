@@ -7,16 +7,16 @@ import {
 import { CheckBox } from '../common/inputForm'
 import { DisplayInputProps } from '../board/boardView.d'
 
-export const DisplayInput: React.FC<DisplayInputProps> = ({ isSearchDel, isSearchReserved, view, isPricesFound }) => {
-  const { isColAmount, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+export const DisplayInput: React.FC<DisplayInputProps> = ({ isSearchDeleted, isSearchReserved, view, isPricesFound }) => {
+  const { isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
   const disabledDiv = isPricesFound ? '' : 'disabledDiv'
   const disabledDivTitle = isPricesFound ? '' : 'These options are not available when there is no data found'
   return <div className='searchDiv' title={disabledDivTitle}>
     <div className={`searchCheckboxAdmin ${disabledDiv}`}  >
       <CheckBox
-        name='isSearchDel'
+        name='isSearchDeleted'
         index={0}
-        checked={isSearchDel}
+        checked={isSearchDeleted}
         handleFC={handleUpdateSearchDel}
         label='DELETED' />
       <CheckBox
@@ -33,6 +33,12 @@ export const DisplayInput: React.FC<DisplayInputProps> = ({ isSearchDel, isSearc
         checked={isColAmount}
         handleFC={handleUpdateDislayCol}
         label='MONTANT' />
+      <CheckBox
+        name='isColCat'
+        index={0}
+        checked={isColCat}
+        handleFC={handleUpdateDislayCol}
+        label='CATEGORIES' />
       <CheckBox
         name='isColComment'
         index={0}

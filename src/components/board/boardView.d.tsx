@@ -29,8 +29,18 @@ export interface BoardViewProps {
   addPriceInput: AddPriceInput,
   isLast: boolean,
   orderOptions: OrderOptions,
-  view: ViewOptions
+  view: ViewOptions,
+  nbObjPerCats: NbObjPerCat[]
 }
+
+export interface NbObjPerCat {
+  catId: number,
+  nbActivatedObj: number,
+  nbReservedObj: number,
+  nbDeletedObj: number
+}
+
+
 
 export interface ModifLineProps {
   modifPriceInput: ModifPriceInput,
@@ -78,6 +88,9 @@ export interface ActivatedCatsInputProps {
   displayedCats: Categorie[]
   isMultiCats: boolean
   isAllCatsChecked: boolean
+  nbObjPerCats: NbObjPerCat[],
+  isSearchReserved: boolean,
+  isSearchDeleted: boolean,
 }
 
 export interface SearchInputCatProps {
@@ -112,7 +125,7 @@ export interface OrderInputProps {
 
 export interface DisplayInputProps {
   searchWord: string,
-  isSearchDel: boolean,
+  isSearchDeleted: boolean,
   isSearchReserved: boolean,
   view: ViewOptions,
   isPricesFound: boolean

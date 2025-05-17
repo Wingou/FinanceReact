@@ -28,7 +28,8 @@ export class BoardView extends Component<BoardViewProps, {}> {
       categories,
       isLast,
       orderOptions,
-      view
+      view,
+      nbObjPerCats
     } = this.props
     const {
       isMultiYears,
@@ -37,7 +38,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
       searchWord,
       searchMin,
       searchMax,
-      isSearchDel,
+      isSearchDeleted,
       isSearchReserved,
       lastMutatedPriceId
     } = searchOptions
@@ -76,13 +77,16 @@ export class BoardView extends Component<BoardViewProps, {}> {
         />
         <ActivatedCatsInput
           displayedCats={displayedCats}
-          selectedCats={selectedCats}
           isAllCatsChecked={isAllCatsChecked}
           isMultiCats={isMultiCats}
+          nbObjPerCats={nbObjPerCats}
+          isSearchReserved={isSearchReserved}
+          isSearchDeleted={isSearchDeleted}
+
         />
         <DisplayInput
           searchWord={searchWord}
-          isSearchDel={isSearchDel}
+          isSearchDeleted={isSearchDeleted}
           isSearchReserved={isSearchReserved}
           view={view}
           isPricesFound={isPricesFound}
@@ -97,7 +101,8 @@ export class BoardView extends Component<BoardViewProps, {}> {
             lastMutatedPriceId={lastMutatedPriceId}
             addLineProps={addLineProps}
             isSearchReserved={isSearchReserved}
-            view={view} />
+            view={view}
+          />
         ) : (
           <NoBoard />
         )}

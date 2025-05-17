@@ -1,10 +1,10 @@
 import { connect } from 'react-redux'
 import { BoardView } from '../components/board/boardView'
-import { Categorie, Month, OrderSelectValue, Price, Year } from '../types/common'
+import { Categorie, Month, Price, Year } from '../types/common'
 import { OrderDir, SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
-import { BoardViewProps } from '../components/board/boardView.d'
-import { formatDateFR, formatDateYYYYMMDD } from '../utils/helper'
+import { BoardViewProps, NbObjPerCat } from '../components/board/boardView.d'
+import { formatDateYYYYMMDD } from '../utils/helper'
 
 const mapStateToProps = (state: RootState): BoardViewProps => {
 
@@ -22,7 +22,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
   } = state
 
   const { isAddOpen, isLast } = view
-  const { searchMin, searchMax, isSearchDel, isSearchReserved } = searchOptions
+  const { searchMin, searchMax, isSearchDeleted, isSearchReserved } = searchOptions
   const { orderSelectValues } = orderOptions
   const orderRefs = orderSelectValues.filter((v) => v.selectedPos >= 0)
     .sort((a, b) => a.selectedPos - b.selectedPos)
@@ -44,16 +44,16 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
 
   const onlyReservedPricesCatIds = reservedPricesCatIds.filter((catId: number) => !notReservedPricesCatIds.includes(catId))
 
-
   const displayedCats = categories
     .filter((cat: Categorie) => cat.isDisplayed)
-    .filter((cat: Categorie) => !isSearchDel
+    .filter((cat: Categorie) => !isSearchDeleted
       ? !onlyDeletedPricesCatIds.includes(cat.id) : true)
     .filter((cat: Categorie) => !isSearchReserved
       ? !onlyReservedPricesCatIds.includes(cat.id) : true)
     .sort((a: Categorie, b: Categorie) =>
       a.name.localeCompare(b.name, 'fr', { sensitivity: 'base' })
     )
+
   const selectedCatIds = displayedCats
     .filter((cat: Categorie) => cat.isOn)
     .map((cat: Categorie) => cat.id)
@@ -76,7 +76,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     )
     .filter((price: Price) => (searchMin == null ? true : price.amount >= searchMin))
     .filter((price: Price) => (searchMax == null ? true : price.amount <= searchMax))
-    .filter((price: Price) => (price.template == 2 ? isSearchDel : true))
+    .filter((price: Price) => (price.template == 2 ? isSearchDeleted : true))
     .filter((price: Price) => (price.template == 1 ? isSearchReserved : true))
     .sort((a: Price, b: Price) => {
       if (orderRefs.length === 0) {
@@ -107,6 +107,33 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
   const isAllYearsChecked = years.filter((y: Year) => !y.isOn).length === 0
   const isAllMonthsChecked = months.filter((m: Month) => !m.isOn).length === 0
   const isAllCatsChecked = displayedCats.filter((c: Categorie) => !c.isOn).length === 0
+  const nbObjPerCats: NbObjPerCat[] = displayedCats.map((c: Categorie) => {
+
+    const nbObj = prices.reduce(
+      (acc: NbObjPerCat, p: Price): NbObjPerCat => {
+        const nbActivatedObj = p.cat.id === c.id && p.template === 0 ? acc.nbActivatedObj + 1 : acc.nbActivatedObj
+        const nbReservedObj = p.cat.id === c.id && p.template === 1 ? acc.nbReservedObj + 1 : acc.nbReservedObj
+        const nbDeletedObj = p.cat.id === c.id && p.template === 2 ? acc.nbDeletedObj + 1 : acc.nbDeletedObj
+
+        return {
+          catId: c.id,
+          nbActivatedObj,
+          nbReservedObj,
+          nbDeletedObj
+        }
+      }
+      , {
+        catId: -1,
+        nbActivatedObj: 0,
+        nbReservedObj: 0,
+        nbDeletedObj: 0
+      }
+    )
+
+    return nbObj
+
+  })
+
 
   return {
     years,
@@ -125,7 +152,8 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     addPriceInput,
     isLast,
     orderOptions,
-    view
+    view,
+    nbObjPerCats
   }
 }
 const BoardViewContainer = connect(mapStateToProps)(BoardView)

@@ -1,7 +1,5 @@
 import {
   CURRENT_DATE,
-  CURRENT_MONTH,
-  MONTHS,
   PAGE
 } from '../types/constants'
 import { AddPriceInput, ModifPriceInput, OrderOptions, SearchOptions, StateType, ViewOptions, } from '../types/common'
@@ -35,7 +33,7 @@ export const initialSearchOptions: SearchOptions = {
   searchMax: null,
   top: 10,
   lastMutatedPriceId: -1,
-  isSearchDel: false,
+  isSearchDeleted: false,
   isSearchReserved: false
 
 }
@@ -57,6 +55,7 @@ const initialView: ViewOptions = {
   isAddOpen: false,
   isLast: false,
   isColAmount: true,
+  isColCat: true,
   isColComment: false,
   isColDateCreate: false,
   isColDateModif: true,

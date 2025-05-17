@@ -13,7 +13,7 @@ import { SumLinesProps } from './boardLines.d'
 import { handleSearchObj } from '../../actions/search'
 
 export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, lastMutatedPriceId, view }) => {
-    const { isColAmount, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+    const { isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     const modifPriceInputForReserve = {
         ...p,
         catId: p.cat.id,
@@ -42,14 +42,14 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, 
         <td key={`td_date_${index}`}>{formatDateFR(p.actionDate)}</td>
         <td key={`td_obj_${index}`}
             title={rechObjTitle + '\n\n' + commentTitle}
-            onClick={()=>handleSearchObj(p.obj.name)}>
+            onClick={() => handleSearchObj(p.obj.name)}>
             {p.obj.name}
         </td>
         {isColAmount && <td key={`td_amount_${index}`} className={'moneyCell ' + (p.amount < 0 ? 'negative' : 'positive')}>
             {formatPrice(p.amount)}
         </td>}
         {
-            selectedCats.map((cat, index) => {
+            isColCat && selectedCats.map((cat, index) => {
                 const price = cat.id === p.cat.id ? p.amount : 0
                 return (
                     <td key={`td_price_by_${cat.id}_${index}`} className={'moneyCell ' + (price < 0 ? 'negative' : 'positive')}>
@@ -77,7 +77,7 @@ export const SumLines: React.FC<SumLinesProps> = ({ selectedCats, isSearchReserv
 }
 
 const SumLine: React.FC<SumLineProps> = ({ selectedCats, sumType, view }) => {
-    const { isColAmount, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+    const { isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     const amount = selectedCats.reduce((acc, cats) => {
         if (cats.isOn) {
             switch (sumType) {
@@ -122,7 +122,7 @@ const SumLine: React.FC<SumLineProps> = ({ selectedCats, sumType, view }) => {
             >
                 {formatPriceFunc(amount)}
             </td>}
-            {selectedCats.map((cat, index) => {
+            {isColCat && selectedCats.map((cat, index) => {
                 const price: number =
                     {
                         'RECETTE': cat.recette,

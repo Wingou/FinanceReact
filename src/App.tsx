@@ -24,6 +24,7 @@ function App() {
   useEffect(() => {
     const fetchListsData = async () => {
       try {
+        dispatch({ type: '@@INIT' })
         await fetchList('CAT', dispatch)
         await fetchList('OBJ', dispatch)
         await fetchList('YEARS', dispatch)
@@ -150,6 +151,7 @@ const fetchPrices = async (years: Year[], months: Month[], dispatch: Dispatch) =
   try {
     const filteredYears = years.filter(y => y.isOn).map(y => y.year)
     const filteredMonths = months.filter(m => m.isOn).map(m => m.month)
+    console.log("filteredMonths:", filteredMonths)
     const api = gql`query GetPricesByDates {
       pricesByDates(where: {years: "${filteredYears}", months: "${filteredMonths}"}) {
         id

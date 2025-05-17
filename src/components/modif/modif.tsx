@@ -9,7 +9,7 @@ import { formatDateFR, formatTemplate } from "../../utils/helper"
 export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
     const { modifPriceInput, objects, selectedCats, view } = ModifLineProps
     const { catId, objId } = modifPriceInput
-    const { isColAmount, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+    const { isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     return <tr key='tr_ModifLine' className='trFocus' title={modifPriceInput.comment}>
         <td key='td_ModifLine_OK' >
             <button
@@ -47,7 +47,7 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
                 value={modifPriceInput.amount}
                 handleFC={e => handleModifPriceInput(e)} />
         </td>}
-        {selectedCats.map((fcat) => {
+        {isColCat && selectedCats.map((fcat) => {
             return fcat.id === catId
                 ? <td key='td_ModifLine_Price'>{modifPriceInput.amount}</td>
                 : <td key={`td_ModifLine_by_${fcat.id}_blank`}></td>

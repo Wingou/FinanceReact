@@ -16,7 +16,7 @@ export const Board: React.FC<BoardProps> = ({ filteredPrices, selectedCats, modi
 }
 
 const HeaderLine: React.FC<HeaderLineProps> = ({ selectedCats, view }) => {
-  const { isColAmount, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+  const { isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
   return (
     <thead>
       <tr key='tr_header'>
@@ -24,7 +24,7 @@ const HeaderLine: React.FC<HeaderLineProps> = ({ selectedCats, view }) => {
         <th key='th_date' className='thActionDate'> DATE<br />ACTION</th>
         <th key='th_obj' className='thObj'> OBJET </th>
         {isColAmount && <th key='th_montant' className='thAmount'>MONTANT</th>}
-        {selectedCats.map((cat, index) => {
+        {isColCat && selectedCats.map((cat, index) => {
           return <th key={index} className='thCat'>{cat.name}</th>
         })}
         {isColComment && <th key='th_comment' className='thComment'> COMMENTAIRE </th>}

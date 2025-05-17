@@ -19,6 +19,7 @@ export interface ViewOptions {
   isAddOpen: boolean,
   isLast: boolean,
   isColAmount: boolean,
+  isColCat: boolean,
   isColComment: boolean,
   isColDateCreate: boolean,
   isColDateModif: boolean,
@@ -39,7 +40,7 @@ export interface SearchOptions {
   searchMax: number | null,
   top: number,
   lastMutatedPriceId: number,
-  isSearchDel: boolean,
+  isSearchDeleted: boolean,
   isSearchReserved: boolean
 
 }
@@ -69,7 +70,7 @@ export interface Categorie extends CatRaw {
   depense: number,
   reserve: number,
   isDisplayed: boolean
-  isOn: boolean,
+  isOn: boolean
 }
 
 export interface Object extends ObjRaw {

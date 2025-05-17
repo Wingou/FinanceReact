@@ -66,8 +66,8 @@ export const resolvers = {
                 return result as PriceGql[]
             }
             catch (error) {
-                console.error('Error resolver pricesByDates')
-                throw new Error('Error resolver pricesByDates')
+                console.error('Error resolver pricesById')
+                throw new Error('Error resolver pricesById')
             }
         },
         lastPrices: async () => {

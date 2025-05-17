@@ -143,7 +143,7 @@
 
 .searchCheckboxAdmin {
     @apply flex;
-    @apply border-e border-blue-800;    
+    @apply border-e border-blue-800; 
 }   
 
 .searchCheckboxOptions 
@@ -168,7 +168,7 @@
 .checkboxLabel {
     @apply flex;
     @apply text-xs uppercase;
-    @apply pt-0.5;
+    @apply pt-0.5 pe-1;
 }
 
 .checkboxLabelBold {
@@ -200,5 +200,3 @@
     @apply me-1 my-1 px-1;
     @apply focus:outline-none;
 }
-
-
