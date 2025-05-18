@@ -5,6 +5,7 @@ import { OrderDir, SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
 import { BoardViewProps, NbObjPerCat } from '../components/board/boardView.d'
 import { formatDateYYYYMMDD } from '../utils/helper'
+import { CatRaw, ObjRaw } from '../types/reducer'
 
 const mapStateToProps = (state: RootState): BoardViewProps => {
 
@@ -80,7 +81,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     .filter((price: Price) => (price.template == 1 ? isSearchReserved : true))
     .sort((a: Price, b: Price) => {
       if (orderRefs.length === 0) {
-        return a.dateCreate.localeCompare(b.dateModif)
+        return a.dateModif.localeCompare(b.dateModif)
       }
       else {
         return orderRefs.reduce((acc, ref) => {
@@ -108,13 +109,11 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
   const isAllMonthsChecked = months.filter((m: Month) => !m.isOn).length === 0
   const isAllCatsChecked = displayedCats.filter((c: Categorie) => !c.isOn).length === 0
   const nbObjPerCats: NbObjPerCat[] = displayedCats.map((c: Categorie) => {
-
     const nbObj = prices.reduce(
       (acc: NbObjPerCat, p: Price): NbObjPerCat => {
         const nbActivatedObj = p.cat.id === c.id && p.template === 0 ? acc.nbActivatedObj + 1 : acc.nbActivatedObj
         const nbReservedObj = p.cat.id === c.id && p.template === 1 ? acc.nbReservedObj + 1 : acc.nbReservedObj
         const nbDeletedObj = p.cat.id === c.id && p.template === 2 ? acc.nbDeletedObj + 1 : acc.nbDeletedObj
-
         return {
           catId: c.id,
           nbActivatedObj,
@@ -129,12 +128,44 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
         nbDeletedObj: 0
       }
     )
-
     return nbObj
-
   })
 
 
+  interface MostUsedObj extends ObjRaw {
+    cat: {
+      id: number,
+      name: String
+    },
+    nbUse: number
+  }
+
+  const mostUsedObjs: MostUsedObj[] = prices.sort((a, b) => a.dateModif.localeCompare(b.dateModif))
+    .map((p: Price, index: number): MostUsedObj => {
+      return {
+        id: p.obj.id,
+        name: p.obj.name,
+        template: p.obj.template,
+        cat: p.cat,
+        nbUse: 0
+      }
+    }
+    )
+    .filter(muObj => muObj.template === 0)
+    .slice(0, 100)
+    .reduce((acc: MostUsedObj[], muObj): MostUsedObj[] => {
+      return acc.map(a => a.id).includes(muObj.id)
+        ? acc.map((a) => {
+          return {
+            ...a,
+            nbUse: a.id === muObj.id ? a.nbUse + 1 : a.nbUse
+          }
+        })
+        : [...acc, muObj]
+    }, [] as MostUsedObj[])
+    .sort((a, b) => b.nbUse - a.nbUse !== 0 ? b.nbUse - a.nbUse : a.name.localeCompare(b.name))
+
+  console.log("mostUsedObjs:", mostUsedObjs)
   return {
     years,
     months,
