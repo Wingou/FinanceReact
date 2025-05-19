@@ -104,6 +104,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
             addLineProps={addLineProps}
             isSearchReserved={isSearchReserved}
             view={view}
+            mostUsedObjs={mostUsedObjs}
           />
         ) : (
           <NoBoard />

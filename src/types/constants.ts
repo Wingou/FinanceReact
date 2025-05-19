@@ -26,7 +26,7 @@ export const MONTHS = [
   'Décembre'
 ]
 
-export type COY = 'CAT' | 'OBJ' | 'YEARS'
+export type COY = 'CAT' | 'OBJ' | 'YEARS' | 'MUOBJ'
 export type PAGE = 'HOME' | 'BOARD'
 
 export type SUM_TYPE = 'RECETTE' | 'DEPENSE' | 'TOTAL' | 'RESERVE'

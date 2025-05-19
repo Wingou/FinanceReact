@@ -7,7 +7,7 @@ import { InputDate, InputPrice, InputText } from "../common/inputForm"
 import { formatDateFR, formatTemplate } from "../../utils/helper"
 
 export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
-    const { modifPriceInput, objects, selectedCats, view } = ModifLineProps
+    const { modifPriceInput, objects, selectedCats, view, mostUsedObjs } = ModifLineProps
     const { catId, objId } = modifPriceInput
     const { isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     return <tr key='tr_ModifLine' className='trFocus' title={modifPriceInput.comment}>
@@ -39,7 +39,7 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
             />
         </td>
         <td key='td_ModifLine_Objects'>
-            <SelectObj caller='MODIF' catId={-1} objId={objId} categories={[]} objects={objects} />
+            <SelectObj caller='MODIF' catId={-1} objId={objId} categories={[]} objects={objects} mostUsedObjs={mostUsedObjs} />
         </td>
         {isColAmount && <td key='td_ModifLine_Amount'>
             <InputPrice name='price'

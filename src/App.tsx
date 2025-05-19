@@ -28,6 +28,7 @@ function App() {
         await fetchList('CAT', dispatch)
         await fetchList('OBJ', dispatch)
         await fetchList('YEARS', dispatch)
+        await fetchList('MUOBJ', dispatch)
         setIsCOYLoaded(true)
       } catch (error) {
         console.error('ERROR: fetchListsData : ', error)
@@ -132,6 +133,18 @@ const fetchList = async (coy_: COY, dispatch: Dispatch) => {
                 }
                 `,
         type: 'SET_YEARS'
+      },
+      'MUOBJ': {
+        api: gql`query MostUsedObjects {
+                  mostUsedObjects {
+                    nb
+                    objId
+                    objName
+                    catId
+                    catName
+                  }
+                }`,
+        type: 'SET_MUOBJ'
       }
     }[coy_]
     const { data } = await apolloClient.query({ query: coy.api })
@@ -151,7 +164,6 @@ const fetchPrices = async (years: Year[], months: Month[], dispatch: Dispatch) =
   try {
     const filteredYears = years.filter(y => y.isOn).map(y => y.year)
     const filteredMonths = months.filter(m => m.isOn).map(m => m.month)
-    console.log("filteredMonths:", filteredMonths)
     const api = gql`query GetPricesByDates {
       pricesByDates(where: {years: "${filteredYears}", months: "${filteredMonths}"}) {
         id

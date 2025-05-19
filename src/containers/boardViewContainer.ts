@@ -19,7 +19,8 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     modifPriceInput,
     addPriceInput,
     view,
-    orderOptions
+    orderOptions,
+    mostUsedObjects
   } = state
 
   const { isAddOpen, isLast } = view
@@ -131,31 +132,6 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     return nbObj
   })
 
-  const mostUsedObjs: MostUsedObj[] = prices.sort((a, b) => a.dateModif.localeCompare(b.dateModif))
-    .map((p: Price, index: number): MostUsedObj => {
-      return {
-        id: p.obj.id,
-        name: p.obj.name,
-        template: p.obj.template,
-        cat: p.cat,
-        nbUse: 0
-      }
-    }
-    )
-    .filter(muObj => muObj.template === 0)
-    .slice(0, 100)
-    .reduce((acc: MostUsedObj[], muObj): MostUsedObj[] => {
-      return acc.map(a => a.id).includes(muObj.id)
-        ? acc.map((a) => {
-          return {
-            ...a,
-            nbUse: a.id === muObj.id ? a.nbUse + 1 : a.nbUse
-          }
-        })
-        : [...acc, muObj]
-    }, [] as MostUsedObj[])
-    .sort((a, b) => b.nbUse - a.nbUse !== 0 ? b.nbUse - a.nbUse : a.name.localeCompare(b.name))
-    .slice(0, 10)
 
   return {
     years,
@@ -168,7 +144,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     isAllCatsChecked,
     searchOptions,
     objects,
-    mostUsedObjs,
+    mostUsedObjs: state.mostUsedObjects,
     categories,
     modifPriceInput,
     isAddOpen,

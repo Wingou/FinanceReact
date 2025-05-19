@@ -9,7 +9,8 @@ export interface BoardProps {
   lastMutatedPriceId: number,
   addLineProps: AddLineProps,
   isSearchReserved: boolean,
-  view: ViewOptions
+  view: ViewOptions,
+  mostUsedObjs: MostUsedObj[]
 }
 
 export interface BoardViewProps {
@@ -48,7 +49,8 @@ export interface ModifLineProps {
   objects: Object[],
   selectedCats: Categorie[],
   lastMutatedPriceId: number,
-  view: ViewOptions
+  view: ViewOptions,
+  mostUsedObjs: MostUsedObj[]
 }
 
 export interface AddLineProps {
@@ -76,8 +78,8 @@ export interface BodyLineProps {
   lastMutatedPriceId: number,
   isAddOpen: boolean,
   addPriceInput: AddPriceInput,
-  // modifPriceInput: ModifLineProps,
-  view: ViewOptions
+  view: ViewOptions,
+  mostUsedObjs: MostUsedObj[]
 }
 
 export interface HeaderLineProps {

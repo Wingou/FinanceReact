@@ -7,6 +7,7 @@ export interface StateType {
   categories: Categorie[],
   years: Year[],
   months: Month[],
+  mostUsedObjects: MostUsedObj[],
   searchOptions: SearchOptions,
   addPriceInput: AddPriceInput,
   modifPriceInput: ModifPriceInput,

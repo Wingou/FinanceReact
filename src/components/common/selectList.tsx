@@ -69,7 +69,6 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
             : ' (' + getCatById(categories, catId).name + ')')
 
     const Red_Border_Obj = objId === -1 ? 'invalidValue' : ''
-
     return (
         <select
             className={`addInput_Select ${Red_Border_Obj}`}
