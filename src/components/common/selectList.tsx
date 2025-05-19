@@ -3,6 +3,7 @@ import { handleCatIdInput, handleObjIdInput } from "../../actions/add"
 import { handleModifObjIdInput } from "../../actions/modif"
 import { getCatById, getObjById } from "../../utils/helper"
 import { AddFormProps, SelectObjProps } from "./selectList.d"
+import { MostUsedObj } from "../../types/common"
 
 export const SelectCat: React.FC<AddFormProps> = ({ categories, addPriceInput }) => {
     const cat = categories
@@ -41,14 +42,14 @@ export const SelectCat: React.FC<AddFormProps> = ({ categories, addPriceInput })
     )
 }
 
-export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, objects, catId, objId }) => {
+export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, objects, catId, objId, mostUsedObjs }) => {
     const objectsAll = objects
         .filter(o => o.template === 0)
         .sort((a, b) => {
             return a.name.localeCompare(b.name)
         })
 
-    const objectsByCatId =
+    const objectsByCatIds =
         catId === -1
             ? objectsAll
             : objects.filter(o => o.cat.id === catId && o.template === 0)
@@ -83,7 +84,17 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
             >
                 {objLabel}
             </option>
-            {objectsByCatId.map((obj_, index) => {
+
+            {catId === -1 && mostUsedObjs.map((muObj: MostUsedObj, index: number) => {
+                return (
+                    <option key={'option_mostUsedObjId_' + index} value={muObj.id.toString()} title={muObj.name}>
+                        {`${muObj.name} (${muObj.cat.name})`}
+                    </option>
+                )
+            }
+            )}
+            {catId === -1 && <option disabled={true} className="text-center" >¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤</option>}
+            {objectsByCatIds.map((obj_, index) => {
                 const objName =
                     obj_.name +
                     (catId !== -1 ? '' : ' (' + obj_.cat.name + ')')

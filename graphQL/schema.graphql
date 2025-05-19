@@ -1,3 +1,18 @@
+type Query {
+  categories: [CatGql!]
+  objects(where: ObjectsWhereInput): [ObjGql!]
+  years: [YearGql!]
+  pricesByDates(where: PricesByDatesWhereInput!): [PriceGql!]
+  priceById(where: PriceByIdWhereInput!): [PriceGql!]
+  lastPrices : [PriceGql!]
+  mostUsedObjects : [MostUsedObjectGql!]
+}
+
+type Mutation {
+  addPrice (insert : AddPriceInsertInput!):PriceGql!,
+  modifPrice (  update: ModifPriceUpdateInput!):PriceGql!
+}
+
 type CatGql {
   id: ID!
   name: String!
@@ -52,14 +67,7 @@ input PriceByIdWhereInput {
   id: ID!
 }
 
-type Query {
-  categories: [CatGql!]
-  objects(where: ObjectsWhereInput): [ObjGql!]
-  years: [YearGql!]
-  pricesByDates(where: PricesByDatesWhereInput!): [PriceGql!]
-  priceById(where: PriceByIdWhereInput!): [PriceGql!]
-  lastPrices : [PriceGql!]
-}
+
 
 input AddPriceInsertInput  {
   amount: String!
@@ -77,10 +85,7 @@ input ModifPriceUpdateInput  {
   template: String!
 }
 
-type Mutation {
-  addPrice (insert : AddPriceInsertInput!):PriceGql!,
-  modifPrice (  update: ModifPriceUpdateInput!):PriceGql!
-}
+
 
 mutation AddPrice($insert: AddPriceInsertInput!) {
   addPrice(insert: $insert) {
@@ -115,4 +120,12 @@ mutation ModifPrice(  $update: ModifPriceUpdateInput!) {
       name
     }
   }
+}
+
+type MostUsedObjectGql {
+  nb: Int!
+  objId : Int!
+  objName: String!
+  catId : Int!
+  catName: String!
 }

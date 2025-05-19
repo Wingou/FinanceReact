@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { BoardView } from '../components/board/boardView'
-import { Categorie, Month, Price, Year } from '../types/common'
+import { Categorie, Month, MostUsedObj, Price, Year } from '../types/common'
 import { OrderDir, SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
 import { BoardViewProps, NbObjPerCat } from '../components/board/boardView.d'
@@ -131,15 +131,6 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     return nbObj
   })
 
-
-  interface MostUsedObj extends ObjRaw {
-    cat: {
-      id: number,
-      name: String
-    },
-    nbUse: number
-  }
-
   const mostUsedObjs: MostUsedObj[] = prices.sort((a, b) => a.dateModif.localeCompare(b.dateModif))
     .map((p: Price, index: number): MostUsedObj => {
       return {
@@ -164,8 +155,8 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
         : [...acc, muObj]
     }, [] as MostUsedObj[])
     .sort((a, b) => b.nbUse - a.nbUse !== 0 ? b.nbUse - a.nbUse : a.name.localeCompare(b.name))
+    .slice(0, 10)
 
-  console.log("mostUsedObjs:", mostUsedObjs)
   return {
     years,
     months,
@@ -177,6 +168,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     isAllCatsChecked,
     searchOptions,
     objects,
+    mostUsedObjs,
     categories,
     modifPriceInput,
     isAddOpen,

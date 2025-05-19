@@ -38,6 +38,15 @@ export type ModifPriceUpdateInput = {
   template: Scalars['String']['input'];
 };
 
+export type MostUsedObjectGql = {
+  __typename?: 'MostUsedObjectGql';
+  catId: Scalars['Int']['output'];
+  catName: Scalars['String']['output'];
+  nb: Scalars['Int']['output'];
+  objId: Scalars['Int']['output'];
+  objName: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPrice: PriceGql;
@@ -105,15 +114,18 @@ export type Query = {
   __typename?: 'Query';
   categories?: Maybe<Array<CatGql>>;
   lastPrices?: Maybe<Array<PriceGql>>;
+  mostUsedObjects?: Maybe<Array<MostUsedObjectGql>>;
   objects?: Maybe<Array<ObjGql>>;
   priceById?: Maybe<Array<PriceGql>>;
   pricesByDates?: Maybe<Array<PriceGql>>;
   years?: Maybe<Array<YearGql>>;
 };
 
+
 export type QueryObjectsArgs = {
   where?: InputMaybe<ObjectsWhereInput>;
 };
+
 
 export type QueryPriceByIdArgs = {
   where: PriceByIdWhereInput;

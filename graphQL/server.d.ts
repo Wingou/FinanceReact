@@ -50,3 +50,12 @@ export interface WherePricesByDates {
     months: string
   }
 }
+
+
+export interface MostUsedObjectsRaw {
+  nb: number,
+  id_objet: number
+  Objet: string,
+  id_categorie: number,
+  categorie: string
+}

@@ -37,8 +37,17 @@ export const sqlLastPrices = `SELECT TOP 60 p.id as priceId, p.prix, p.commentai
                             AND o.id_categorie = c.id
                             ORDER BY p.dateModif DESC, p.DateAction DESC, c.Ordre, o.Objet`
 
-
-
 export const sqlIdent = `SELECT @@IDENTITY as id`
 
 export const sqlModifPrice = `UPDATE prix set prix=?, commentaire='?', DateAction='?', id_objet=?, template=?, dateModif=Date() WHERE id=?`
+
+export const sqlMostUsedObjects = `SELECT TOP 10 COUNT(p.id_objet) as nb, p.id_objet, o.Objet, o.id_categorie, c.categorie
+                                    FROM prix p, objet o, categorie c
+                                    WHERE o.id=p.id_objet 
+                                    AND c.id=o.id_categorie
+                                    AND p.template=0
+                                    AND o.template=0
+                                    AND c.template=0
+                                    AND p.dateAction >=Date() - 100
+                                    GROUP BY p.id_objet , o.Objet, o.id_categorie, c.categorie
+                                    ORDER BY COUNT(p.id_objet) desc, o.Objet`

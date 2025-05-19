@@ -22,6 +22,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
       isAllCatsChecked,
       searchOptions,
       objects,
+      mostUsedObjs,
       modifPriceInput,
       addPriceInput,
       isAddOpen,
@@ -58,6 +59,7 @@ export class BoardView extends Component<BoardViewProps, {}> {
             caller={'ADD'}
             categories={categories}
             objects={objects}
+            mostUsedObjs={mostUsedObjs}
           />
         }
         <SearchWordInput

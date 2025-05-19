@@ -105,3 +105,10 @@ export interface OrderSelectValue {
   selectedPos: number
 }
 
+export interface MostUsedObj extends ObjRaw {
+  cat: {
+    id: number,
+    name: String
+  },
+  nbUse: number
+}

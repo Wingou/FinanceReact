@@ -1,4 +1,4 @@
-import { AddPriceInput, Categorie, ModifPriceInput, Month, Object, OrderOptions, Price, SearchOptions, ViewOptions, Year } from '../../types/common'
+import { AddPriceInput, Categorie, ModifPriceInput, Month, MostUsedObj, Object, OrderOptions, Price, SearchOptions, ViewOptions, Year } from '../../types/common'
 import { SUM_TYPE } from '../../types/constants'
 
 export interface BoardProps {
@@ -23,6 +23,7 @@ export interface BoardViewProps {
   isAllCatsChecked: boolean,
   searchOptions: SearchOptions,
   objects: Object[],
+  mostUsedObjs: MostUsedObj[],
   categories: Categorie[],
   modifPriceInput: ModifPriceInput,
   isAddOpen: boolean,

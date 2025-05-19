@@ -1,5 +1,5 @@
-import { CatGql, ObjGql, PriceGql, YearGql } from "./types/graphql.js"
-import { CatRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
+import { CatGql, MostUsedObjectGql, ObjGql, PriceGql, YearGql } from "./types/graphql.js"
+import { CatRaw, MostUsedObjectsRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
 
 export const parseCategories = (rows: CatRaw[]): CatGql[] => {
   return rows.map((rs: CatRaw): CatGql => {
@@ -50,6 +50,19 @@ export const parsePrices = (rows: PriceRaw[]): PriceGql[] => {
         position: rs.Ordre,
         template: rs.catTemplate
       }
+    }
+  })
+}
+
+export const parseMostUsedObjects = (rows: MostUsedObjectsRaw[]) => {
+  return rows.map((rs: MostUsedObjectsRaw): MostUsedObjectGql => {
+    const { nb, id_objet, Objet, id_categorie, categorie } = rs
+    return {
+      nb,
+      objId: id_objet,
+      objName: Objet,
+      catId: id_categorie,
+      catName: categorie
     }
   })
 }
