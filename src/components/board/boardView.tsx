@@ -7,7 +7,8 @@ import { NoBoard } from './noBoard'
 import { BoardViewProps } from './boardView.d'
 import { AddPriceInput } from '../add/add'
 import { OrderInput } from '../inputs/orderInput'
-import { DisplayInput } from '../inputs/displayInput'
+import { ColumnInput } from '../inputs/columnInput'
+import { GroupByInput } from '../inputs/detailInput'
 
 export class BoardView extends Component<BoardViewProps, {}> {
   render() {
@@ -86,7 +87,14 @@ export class BoardView extends Component<BoardViewProps, {}> {
           isSearchDeleted={isSearchDeleted}
 
         />
-        <DisplayInput
+        <ColumnInput
+          searchWord={searchWord}
+          isSearchDeleted={isSearchDeleted}
+          isSearchReserved={isSearchReserved}
+          view={view}
+          isPricesFound={isPricesFound}
+        />
+        <GroupByInput
           searchWord={searchWord}
           isSearchDeleted={isSearchDeleted}
           isSearchReserved={isSearchReserved}

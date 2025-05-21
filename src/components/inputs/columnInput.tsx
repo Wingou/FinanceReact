@@ -5,10 +5,10 @@ import {
   handleUpdateDislayCol
 } from '../../actions/search'
 import { CheckBox } from '../common/inputForm'
-import { DisplayInputProps } from '../board/boardView.d'
+import { ColumnInputProps } from '../board/boardView.d'
 
-export const DisplayInput: React.FC<DisplayInputProps> = ({ isSearchDeleted, isSearchReserved, view, isPricesFound }) => {
-  const { isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+export const ColumnInput: React.FC<ColumnInputProps> = ({ isSearchDeleted, isSearchReserved, view, isPricesFound }) => {
+  const { isDetailObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
   const disabledDiv = isPricesFound ? '' : 'disabledDiv'
 
   const disabledDivTitle = isPricesFound ? '' : 'These options are not available when there is no data found'
@@ -52,28 +52,20 @@ export const DisplayInput: React.FC<DisplayInputProps> = ({ isSearchDeleted, isS
         checked={isColDateCreate}
         handleFC={handleUpdateDislayCol}
         label='D.CREATE'
-        isDisabled={!isColObj} />
+        isDisabled={!isDetailObj} />
       <CheckBox
         name='isColDateModif'
         index={0}
         checked={isColDateModif}
         handleFC={handleUpdateDislayCol}
         label='D.MODIF'
-        isDisabled={!isColObj} />
+        isDisabled={!isDetailObj} />
       <CheckBox
         name='isColTemplate'
         index={0}
         checked={isColTemplate}
         handleFC={handleUpdateDislayCol}
         label='TYPE' />
-    </div>
-    <div className={`searchCheckboxOptions ${disabledDiv}`}>
-      <CheckBox
-        name='isColObj'
-        index={0}
-        checked={isColObj}
-        handleFC={handleUpdateDislayCol}
-        label='OBJET' />
     </div>
   </div>
 }

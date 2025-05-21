@@ -118,7 +118,7 @@ export const handleUpdateSearchReserved = (e: React.ChangeEvent<HTMLInputElement
 
 export const handleUpdateDislayCol = (e: React.ChangeEvent<HTMLInputElement>) => {
   const action = {
-    type: 'TOGGLE_DISPLAY_COL',
+    type: 'TOGGLE_VIEW_COL',
     payload: e.target.name
   }
   store.dispatch(action)

@@ -4,7 +4,7 @@ import { Categorie, Month, MostUsedObj, Price, Year } from '../types/common'
 import { ORDERDIR, SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
 import { BoardViewProps, NbObjPerCat } from '../components/board/boardView.d'
-import { formatDateYYYYMMDD } from '../utils/helper'
+import { formatDateYYYYMMDD, formatFirstDayOfMonth } from '../utils/helper'
 import { CatRaw, ObjRaw } from '../types/reducer'
 
 const mapStateToProps = (state: RootState): BoardViewProps => {
@@ -23,7 +23,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     mostUsedObjects
   } = state
 
-  const { isAddOpen, isLast, isColObj } = view
+  const { isAddOpen, isLast, isDetailObj, isDetailDay } = view
   const { searchMin, searchMax, isSearchDeleted, isSearchReserved } = searchOptions
   const { orderSelectValues } = orderOptions
   const orderRefs = orderSelectValues.filter((v) => v.selectedPos >= 0)
@@ -91,7 +91,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
       }
     })
 
-  const filteredPrices = isColObj
+  const filteredPrices__ = isDetailObj
     ? filteredPrices_
     : filteredPrices_
       .reduce((acc: Price[], p: Price): Price[] => {
@@ -106,13 +106,57 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
             return {
               ...a,
               amount: isMatched ? a.amount + amount : a.amount,
-              comment: isMatched && comment !== '' ? a.comment + ' ¤ ' + comment : a.comment
+              comment: isMatched && comment !== '' ? a.comment + ' ¤ ' + comment : a.comment,
+              isGroupby: isMatched ? true : a.isGroupby
             }
           }
           )
       }
         , [] as Price[])
 
+  const filteredPrices___ = isDetailDay
+    ? filteredPrices__
+    : filteredPrices__
+      .reduce((acc: Price[], p: Price): Price[] => {
+        const { actionDate, template, amount, comment, obj } = p // YYYY-MM-DD 00:00:00
+        const objId = obj.id
+        const actionDay = formatFirstDayOfMonth(actionDate)
+        const acc_ = acc.map((p) => { return { actionDay: formatFirstDayOfMonth(p.actionDate), objId: p.obj.id, template: p.template } })
+        const isPriceInAcc = isDetailObj
+          ? acc_.filter((a) =>
+            a.actionDay === actionDay
+            && a.template === template
+            && a.objId === objId
+          ).length !== 0
+          : acc_.filter((a) =>
+            a.actionDay === actionDay
+            && a.template === template
+          ).length !== 0
+        return !isPriceInAcc || acc.length === 0
+          ? [...acc, p]
+          : acc.map((a) => {
+            const isMatched =
+              isDetailObj ?
+                formatFirstDayOfMonth(a.actionDate) === actionDay
+                && a.template === template
+                && a.obj.id === objId
+                : formatFirstDayOfMonth(a.actionDate) === actionDay
+                && a.template === template
+            console.log("formatFirstDayOfMonth(a.actionDate):", formatFirstDayOfMonth(a.actionDate))
+            return {
+              ...a,
+              amount: isMatched ? a.amount + amount : a.amount,
+              comment: isMatched && comment !== '' ? a.comment + ' ¤ ' + comment : a.comment,
+              actionDate: formatFirstDayOfMonth(a.actionDate),
+              isGroupby: isMatched ? true : a.isGroupby
+            }
+          }
+          )
+      }
+        , [] as Price[])
+
+  console.log("filteredPrices___:", filteredPrices___)
+  const filteredPrices = filteredPrices___
   const filteredPricesCatIds = [...new Set(filteredPrices.map((p: Price) => p.cat.id))]
   const selectedCats = displayedCats
     .filter((cat: Categorie) => cat.isOn)

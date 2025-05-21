@@ -19,14 +19,14 @@ export interface ViewOptions {
   page: PAGE,
   isAddOpen: boolean,
   isLast: boolean,
-  isColObj: boolean,
   isColAmount: boolean,
   isColCat: boolean,
   isColComment: boolean,
   isColDateCreate: boolean,
   isColDateModif: boolean,
   isColTemplate: boolean,
-
+  isDetailObj: boolean,
+  isDetailDay: boolean
 }
 
 export interface ActionType {
@@ -82,7 +82,8 @@ export interface Object extends ObjRaw {
 
 export interface Price extends PriceRaw {
   obj: ObjRaw,
-  cat: CatRaw
+  cat: CatRaw,
+  isGroupby: boolean
 }
 
 export interface Year {

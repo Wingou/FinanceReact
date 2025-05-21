@@ -106,6 +106,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
             id: parseInt(id),
             amount: parseFloat(amount),
             comment: comment_,
+            isGroupby: false,
             obj: {
               ...p.obj,
               id: parseInt(obj.id)
@@ -608,7 +609,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         }
       }
 
-    case 'TOGGLE_DISPLAY_COL':
+    case 'TOGGLE_VIEW_COL':
       const colName = action.payload as string
       const sView = state.view
 
@@ -619,13 +620,14 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state,
         view: {
           ...sView,
-          isColObj: colName == 'isColObj' ? !sView.isColObj : sView.isColObj,
           isColAmount,
           isColCat,
           isColComment: colName == 'isColComment' ? !sView.isColComment : sView.isColComment,
           isColDateCreate: colName == 'isColDateCreate' ? !sView.isColDateCreate : sView.isColDateCreate,
           isColDateModif: colName == 'isColDateModif' ? !sView.isColDateModif : sView.isColDateModif,
-          isColTemplate: colName == 'isColTemplate' ? !sView.isColTemplate : sView.isColTemplate
+          isColTemplate: colName == 'isColTemplate' ? !sView.isColTemplate : sView.isColTemplate,
+          isDetailObj: colName == 'isDetailObj' ? !sView.isDetailObj : sView.isDetailObj,
+          isDetailDay: colName == 'isDetailDay' ? !sView.isDetailDay : sView.isDetailDay
         }
       }
 

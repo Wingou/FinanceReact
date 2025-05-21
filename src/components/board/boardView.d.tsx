@@ -126,7 +126,15 @@ export interface OrderInputProps {
   orderOptions: OrderOptions
 }
 
-export interface DisplayInputProps {
+export interface ColumnInputProps {
+  searchWord: string,
+  isSearchDeleted: boolean,
+  isSearchReserved: boolean,
+  view: ViewOptions,
+  isPricesFound: boolean
+}
+
+export interface GroupByInputProps {
   searchWord: string,
   isSearchDeleted: boolean,
   isSearchReserved: boolean,

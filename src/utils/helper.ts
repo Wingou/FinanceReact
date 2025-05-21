@@ -1,6 +1,22 @@
 import { catNone, objNone, TEMPLATE } from '../types/constants'
 import { Categorie, Object } from '../types/common'
 
+
+export const formatDateDisplayMonthYear = (d_: string) => {
+  const [yearA, monthA, _] = d_.split('-');
+  const dateA = `${monthA}/${yearA}`;
+  return dateA;
+
+}
+
+
+// FROM YYYY-MM-DD 00:00:00 tTO YYYY-MM-01 00:00:00
+export const formatFirstDayOfMonth = (d_: string) => {
+  const [yearA, monthA, _] = d_.split('-');
+  const dateA = `${yearA}-${monthA}-01 00:00:00`;
+  return dateA;
+}
+
 export const formatDateYYYYMMDD = (d: string): string => {
   const [dayA, monthA, yearA] = d.split('/');
   const dateA = `${yearA}${monthA}${dayA}`;

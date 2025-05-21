@@ -53,13 +53,14 @@ const initialView: ViewOptions = {
   page: 'HOME' as PAGE,
   isAddOpen: false,
   isLast: false,
-  isColObj: true,
   isColAmount: true,
   isColCat: true,
   isColComment: false,
   isColDateCreate: false,
   isColDateModif: true,
-  isColTemplate: false
+  isColTemplate: false,
+  isDetailObj: true,
+  isDetailDay: true
 }
 
 export const initialModel: StateType = {
