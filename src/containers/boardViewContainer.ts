@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { BoardView } from '../components/board/boardView'
 import { Categorie, Month, MostUsedObj, Price, Year } from '../types/common'
-import { OrderDir, SUM_TYPE } from '../types/constants'
+import { ORDERDIR, SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
 import { BoardViewProps, NbObjPerCat } from '../components/board/boardView.d'
 import { formatDateYYYYMMDD } from '../utils/helper'
@@ -23,7 +23,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     mostUsedObjects
   } = state
 
-  const { isAddOpen, isLast } = view
+  const { isAddOpen, isLast, isColObj } = view
   const { searchMin, searchMax, isSearchDeleted, isSearchReserved } = searchOptions
   const { orderSelectValues } = orderOptions
   const orderRefs = orderSelectValues.filter((v) => v.selectedPos >= 0)
@@ -60,7 +60,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     .filter((cat: Categorie) => cat.isOn)
     .map((cat: Categorie) => cat.id)
 
-  const filteredPrices = prices
+  const filteredPrices_ = prices
     .filter((price: Price) => selectedCatIds.includes(price.cat.id))
     .filter((price: Price) =>
       searchOptions.searchWord.length < 3
@@ -90,6 +90,28 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
         }, 0)
       }
     })
+
+  const filteredPrices = isColObj
+    ? filteredPrices_
+    : filteredPrices_
+      .reduce((acc: Price[], p: Price): Price[] => {
+
+        const { actionDate, template, amount, comment } = p
+        const acc_ = acc.map((p) => { return { actionDate: p.actionDate, template: p.template } })
+
+        return acc_.filter((a) => a.actionDate === actionDate && a.template === template).length === 0 || acc.length === 0
+          ? [...acc, p]
+          : acc.map((a) => {
+            const isMatched = a.actionDate === actionDate && a.template === template
+            return {
+              ...a,
+              amount: isMatched ? a.amount + amount : a.amount,
+              comment: isMatched && comment !== '' ? a.comment + ' ¤ ' + comment : a.comment
+            }
+          }
+          )
+      }
+        , [] as Price[])
 
   const filteredPricesCatIds = [...new Set(filteredPrices.map((p: Price) => p.cat.id))]
   const selectedCats = displayedCats
@@ -174,7 +196,7 @@ const sumPrices = (filteredPrices: Price[], cat: Categorie, sumType: SUM_TYPE): 
   return prices.reduce((acc: number, price: Price): number => acc + price.amount, 0)
 }
 
-const compareValue = (sortCriteria: string, dir: OrderDir, a: Price, b: Price): number => {
+const compareValue = (sortCriteria: string, dir: ORDERDIR, a: Price, b: Price): number => {
   const critA = dir === 'ASC' ? a : b
   const critB = dir === 'ASC' ? b : a
   const sortDates = (a_: string, b_: string): number => formatDateYYYYMMDD(a_).localeCompare(formatDateYYYYMMDD(b_))

@@ -35,7 +35,6 @@ export const initialSearchOptions: SearchOptions = {
   lastMutatedPriceId: -1,
   isSearchDeleted: false,
   isSearchReserved: false
-
 }
 
 export const initialOrderOptions: OrderOptions = {
@@ -54,6 +53,7 @@ const initialView: ViewOptions = {
   page: 'HOME' as PAGE,
   isAddOpen: false,
   isLast: false,
+  isColObj: true,
   isColAmount: true,
   isColCat: true,
   isColComment: false,
@@ -72,6 +72,7 @@ export const initialModel: StateType = {
   addPriceInput: initialAddPriceInput,
   modifPriceInput: initialModifPriceInput,
   view: initialView,
-  orderOptions: initialOrderOptions
+  orderOptions: initialOrderOptions,
+  mostUsedObjects: []
 }
 

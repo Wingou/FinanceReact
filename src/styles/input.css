@@ -77,7 +77,7 @@
     @apply border border-blue-800 rounded-md;
     @apply w-28;
     @apply me-1 my-1 px-1;
-    @apply focus:outline-none;
+    /* @apply focus:outline-none; */
 }
 
 .addInput_Select {
@@ -85,7 +85,7 @@
     @apply border border-blue-800 rounded-md;
     @apply w-auto;
     @apply me-1 my-1 px-1;
-    @apply focus:outline-none;
+    /* @apply focus:outline-none; */
 }
  
 .addInput_PriceAndCurrency {
@@ -116,7 +116,7 @@
     @apply border-blue-800 rounded-sm;
     @apply border;
     @apply my-1 px-1 me-1;
-    @apply focus:outline-none;
+    /* @apply focus:outline-none; */
 }
 
 .invalidValue {
@@ -151,6 +151,7 @@
     @apply flex;
     @apply flex-wrap;
     @apply px-1;
+    @apply border-e border-blue-800; 
 }
 
 .checkboxWithLabel {
@@ -198,5 +199,5 @@
     @apply border-blue-800 rounded-sm border;
     @apply bg-white;
     @apply me-1 my-1 px-1;
-    @apply focus:outline-none;
+    /* @apply focus:outline-none; */
 }

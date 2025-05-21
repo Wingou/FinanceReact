@@ -7,17 +7,20 @@ interface CheckBoxProps {
     checked: boolean,
     handleFC: (e: React.ChangeEvent<HTMLInputElement>) => void,
     label: string,
-    isLabelBold?: boolean
+    isLabelBold?: boolean,
+    isDisabled?: boolean
 }
-export const CheckBox: React.FC<CheckBoxProps> = ({ name, index, checked, handleFC, label, isLabelBold }) => {
+export const CheckBox: React.FC<CheckBoxProps> = ({ name, index, checked, handleFC, label, isLabelBold, isDisabled }) => {
     const checkboxLabelStyle = isLabelBold ? 'checkboxLabelBold' : 'checkboxLabel'
-    return <div className='checkboxWithLabel' >
+    const disableDiv = isDisabled ? 'disabledDiv' : ''
+    return <div className={`checkboxWithLabel ${disableDiv}`} >
         <div key={`${name}Label_${index}`} className='checkbox'>
             <input
                 key={`${name}Input_${index}`}
                 type='checkbox'
                 name={name}
                 checked={checked}
+                disabled={isDisabled}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     handleFC(e)
                 }}

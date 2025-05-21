@@ -19,12 +19,14 @@ export interface ViewOptions {
   page: PAGE,
   isAddOpen: boolean,
   isLast: boolean,
+  isColObj: boolean,
   isColAmount: boolean,
   isColCat: boolean,
   isColComment: boolean,
   isColDateCreate: boolean,
   isColDateModif: boolean,
   isColTemplate: boolean,
+
 }
 
 export interface ActionType {
@@ -102,7 +104,7 @@ export interface OrderOptions {
 export interface OrderSelectValue {
   name: string,
   value: string,
-  dir: OrderDir,
+  dir: ORDERDIR,
   selectedPos: number
 }
 

@@ -619,6 +619,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state,
         view: {
           ...sView,
+          isColObj: colName == 'isColObj' ? !sView.isColObj : sView.isColObj,
           isColAmount,
           isColCat,
           isColComment: colName == 'isColComment' ? !sView.isColComment : sView.isColComment,

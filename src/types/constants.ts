@@ -51,6 +51,6 @@ export const catNone: Categorie = {
 
 export type CALLER = 'MODIF' | 'ADD' | 'SEARCH' | 'LAST' | 'ORDER'
 
-export type OrderDir = 'ASC' | 'DESC'
+export type ORDERDIR = 'ASC' | 'DESC'
 
 export type TEMPLATE = 'ACTIVATED' | 'RESERVED' | 'DELETED'
