@@ -28,8 +28,10 @@ export const MONTHS = [
 
 export type COY = 'CAT' | 'OBJ' | 'YEARS' | 'MUOBJ'
 export type PAGE = 'HOME' | 'BOARD'
-
 export type SUM_TYPE = 'RECETTE' | 'DEPENSE' | 'TOTAL' | 'RESERVE'
+export type CALLER = 'MODIF' | 'ADD' | 'SEARCH' | 'LAST' | 'ORDER'
+export type ORDERDIR = 'ASC' | 'DESC'
+export type TEMPLATE = 'ACTIVATED' | 'RESERVED' | 'DELETED' | 'PREFERED'
 
 const catRawNone = { id: -1, name: 'NONE', position: 99, template: 0 }
 
@@ -49,8 +51,3 @@ export const catNone: Categorie = {
   isOn: false
 }
 
-export type CALLER = 'MODIF' | 'ADD' | 'SEARCH' | 'LAST' | 'ORDER'
-
-export type ORDERDIR = 'ASC' | 'DESC'
-
-export type TEMPLATE = 'ACTIVATED' | 'RESERVED' | 'DELETED'

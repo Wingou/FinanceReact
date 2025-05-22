@@ -615,6 +615,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
       const isColAmount = (colName == 'isColAmount' ? !sView.isColAmount : sView.isColAmount) || (colName == 'isColCat' && !sView.isColAmount && sView.isColCat)
       const isColCat = (colName == 'isColCat' ? !sView.isColCat : sView.isColCat) || (colName == 'isColAmount' && !sView.isColCat && sView.isColAmount)
+      const isDetailDay = colName == 'isDetailDay' ? !sView.isDetailDay : sView.isDetailDay
+      const isDetailMonth = colName == 'isDetailMonth' ? !sView.isDetailMonth : sView.isDetailMonth
+
+      const isDetailDay_ = colName == 'isDetailMonth' ? (isDetailMonth || !isDetailDay) && isDetailDay : isDetailDay
+      const isDetailMonth_ = colName == 'isDetailDay' ? (!isDetailDay || isDetailMonth ? isDetailMonth : true) : isDetailMonth
 
       return {
         ...state,
@@ -627,7 +632,9 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           isColDateModif: colName == 'isColDateModif' ? !sView.isColDateModif : sView.isColDateModif,
           isColTemplate: colName == 'isColTemplate' ? !sView.isColTemplate : sView.isColTemplate,
           isDetailObj: colName == 'isDetailObj' ? !sView.isDetailObj : sView.isDetailObj,
-          isDetailDay: colName == 'isDetailDay' ? !sView.isDetailDay : sView.isDetailDay
+          isDetailDay: isDetailDay_,
+          isDetailMonth: isDetailMonth_
+
         }
       }
 

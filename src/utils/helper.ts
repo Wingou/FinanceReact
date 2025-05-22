@@ -1,19 +1,27 @@
 import { catNone, objNone, TEMPLATE } from '../types/constants'
 import { Categorie, Object } from '../types/common'
 
-
 export const formatDateDisplayMonthYear = (d_: string) => {
-  const [yearA, monthA, _] = d_.split('-');
+  const [yearA, monthA] = d_.split('-');
   const dateA = `${monthA}/${yearA}`;
   return dateA;
-
 }
 
+export const formatDateDisplayYear = (d_: string) => {
+  const [yearA] = d_.split('-');
+  const dateA = yearA;
+  return dateA;
+}
 
-// FROM YYYY-MM-DD 00:00:00 tTO YYYY-MM-01 00:00:00
-export const formatFirstDayOfMonth = (d_: string) => {
-  const [yearA, monthA, _] = d_.split('-');
+export const formatFirstDay = (d_: string) => {
+  const [yearA, monthA] = d_.split('-');
   const dateA = `${yearA}-${monthA}-01 00:00:00`;
+  return dateA;
+}
+
+export const formatFirstMonth = (d_: string) => {
+  const [yearA] = d_.split('-');
+  const dateA = `${yearA}-01-01 00:00:00`;
   return dateA;
 }
 
@@ -32,7 +40,7 @@ export const formatTemplate = (t: number): TEMPLATE => {
     0: 'ACTIVATED',
     1: 'RESERVED',
     2: 'DELETED',
-  }[t] as TEMPLATE || 'ACTIVATED'
+  }[t] as TEMPLATE || 'PREFERED'
 }
 
 export const formatCalendarDate = (d: string) => {

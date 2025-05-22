@@ -60,7 +60,8 @@ const initialView: ViewOptions = {
   isColDateModif: true,
   isColTemplate: false,
   isDetailObj: true,
-  isDetailDay: true
+  isDetailDay: true,
+  isDetailMonth: true
 }
 
 export const initialModel: StateType = {
