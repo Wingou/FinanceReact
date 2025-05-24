@@ -42,8 +42,13 @@ const SearchInputCat: React.FC<ActivatedCatsInputProps> = ({ isMultiCats, isAllC
       </div>
       <div className='searchCheckboxOptions'>
         {displayedCats.map((c, index) => {
-          const nbObjPerCat_ = nbObjPerCats.find((nbObjCat) => nbObjCat.catId === c.id)
-          const nbObjPerCat = nbObjPerCat_ === undefined ? { catId: c.id, nbActivatedObj: 0, nbReservedObj: 0, nbDeletedObj: 0 } : nbObjPerCat_
+          const nbObjPerCat = nbObjPerCats.find((nbObjCat) => nbObjCat.catId === c.id)
+            ?? {
+            catId: c.id,
+            nbActivatedObj: 0,
+            nbReservedObj: 0,
+            nbDeletedObj: 0
+          }
           const nbObj = nbObjPerCat.nbActivatedObj + (isSearchReserved ? nbObjPerCat.nbReservedObj : 0) + (isSearchDeleted ? nbObjPerCat.nbDeletedObj : 0)
           const label = nbObjPerCat ? c.name + ' (' + nbObj + ')' : 'NONE'
           return (

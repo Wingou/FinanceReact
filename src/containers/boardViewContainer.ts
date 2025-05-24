@@ -77,10 +77,10 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
           .toLowerCase()
           .includes(searchOptions.searchWord.replace(/\s/g, '').toLowerCase())
     )
-    .filter((price: Price) => (searchMin == null ? true : price.amount >= searchMin))
-    .filter((price: Price) => (searchMax == null ? true : price.amount <= searchMax))
-    .filter((price: Price) => (price.template == 2 ? isSearchDeleted : true))
-    .filter((price: Price) => (price.template == 1 ? isSearchReserved : true))
+    .filter((price: Price) => (searchMin === null ? true : price.amount >= searchMin))
+    .filter((price: Price) => (searchMax === null ? true : price.amount <= searchMax))
+    .filter((price: Price) => (price.template === 2 ? isSearchDeleted : true))
+    .filter((price: Price) => (price.template === 1 ? isSearchReserved : true))
     .sort((a: Price, b: Price) => {
       if (orderRefs.length === 0) {
         return a.dateModif.localeCompare(b.dateModif)
@@ -224,10 +224,10 @@ const BoardViewContainer = connect(mapStateToProps)(BoardView)
 export default BoardViewContainer
 
 const sumPrices = (filteredPrices: Price[], cat: Categorie, sumType: SUM_TYPE): number => {
-  const recettePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.amount < 0 && price.template == 0)
-  const depensePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.amount > 0 && price.template == 0)
-  const totalPrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.template == 0)
-  const reservePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.template == 1)
+  const recettePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.amount < 0 && price.template === 0)
+  const depensePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.amount > 0 && price.template === 0)
+  const totalPrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.template === 0)
+  const reservePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.template === 1)
 
   const prices = {
     'RECETTE': recettePrices,

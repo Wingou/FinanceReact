@@ -36,7 +36,7 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, 
         : ''
     const groupbyLineStyle = p.isGroupby ? 'GroupbyLine' : ''
     const btnStyleDisabled = p.template === 2 || !isDetailObj || !isDetailDay ? 'btnDisabled' : 'btnEnabled'
-    const commentTitle = p.comment == '' ? 'no comment' : 'commentaire:\n' + p.comment
+    const commentTitle = p.comment === '' ? 'no comment' : 'commentaire:\n' + p.comment
     const rechObjTitle = `Copier sur le champ recherche :\n${p.obj.name}`
 
     const isColDateModif_ = isColDateModif && isDetailObj && isDetailDay

@@ -9,8 +9,8 @@ import { SearchWordInputProps } from '../board/boardView.d'
 import { handleCancel } from '../../actions/cancel'
 
 export const SearchWordInput: React.FC<SearchWordInputProps> = ({ searchWord, searchMin, searchMax, isPricesFound }) => {
-  const minPrice = searchMin === null ? '' : searchMin.toString()
-  const maxPrice = searchMax === null ? '' : searchMax.toString()
+  const minPrice = searchMin?.toString ?? ''
+  const maxPrice = searchMax?.toString ?? ''
   const disabledDiv = isPricesFound ? '' : 'disabledDiv'
   const disabledDivTitle = isPricesFound ? '' : 'These options are not available when there is no data found'
   return <div className='searchDiv' title={disabledDivTitle}>

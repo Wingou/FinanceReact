@@ -73,7 +73,7 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
         <select
             className={`addInput_Select ${Red_Border_Obj}`}
             value={objId}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => caller == 'MODIF' ? handleModifObjIdInput(e) : handleObjIdInput(e)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => caller === 'MODIF' ? handleModifObjIdInput(e) : handleObjIdInput(e)}
             title={objNameForTitle}
         >
             <option

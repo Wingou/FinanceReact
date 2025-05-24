@@ -100,7 +100,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state,
         prices: prices.map((p: PriceGql): Price => {
           const { id, amount, comment, obj, cat } = p
-          const comment_ = comment == undefined ? '' : comment
+          const comment_ = comment ?? ''
           return {
             ...p,
             id: parseInt(id),
@@ -552,7 +552,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           searchMin: null,
           searchMax: null,
         } : state.searchOptions,
-        orderOptions: caller == 'ORDER' ? initialOrderOptions : state.orderOptions
+        orderOptions: caller === 'ORDER' ? initialOrderOptions : state.orderOptions
       }
     }
 
@@ -561,7 +561,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const cols = state.orderOptions.orderSelectValues
       const orderSelectValuesReinit = cols
         .map((c: OrderSelectValue): OrderSelectValue => {
-          const selectedPos = c.selectedPos == selectedPosCurrent ? -1 : c.selectedPos
+          const selectedPos = c.selectedPos === selectedPosCurrent ? -1 : c.selectedPos
           return {
             ...c,
             selectedPos
@@ -613,13 +613,13 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const colName = action.payload as string
       const sView = state.view
 
-      const isColAmount = (colName == 'isColAmount' ? !sView.isColAmount : sView.isColAmount) || (colName == 'isColCat' && !sView.isColAmount && sView.isColCat)
-      const isColCat = (colName == 'isColCat' ? !sView.isColCat : sView.isColCat) || (colName == 'isColAmount' && !sView.isColCat && sView.isColAmount)
-      const isDetailDay = colName == 'isDetailDay' ? !sView.isDetailDay : sView.isDetailDay
-      const isDetailMonth = colName == 'isDetailMonth' ? !sView.isDetailMonth : sView.isDetailMonth
+      const isColAmount = (colName === 'isColAmount' ? !sView.isColAmount : sView.isColAmount) || (colName === 'isColCat' && !sView.isColAmount && sView.isColCat)
+      const isColCat = (colName === 'isColCat' ? !sView.isColCat : sView.isColCat) || (colName === 'isColAmount' && !sView.isColCat && sView.isColAmount)
+      const isDetailDay = colName === 'isDetailDay' ? !sView.isDetailDay : sView.isDetailDay
+      const isDetailMonth = colName === 'isDetailMonth' ? !sView.isDetailMonth : sView.isDetailMonth
 
-      const isDetailDay_ = colName == 'isDetailMonth' ? (isDetailMonth || !isDetailDay) && isDetailDay : isDetailDay
-      const isDetailMonth_ = colName == 'isDetailDay' ? (!isDetailDay || isDetailMonth ? isDetailMonth : true) : isDetailMonth
+      const isDetailDay_ = colName === 'isDetailMonth' ? (isDetailMonth || !isDetailDay) && isDetailDay : isDetailDay
+      const isDetailMonth_ = colName === 'isDetailDay' ? (!isDetailDay || isDetailMonth ? isDetailMonth : true) : isDetailMonth
 
       return {
         ...state,
@@ -627,11 +627,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           ...sView,
           isColAmount,
           isColCat,
-          isColComment: colName == 'isColComment' ? !sView.isColComment : sView.isColComment,
-          isColDateCreate: colName == 'isColDateCreate' ? !sView.isColDateCreate : sView.isColDateCreate,
-          isColDateModif: colName == 'isColDateModif' ? !sView.isColDateModif : sView.isColDateModif,
-          isColTemplate: colName == 'isColTemplate' ? !sView.isColTemplate : sView.isColTemplate,
-          isDetailObj: colName == 'isDetailObj' ? !sView.isDetailObj : sView.isDetailObj,
+          isColComment: colName === 'isColComment' ? !sView.isColComment : sView.isColComment,
+          isColDateCreate: colName === 'isColDateCreate' ? !sView.isColDateCreate : sView.isColDateCreate,
+          isColDateModif: colName === 'isColDateModif' ? !sView.isColDateModif : sView.isColDateModif,
+          isColTemplate: colName === 'isColTemplate' ? !sView.isColTemplate : sView.isColTemplate,
+          isDetailObj: colName === 'isDetailObj' ? !sView.isDetailObj : sView.isDetailObj,
           isDetailDay: isDetailDay_,
           isDetailMonth: isDetailMonth_
 

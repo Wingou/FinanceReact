@@ -38,7 +38,7 @@ export const OrderInput: React.FC<OrderInputProps> = (props) => {
 }
 
 const SelectOrder: React.FC<OrderSelectProps> = ({ orderSelectValues, index }) => {
-  const orderSelectValue = orderSelectValues.find((o: OrderSelectValue): boolean => o.selectedPos == index) as OrderSelectValue
+  const orderSelectValue = orderSelectValues.find((o: OrderSelectValue): boolean => o.selectedPos === index) as OrderSelectValue
   const selectedValue = orderSelectValue?.value as string
   return (
     <div>
