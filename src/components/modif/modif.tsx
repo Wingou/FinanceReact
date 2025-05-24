@@ -9,7 +9,7 @@ import { formatDateFR, formatTemplate } from "../../utils/helper"
 export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
     const { modifPriceInput, objects, selectedCats, view, mostUsedObjs } = ModifLineProps
     const { catId, objId } = modifPriceInput
-    const { isDetailObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+    const { isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     return <tr key='tr_ModifLine' className='trFocus' title={modifPriceInput.comment}>
         <td key='td_ModifLine_OK' >
             <button
@@ -38,7 +38,7 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
                 handleFC={e => handleModifDateInput(e)}
             />
         </td>
-        {isDetailObj && <td key='td_ModifLine_Objects'>
+        {isColObj && <td key='td_ModifLine_Objects'>
             <SelectObj caller='MODIF' catId={-1} objId={objId} categories={[]} objects={objects} mostUsedObjs={mostUsedObjs} />
         </td>}
         {isColAmount && <td key='td_ModifLine_Amount'>
@@ -60,8 +60,8 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
                 value={modifPriceInput.comment}
                 width='w-60' />
         </td>}
-        {isColDateCreate && isDetailObj && <td key='td_ModifLine_DateCreate'>{formatDateFR(modifPriceInput.dateCreate)}</td>}
-        {isColDateModif && isDetailObj && <td key='td_ModifLine_DateModif'>{formatDateFR(modifPriceInput.dateModif)}</td>}
+        {isColDateCreate && isColObj && <td key='td_ModifLine_DateCreate'>{formatDateFR(modifPriceInput.dateCreate)}</td>}
+        {isColDateModif && isColObj && <td key='td_ModifLine_DateModif'>{formatDateFR(modifPriceInput.dateModif)}</td>}
         {isColTemplate && <td key='td_ModifLine_Template'>{formatTemplate(modifPriceInput.template)}</td>}
     </tr >
 

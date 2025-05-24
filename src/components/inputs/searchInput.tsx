@@ -26,13 +26,13 @@ export const SearchWordInput: React.FC<SearchWordInputProps> = ({ searchWord, se
         name='searchMin'
         placeholder='MIN Price'
         handleFC={handleUpdateSearchMin}
-        value={minPrice}
+        value={minPrice as string}
       />
       <InputPrice
         name='searchMax'
         placeholder='MAX Price'
         handleFC={handleUpdateSearchMax}
-        value={maxPrice}
+        value={maxPrice as string}
       />
       <div  >
         <button

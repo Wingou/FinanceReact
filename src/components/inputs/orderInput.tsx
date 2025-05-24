@@ -14,25 +14,30 @@ export const OrderInput: React.FC<OrderInputProps> = (props) => {
   const orderSelectValuesNb = orderSelectValuesSelected.length
 
   return <div className='searchDivWrap' >
-    <div className='orderByLabel'>ORDER BY</div>
-    {
-      orderSelectValuesSelected.map((_c, index) => {
-        return <SelectOrder key={`selectOrder_${index}`} orderSelectValues={orderSelectValues} index={index} />
+    <div className={`searchCheckboxAdmin`}>
+      <div className='searchCheckboxLabel'>ORDER BY</div>
+    </div>
+    <div className={`searchCheckboxOptions`}>
+      {
+        orderSelectValuesSelected.map((_c, index) => {
+          return <SelectOrder key={`selectOrder_${index}`} orderSelectValues={orderSelectValues} index={index} />
+        }
+        )
       }
-      )
-    }
-    <SelectOrder key={`selectOrder_${orderSelectValuesNb}`} orderSelectValues={orderSelectValues} index={orderSelectValuesNb} />
+      <SelectOrder key={`selectOrder_${orderSelectValuesNb}`} orderSelectValues={orderSelectValues} index={orderSelectValuesNb} />
 
-    <div  >
-      <button
-        className={`btnAdmin btnAdminSize3 btnEnabled `}
-        onClick={() => {
-          handleCancel('ORDER')
-        }}
-        title='Cliquer pour réinitaliser les critères'
-      >
-        ¤
-      </button>
+      <div  >
+        <button
+          className={`btnAdmin btnAdminSize3 btnEnabled `}
+          onClick={() => {
+            handleCancel('ORDER')
+          }}
+          title='Cliquer pour réinitaliser les critères'
+        >
+          ¤
+        </button>
+
+      </div>
     </div>
   </div>
 }

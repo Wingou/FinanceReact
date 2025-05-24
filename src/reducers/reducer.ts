@@ -615,11 +615,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
       const isColAmount = (colName === 'isColAmount' ? !sView.isColAmount : sView.isColAmount) || (colName === 'isColCat' && !sView.isColAmount && sView.isColCat)
       const isColCat = (colName === 'isColCat' ? !sView.isColCat : sView.isColCat) || (colName === 'isColAmount' && !sView.isColCat && sView.isColAmount)
-      const isDetailDay = colName === 'isDetailDay' ? !sView.isDetailDay : sView.isDetailDay
-      const isDetailMonth = colName === 'isDetailMonth' ? !sView.isDetailMonth : sView.isDetailMonth
+      const isColDay = colName === 'isColDay' ? !sView.isColDay : sView.isColDay
+      const isColMonth = colName === 'isColMonth' ? !sView.isColMonth : sView.isColMonth
 
-      const isDetailDay_ = colName === 'isDetailMonth' ? (isDetailMonth || !isDetailDay) && isDetailDay : isDetailDay
-      const isDetailMonth_ = colName === 'isDetailDay' ? (!isDetailDay || isDetailMonth ? isDetailMonth : true) : isDetailMonth
+      const isDetailDay_ = colName === 'isColMonth' ? (isColMonth || !isColDay) && isColDay : isColDay
+      const isDetailMonth_ = colName === 'isColDay' ? (!isColDay || isColMonth ? isColMonth : true) : isColMonth
 
       return {
         ...state,
@@ -631,9 +631,9 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           isColDateCreate: colName === 'isColDateCreate' ? !sView.isColDateCreate : sView.isColDateCreate,
           isColDateModif: colName === 'isColDateModif' ? !sView.isColDateModif : sView.isColDateModif,
           isColTemplate: colName === 'isColTemplate' ? !sView.isColTemplate : sView.isColTemplate,
-          isDetailObj: colName === 'isDetailObj' ? !sView.isDetailObj : sView.isDetailObj,
-          isDetailDay: isDetailDay_,
-          isDetailMonth: isDetailMonth_
+          isColObj: colName === 'isColObj' ? !sView.isColObj : sView.isColObj,
+          isColDay: isDetailDay_,
+          isColMonth: isDetailMonth_
 
         }
       }

@@ -17,7 +17,7 @@ import { SumLinesProps } from './boardLines.d'
 import { handleSearchObj } from '../../actions/search'
 
 export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, lastMutatedPriceId, view }) => {
-    const { isDetailMonth, isDetailDay, isDetailObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+    const { isColMonth, isColDay, isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     const modifPriceInputForReserve = {
         ...p,
         catId: p.cat.id,
@@ -35,26 +35,26 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, 
         ? 'FocusedLine'
         : ''
     const groupbyLineStyle = p.isGroupby ? 'GroupbyLine' : ''
-    const btnStyleDisabled = p.template === 2 || !isDetailObj || !isDetailDay ? 'btnDisabled' : 'btnEnabled'
+    const btnStyleDisabled = p.template === 2 || !isColObj || !isColDay ? 'btnDisabled' : 'btnEnabled'
     const commentTitle = p.comment === '' ? 'no comment' : 'commentaire:\n' + p.comment
     const rechObjTitle = `Copier sur le champ recherche :\n${p.obj.name}`
 
-    const isColDateModif_ = isColDateModif && isDetailObj && isDetailDay
-    const isColDateCreate_ = isColDateCreate && isDetailObj && isDetailDay
+    const isColDateModif_ = isColDateModif && isColObj && isColDay
+    const isColDateCreate_ = isColDateCreate && isColObj && isColDay
 
     return <tr key={`tr_SimpleLine_${index}`} className={trSimpleLine + ' trhover ' + simpleLineStyleByTemplate + ' ' + groupbyLineStyle} title={commentTitle}>
         <td key={`td_admin_${index}`}>
-            <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2 || !isDetailObj || !isDetailDay} onClick={() => handleModifPrice(modifPriceInputForReserve)}>~</button>
-            <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2 || !isDetailObj || !isDetailDay} onClick={() => handleModif(p)}>...</button>
-            <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2 || !isDetailObj || !isDetailDay} onClick={() => handleModif({ ...p, template: 2 })}>X</button>
+            <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2 || !isColObj || !isColDay} onClick={() => handleModifPrice(modifPriceInputForReserve)}>~</button>
+            <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2 || !isColObj || !isColDay} onClick={() => handleModif(p)}>...</button>
+            <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={p.template === 2 || !isColObj || !isColDay} onClick={() => handleModif({ ...p, template: 2 })}>X</button>
         </td>
         <td key={`td_date_${index}`} className='text-center' >{
-            isDetailDay ? formatDateFR(p.actionDate) :
-                isDetailMonth ?
+            isColDay ? formatDateFR(p.actionDate) :
+                isColMonth ?
                     formatDateDisplayMonthYear(formatFirstDay(p.actionDate))
                     : formatDateDisplayYear(formatFirstMonth(p.actionDate))
         }</td>
-        {isDetailObj && <td key={`td_obj_${index}`}
+        {isColObj && <td key={`td_obj_${index}`}
             title={rechObjTitle + '\n\n' + commentTitle}
             onClick={() => handleSearchObj(p.obj.name)}>
             {p.obj.name}
@@ -73,8 +73,8 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ selectedCats, p, index, 
             })
         }
         {isColComment && <td key={`td_comment_${index}`}>{p.comment}</td>}
-        {isColDateCreate_ && isDetailObj && <td key={`td_dateCreate_${index}`}>{formatDateFR(p.dateCreate)}</td>}
-        {isColDateModif_ && isDetailObj && <td key={`td_dateModif_${index}`}>{formatDateFR(p.dateModif)}</td>}
+        {isColDateCreate_ && isColObj && <td key={`td_dateCreate_${index}`}>{formatDateFR(p.dateCreate)}</td>}
+        {isColDateModif_ && isColObj && <td key={`td_dateModif_${index}`}>{formatDateFR(p.dateModif)}</td>}
         {isColTemplate && <td key={`td_template_${index}`}>{formatTemplate(p.template)}</td>}
     </tr >
 }
@@ -91,7 +91,7 @@ export const SumLines: React.FC<SumLinesProps> = ({ selectedCats, isSearchReserv
 }
 
 const SumLine: React.FC<SumLineProps> = ({ selectedCats, sumType, view }) => {
-    const { isDetailDay, isDetailObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+    const { isColDay, isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     const amount = selectedCats.reduce((acc, cats) => {
         if (cats.isOn) {
             switch (sumType) {
@@ -122,15 +122,15 @@ const SumLine: React.FC<SumLineProps> = ({ selectedCats, sumType, view }) => {
     const formatPriceFunc = sumType === 'TOTAL' ? formatPriceWithZero : formatPrice
     const colspanSumLineEnd = [
         isColComment,
-        isDetailObj && isDetailDay && isColDateCreate,
-        isDetailObj && isDetailDay && isColDateModif,
+        isColObj && isColDay && isColDateCreate,
+        isColObj && isColDay && isColDateModif,
         isColTemplate
     ].reduce((acc: number, isCol: boolean): number => {
         return isCol ? acc + 1 : acc
     }
         , 0)
     const colspanSumLineStart = 3
-    const colspan = isDetailObj ? colspanSumLineStart : colspanSumLineStart - 1
+    const colspan = isColObj ? colspanSumLineStart : colspanSumLineStart - 1
     return (
         <tr key={'tr_' + sumType} className={`sumLine_${titleAmount}`}>
             <td key={'td_' + sumType} className='SumTitleCell' colSpan={colspan}>

@@ -8,26 +8,35 @@ import { CheckBox } from '../common/inputForm'
 import { ColumnInputProps } from '../board/boardView.d'
 
 export const ColumnInput: React.FC<ColumnInputProps> = ({ isSearchDeleted, isSearchReserved, view, isPricesFound }) => {
-  const { isDetailObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+  const { isColDay, isColMonth, isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
   const disabledDiv = isPricesFound ? '' : 'disabledDiv'
 
   const disabledDivTitle = isPricesFound ? '' : 'These options are not available when there is no data found'
   return <div className='searchDiv' title={disabledDivTitle}>
     <div className={`searchCheckboxAdmin ${disabledDiv}`}  >
-      <CheckBox
-        name='isSearchDeleted'
-        index={0}
-        checked={isSearchDeleted}
-        handleFC={handleUpdateSearchDel}
-        label='DELETED' />
-      <CheckBox
-        name='isSearchReserved'
-        index={0}
-        checked={isSearchReserved}
-        handleFC={handleUpdateSearchReserved}
-        label='RESERVED' />
+      <div className={`searchCheckboxLabel`} >
+        COLUMNS
+      </div>
     </div>
     <div className={`searchCheckboxOptions ${disabledDiv}`}>
+      <CheckBox
+        name='isColDay'
+        index={0}
+        checked={isColDay}
+        handleFC={handleUpdateDislayCol}
+        label='DAY' />
+      <CheckBox
+        name='isColMonth'
+        index={0}
+        checked={isColMonth}
+        handleFC={handleUpdateDislayCol}
+        label='MONTH' />
+      <CheckBox
+        name='isColObj'
+        index={0}
+        checked={isColObj}
+        handleFC={handleUpdateDislayCol}
+        label='OBJET' />
       <CheckBox
         name='isColAmount'
         index={0}
@@ -52,20 +61,21 @@ export const ColumnInput: React.FC<ColumnInputProps> = ({ isSearchDeleted, isSea
         checked={isColDateCreate}
         handleFC={handleUpdateDislayCol}
         label='D.CREATE'
-        isDisabled={!isDetailObj} />
+        isDisabled={!isColObj} />
       <CheckBox
         name='isColDateModif'
         index={0}
         checked={isColDateModif}
         handleFC={handleUpdateDislayCol}
         label='D.MODIF'
-        isDisabled={!isDetailObj} />
+        isDisabled={!isColObj} />
       <CheckBox
         name='isColTemplate'
         index={0}
         checked={isColTemplate}
         handleFC={handleUpdateDislayCol}
         label='TYPE' />
+
     </div>
   </div>
 }

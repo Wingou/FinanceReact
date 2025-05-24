@@ -23,7 +23,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     mostUsedObjects
   } = state
 
-  const { isAddOpen, isLast, isDetailObj, isDetailDay, isDetailMonth } = view
+  const { isAddOpen, isLast, isColObj, isColDay, isColMonth } = view
   const { searchMin, searchMax, isSearchDeleted, isSearchReserved } = searchOptions
   const { orderSelectValues } = orderOptions
   const orderRefs = orderSelectValues.filter((v) => v.selectedPos >= 0)
@@ -92,7 +92,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
       }
     })
 
-  const filteredPrices__ = isDetailObj
+  const filteredPrices__ = isColObj
     ? filteredPrices_
     : filteredPrices_
       .reduce((acc: Price[], p: Price): Price[] => {
@@ -115,16 +115,16 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
       }
         , [] as Price[])
 
-  const filteredPrices___ = isDetailDay
+  const filteredPrices___ = isColDay
     ? filteredPrices__
     : filteredPrices__
       .reduce((acc: Price[], p: Price): Price[] => {
-        const formatForReduce = isDetailMonth ? formatFirstDay : formatFirstMonth
+        const formatForReduce = isColMonth ? formatFirstDay : formatFirstMonth
         const { actionDate, template, amount, comment, obj } = p // YYYY-MM-DD 00:00:00
         const objId = obj.id
         const actionDay = formatForReduce(actionDate)
         const acc_ = acc.map((p) => { return { actionDay: formatForReduce(p.actionDate), objId: p.obj.id, template: p.template } })
-        const isPriceInAcc = isDetailObj
+        const isPriceInAcc = isColObj
           ? acc_.filter((a) =>
             a.actionDay === actionDay
             && a.template === template
@@ -138,7 +138,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
           ? [...acc, p]
           : acc.map((a) => {
             const isMatched =
-              isDetailObj ?
+              isColObj ?
                 formatForReduce(a.actionDate) === actionDay
                 && a.template === template
                 && a.obj.id === objId

@@ -16,15 +16,15 @@ export const Board: React.FC<BoardProps> = ({ filteredPrices, selectedCats, modi
 }
 
 const HeaderLine: React.FC<HeaderLineProps> = ({ selectedCats, view }) => {
-  const { isDetailDay, isDetailObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
-  const isColDateModif_ = isColDateModif && isDetailObj && isDetailDay
-  const isColDateCreate_ = isColDateCreate && isDetailObj && isDetailDay
+  const { isColDay, isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+  const isColDateModif_ = isColDateModif && isColObj && isColDay
+  const isColDateCreate_ = isColDateCreate && isColObj && isColDay
   return (
     <thead>
       <tr key='tr_header'>
         <th key='th_admin' className='thAdmin'> ADMIN </th>
         <th key='th_date' className='thActionDate'> DATE<br />ACTION</th>
-        {isDetailObj && <th key='th_obj' className='thObj'> OBJET </th>}
+        {isColObj && <th key='th_obj' className='thObj'> OBJET </th>}
         {isColAmount && <th key='th_montant' className='thAmount'>MONTANT</th>}
         {isColCat && selectedCats.map((cat, index) => {
           return <th key={index} className='thCat'>{cat.name}</th>
@@ -39,12 +39,12 @@ const HeaderLine: React.FC<HeaderLineProps> = ({ selectedCats, view }) => {
 }
 
 const BodyLines: React.FC<BodyLineProps> = ({ filteredPrices, selectedCats, modifPriceInput, objects, lastMutatedPriceId, view, mostUsedObjs }) => {
-  const { isDetailObj, isDetailDay } = view
+  const { isColObj, isColDay } = view
   return (
     <tbody>
       {filteredPrices.map((p, index) => {
         return (
-          p.id === modifPriceInput.id && isDetailObj && isDetailDay ?
+          p.id === modifPriceInput.id && isColObj && isColDay ?
             modifPriceInput.template === 2 ?
               <DelLine key={`DelLine_${index}`} selectedCats={selectedCats} price={p} modifPriceInput={modifPriceInput} />
               :

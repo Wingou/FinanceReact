@@ -25,9 +25,9 @@ export interface ViewOptions {
   isColDateCreate: boolean,
   isColDateModif: boolean,
   isColTemplate: boolean,
-  isDetailObj: boolean,
-  isDetailDay: boolean,
-  isDetailMonth: boolean
+  isColObj: boolean,
+  isColDay: boolean,
+  isColMonth: boolean
 }
 
 export interface ActionType {

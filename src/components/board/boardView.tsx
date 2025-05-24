@@ -8,7 +8,7 @@ import { BoardViewProps } from './boardView.d'
 import { AddPriceInput } from '../add/add'
 import { OrderInput } from '../inputs/orderInput'
 import { ColumnInput } from '../inputs/columnInput'
-import { GroupByInput } from '../inputs/detailInput'
+import { GroupByInput } from '../inputs/rowInput'
 
 export class BoardView extends Component<BoardViewProps, {}> {
   render() {
