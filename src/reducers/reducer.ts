@@ -12,6 +12,7 @@ import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrde
 import { ActionType, Categorie, ModifPriceInput, Month, MostUsedObj, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
 import { CatGql, MostUsedObjectGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
+import { AddPriceInput } from '../components/add/add'
 
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
   switch (action.type) {
@@ -367,22 +368,41 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       }
     }
 
-    case 'ADDPRICEINPUT_SET_CATID': {
-      const catId = Number(action.payload)
+    case 'SET_CATID': {
+      const catId = Number(action.payload.catId)
+      const caller = action.payload.caller
+      const { addPriceInput, addObjectInput } = state
       return {
         ...state,
-        addPriceInput: {
+        addPriceInput: caller === 'ADD' ? {
           ...state.addPriceInput,
           catId,
           objId: -1
+        } : addPriceInput,
+        addObjectInput: caller === 'HOME' ? {
+          ...addObjectInput,
+          catId
         }
+          : addObjectInput
       }
     }
 
-    case 'ADDPRICEINPUT_SET_OBJID': {
+    case 'SET_OBJID': {
+      const objId = Number(action.payload.objId)
+      const caller = action.payload.caller
+      const { addPriceInput, addObjectInput } = state
+
       return {
         ...state,
-        addPriceInput: { ...state.addPriceInput, objId: Number(action.payload) }
+        addPriceInput: caller === 'ADD' ? {
+          ...addPriceInput,
+          objId
+        } : addPriceInput,
+        addObjectInput: caller === 'HOME' ? {
+          ...addObjectInput,
+          objId: objId
+        } : addObjectInput
+
       }
     }
 
@@ -657,6 +677,39 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       return {
         ...state,
         mostUsedObjects
+      }
+
+
+    case 'ADDOBJECTINPUT':
+      {
+        const addObjectInput = {
+          ...state.addObjectInput,
+          objName: action.payload
+        }
+        return {
+          ...state,
+          addObjectInput
+        }
+      }
+
+    case 'SET_OBJECT_AFTER_ADD':
+      {
+        const { id, name, cat } = action.payload
+        const catId = parseInt(cat.id) as number
+        const catById = getCatById(state.categories, catId)
+        const objects = [
+          ...state.objects,
+          {
+            id,
+            name,
+            template: 0,
+            cat: catById
+          }
+        ]
+        return {
+          ...state,
+          objects
+        }
       }
 
     default:

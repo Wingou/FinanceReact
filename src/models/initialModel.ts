@@ -2,7 +2,7 @@ import {
   CURRENT_DATE,
   PAGE
 } from '../types/constants'
-import { AddPriceInput, ModifPriceInput, OrderOptions, SearchOptions, StateType, ViewOptions, } from '../types/common'
+import { AddObjectInput, AddPriceInput, ModifPriceInput, OrderOptions, SearchOptions, StateType, ViewOptions, } from '../types/common'
 
 export const initialModifPriceInput: ModifPriceInput = {
   id: -1,
@@ -24,6 +24,11 @@ export const initialAddPriceInput: AddPriceInput = {
   comment: ''
 }
 
+export const initialAddObjectInput: AddObjectInput = {
+  objId: -1,
+  catId: -1,
+  objName: ''
+}
 export const initialSearchOptions: SearchOptions = {
   isMultiYears: false,
   isMultiMonths: false,
@@ -72,6 +77,7 @@ export const initialModel: StateType = {
   months: [],
   searchOptions: initialSearchOptions,
   addPriceInput: initialAddPriceInput,
+  addObjectInput: initialAddObjectInput,
   modifPriceInput: initialModifPriceInput,
   view: initialView,
   orderOptions: initialOrderOptions,

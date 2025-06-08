@@ -34,7 +34,6 @@ export const handleModifDateInput = (e: React.ChangeEvent<HTMLInputElement>) => 
   store.dispatch(action)
 }
 
-
 export const handleModifObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const objId = e.target.value
   const action = {
@@ -64,10 +63,6 @@ export const handleModifCommentInput = (e: React.ChangeEvent<HTMLInputElement>) 
   }
   store.dispatch(action)
 }
-
-
-
-
 
 export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
   try {

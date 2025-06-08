@@ -14,6 +14,11 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type AddObjectInsertInput = {
+  catId: Scalars['String']['input'];
+  objName: Scalars['String']['input'];
+};
+
 export type AddPriceInsertInput = {
   actionDate: Scalars['String']['input'];
   amount: Scalars['String']['input'];
@@ -49,8 +54,14 @@ export type MostUsedObjectGql = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addObject: ObjGql;
   addPrice: PriceGql;
   modifPrice: PriceGql;
+};
+
+
+export type MutationAddObjectArgs = {
+  insert: AddObjectInsertInput;
 };
 
 

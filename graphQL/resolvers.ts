@@ -1,9 +1,9 @@
 import odbc, { Result } from "odbc"
 import { parseCategories, parseMostUsedObjects, parseObjects, parsePrices, parseYears } from "./parsers.js"
-import { sqlAddPrice, sqlCategories, sqlIdent, sqlLastPrices, sqlModifPrice, sqlMostUsedObjects, sqlObjects, sqlPriceById, sqlPricesByDates, sqlYears } from "./queries.js"
+import { sqlAddObject, sqlAddPrice, sqlCategories, sqlIdent, sqlLastPrices, sqlModifPrice, sqlMostUsedObjects, sqlObjects, sqlPriceById, sqlPricesByDates, sqlYears } from "./queries.js"
 import { setParamInSQL } from "./utils.js"
 import { CatRaw, MostUsedObjectsRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
-import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, YearGql, ModifPriceUpdateInput, MostUsedObjectGql } from "./types/graphql.js"
+import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, YearGql, ModifPriceUpdateInput, MostUsedObjectGql, AddObjectInsertInput } from "./types/graphql.js"
 const cnx = await odbc.connect('DSN=financereact')
 
 export const resolvers = {
@@ -121,6 +121,22 @@ export const resolvers = {
                 console.error('Error resolver modifPrice')
                 throw new Error('Error resolver modifPrice')
             }
-        }
+        },
+        addObject: async (_: any, { insert }: { insert: AddObjectInsertInput }) => {
+            try {
+                const { objName, catId } = insert
+                await cnx.query(setParamInSQL(sqlAddObject, [objName, catId]))
+                const res = await cnx.query(sqlIdent) as Result<{ id: string }>
+                return {
+                    id: res[0].id,
+                    name: objName,
+                    cat: { id: catId }
+                } as ObjGql
+            }
+            catch (error) {
+                console.error('Error resolver addObject')
+                throw new Error('Error resolver addObject')
+            }
+        },
     }
 }

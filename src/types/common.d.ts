@@ -10,6 +10,7 @@ export interface StateType {
   mostUsedObjects: MostUsedObj[],
   searchOptions: SearchOptions,
   addPriceInput: AddPriceInput,
+  addObjectInput: AddObjectInput,
   modifPriceInput: ModifPriceInput,
   view: ViewOptions,
   orderOptions: OrderOptions
@@ -55,6 +56,12 @@ export interface AddPriceInput {
   comment: stringn
   catId: number,
   objId: number
+}
+
+export interface AddObjectInput {
+  objId: number,
+  catId: number,
+  objName: string
 }
 
 export interface ModifPriceInput {

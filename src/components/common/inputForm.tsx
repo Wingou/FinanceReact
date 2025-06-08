@@ -1,5 +1,6 @@
 import React from 'react'
-import { InputDateProps, InputTextProps } from '../board/boardView.d'
+import { InputDateProps, InputTextProps } from './inputForm.d'
+
 
 interface CheckBoxProps {
     name: string,
@@ -43,14 +44,8 @@ export const InputText: React.FC<InputTextProps> = ({ name, placeholder, handleF
     />
 }
 
-export interface InputPriceProps {
-    name: string,
-    placeholder: string,
-    value: string,
-    handleFC: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
 
-export const InputPrice: React.FC<InputPriceProps> = ({ name, placeholder, value, handleFC }) => {
+export const InputPrice: React.FC<InputTextProps> = ({ name, placeholder, value, handleFC }) => {
 
     const isPriceOK = /^-?\d*\.?\d{0,2}$/.test(value)
         && value !== '' && value !== '-'

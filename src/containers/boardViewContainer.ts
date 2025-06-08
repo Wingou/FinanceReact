@@ -19,8 +19,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     modifPriceInput,
     addPriceInput,
     view,
-    orderOptions,
-    mostUsedObjects
+    orderOptions
   } = state
 
   const { isAddOpen, isLast, isColObj, isColDay, isColMonth } = view

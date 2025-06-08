@@ -4,7 +4,12 @@ import { HomeView } from '../components/home/homeView'
 
 const mapStateToProps = (state: RootState) => {
   return {
-    years: state.years
+    addPriceInput: state.addPriceInput,
+    categories: state.categories,
+    objects: state.objects,
+    mostUsedObjs: state.mostUsedObjects,
+    addObjectInput: state.addObjectInput
+
   }
 }
 const HomeViewContainer = connect(mapStateToProps)(HomeView)

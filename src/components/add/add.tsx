@@ -38,7 +38,7 @@ export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
         value={addPriceInput.actionDate}
         handleFC={handleAddDateInput}
       />
-      <SelectCat {...addLineProps} /><br />
+      <SelectCat caller='ADD' categories={categories} catId={catId} /><br />
       <SelectObj caller='ADD' categories={categories} objects={objects} catId={catId} objId={objId} mostUsedObjs={mostUsedObjs} />
       <InputText
         name='comment'

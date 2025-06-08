@@ -5,21 +5,28 @@ import { formatTextSQL } from '../utils/helper'
 import { gql } from '@apollo/client'
 import { apolloClient } from '../apollo-client'
 import { PriceGql } from '../types/graphql'
+import { CALLER } from '../types/constants'
 
-export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
+export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller: CALLER) => {
   const catId = e.target.value
   const action = {
-    type: 'ADDPRICEINPUT_SET_CATID',
-    payload: catId
+    type: 'SET_CATID',
+    payload: {
+      catId,
+      caller
+    }
   }
   store.dispatch(action)
 }
 
-export const handleObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
+export const handleObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller: CALLER) => {
   const objId = e.target.value
   const action = {
-    type: 'ADDPRICEINPUT_SET_OBJID',
-    payload: objId
+    type: 'SET_OBJID',
+    payload: {
+      caller,
+      objId
+    }
   }
   store.dispatch(action)
 }

@@ -10,7 +10,8 @@ type Query {
 
 type Mutation {
   addPrice (insert : AddPriceInsertInput!):PriceGql!,
-  modifPrice (  update: ModifPriceUpdateInput!):PriceGql!
+  modifPrice (update: ModifPriceUpdateInput!):PriceGql!
+  addObject (insert : AddObjectInsertInput!):ObjGql!,
 }
 
 type CatGql {
@@ -87,6 +88,7 @@ input ModifPriceUpdateInput  {
 
 
 
+
 mutation AddPrice($insert: AddPriceInsertInput!) {
   addPrice(insert: $insert) {
     id
@@ -128,4 +130,10 @@ type MostUsedObjectGql {
   objName: String!
   catId : Int!
   catName: String!
+}
+
+
+input AddObjectInsertInput  {
+  objName: String!
+  catId: String!
 }

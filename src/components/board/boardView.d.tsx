@@ -100,13 +100,6 @@ export interface SearchInputCatProps {
   props: ActivatedCatsInputProps
 }
 
-export interface InputTextProps {
-  name: string,
-  placeholder: string,
-  handleFC: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  value: string,
-  width?: string
-}
 
 
 export interface SearchWordInputProps {
@@ -116,11 +109,7 @@ export interface SearchWordInputProps {
   isPricesFound: boolean
 }
 
-export interface InputDateProps {
-  name: string,
-  value: string,
-  handleFC: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
+
 
 export interface OrderInputProps {
   orderOptions: OrderOptions

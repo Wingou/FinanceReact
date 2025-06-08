@@ -51,3 +51,7 @@ export const sqlMostUsedObjects = `SELECT TOP 10 COUNT(p.id_objet) as nb, p.id_o
                                     AND p.dateAction >=Date() - 100
                                     GROUP BY p.id_objet , o.Objet, o.id_categorie, c.categorie
                                     ORDER BY COUNT(p.id_objet) desc, o.Objet`
+
+export const sqlAddObject = `INSERT INTO objet (Objet, id_categorie) VALUES ('?',?)`
+
+

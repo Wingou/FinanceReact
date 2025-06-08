@@ -1,11 +1,10 @@
 import { CALLER } from "../../types/constants"
 import { AddPriceInput, Categorie, MostUsedObj, Object } from "../../types/common"
 
-export interface AddFormProps {
+export interface SelectCatProps {
     caller: CALLER,
-    addPriceInput: AddPriceInput,
-    categories: Categorie[],
-    objects: Object[]
+    catId: number,
+    categories: Categorie[]
 }
 
 export interface SelectObjProps {
