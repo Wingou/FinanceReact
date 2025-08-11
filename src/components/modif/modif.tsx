@@ -24,7 +24,7 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
             <button
                 className='btnAdmin btnAdminSize2 btnEnabled'
                 onClick={() => {
-                    handleCancel('MODIF')
+                    handleCancel('MODIF_PRICE')
                 }}
                 title='Cliquer pour annuler la modification'
             >
@@ -39,7 +39,7 @@ export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
             />
         </td>
         {isColObj && <td key='td_ModifLine_Objects'>
-            <SelectObj caller='MODIF' catId={-1} objId={objId} categories={[]} objects={objects} mostUsedObjs={mostUsedObjs} />
+            <SelectObj caller='MODIF_PRICE' catId={-1} objId={objId} categories={[]} objects={objects} mostUsedObjs={mostUsedObjs} />
         </td>}
         {isColAmount && <td key='td_ModifLine_Amount'>
             <InputPrice name='price'

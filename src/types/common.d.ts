@@ -10,8 +10,8 @@ export interface StateType {
   mostUsedObjects: MostUsedObj[],
   searchOptions: SearchOptions,
   addPriceInput: AddPriceInput,
-  addObjectInput: AddObjectInput,
   modifPriceInput: ModifPriceInput,
+  objectInput: ObjectInput,
   view: ViewOptions,
   orderOptions: OrderOptions
 }
@@ -58,10 +58,11 @@ export interface AddPriceInput {
   objId: number
 }
 
-export interface AddObjectInput {
+export interface ObjectInput {
   objId: number,
   catId: number,
-  objName: string
+  objName: string,
+  template: number
 }
 
 export interface ModifPriceInput {

@@ -7,7 +7,7 @@ import {
 import { CheckBox } from '../common/inputForm'
 import { ColumnInputProps } from '../board/boardView.d'
 
-export const ColumnInput: React.FC<ColumnInputProps> = ({ isSearchDeleted, isSearchReserved, view, isPricesFound }) => {
+export const ColumnInput: React.FC<ColumnInputProps> = ({ view, isPricesFound }) => {
   const { isColDay, isColMonth, isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
   const disabledDiv = isPricesFound ? '' : 'disabledDiv'
 

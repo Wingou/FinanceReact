@@ -1,9 +1,9 @@
 import odbc, { Result } from "odbc"
 import { parseCategories, parseMostUsedObjects, parseObjects, parsePrices, parseYears } from "./parsers.js"
-import { sqlAddObject, sqlAddPrice, sqlCategories, sqlIdent, sqlLastPrices, sqlModifPrice, sqlMostUsedObjects, sqlObjects, sqlPriceById, sqlPricesByDates, sqlYears } from "./queries.js"
+import { sqlAddObject, sqlAddPrice, sqlCategories, sqlIdent, sqlLastPrices, sqlModifObject, sqlModifPrice, sqlMostUsedObjects, sqlObjectById, sqlObjects, sqlPriceById, sqlPricesByDates, sqlYears } from "./queries.js"
 import { setParamInSQL } from "./utils.js"
 import { CatRaw, MostUsedObjectsRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
-import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, YearGql, ModifPriceUpdateInput, MostUsedObjectGql, AddObjectInsertInput } from "./types/graphql.js"
+import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, YearGql, ModifPriceUpdateInput, MostUsedObjectGql, AddObjectInsertInput, ModifObjectInput } from "./types/graphql.js"
 const cnx = await odbc.connect('DSN=financereact')
 
 export const resolvers = {
@@ -138,5 +138,22 @@ export const resolvers = {
                 throw new Error('Error resolver addObject')
             }
         },
+        modifObject: async (_: any, { update }: { update: ModifObjectInput }) => {
+            try {
+                const { objName, template, id } = update
+                await cnx.query(setParamInSQL(sqlModifObject, [objName, template, id]))
+
+
+                const rows = await cnx.query(setParamInSQL(sqlObjectById, [id]))
+                const result = parseObjects(rows as ObjRaw[])
+                return result[0] as ObjGql
+
+
+            }
+            catch (error) {
+                console.error('Error resolver addObject')
+                throw new Error('Error resolver addObject')
+            }
+        }
     }
 }

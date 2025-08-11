@@ -19,7 +19,7 @@ export const DelLine: React.FC<DelLineProps> = ({ selectedCats, price, modifPric
             <button
                 className='btnAdmin btnAdminSize2 btnEnabled'
                 onClick={() => {
-                    handleCancel('MODIF')
+                    handleCancel('MODIF_PRICE')
                 }}
                 title='Cliquer pour annuler la suppression'
             >

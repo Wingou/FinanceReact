@@ -1,6 +1,5 @@
 import React from "react"
 import { handleCatIdInput, handleObjIdInput } from "../../actions/add"
-import { handleModifObjIdInput } from "../../actions/modif"
 import { getCatById, getObjById } from "../../utils/helper"
 import { SelectCatProps, SelectObjProps } from "./selectList.d"
 import { MostUsedObj } from "../../types/common"
@@ -43,6 +42,7 @@ export const SelectCat: React.FC<SelectCatProps> = ({ categories, catId, caller 
 }
 
 export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, objects, catId, objId, mostUsedObjs }) => {
+
     const objectsAll = objects
         .filter(o => o.template === 0)
         .sort((a, b) => {
@@ -52,7 +52,10 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
     const objectsByCatIds =
         catId === -1
             ? objectsAll
-            : objects.filter(o => o.cat.id === catId && o.template === 0)
+            : objectsAll.filter(o => o.cat.id === catId && o.template === 0)
+
+
+    console.log("selectObj obj:", objectsByCatIds)
 
     const objById = getObjById(objects, objId)
 
@@ -69,11 +72,12 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
             : ' (' + getCatById(categories, catId).name + ')')
 
     const Red_Border_Obj = objId === -1 ? 'invalidValue' : ''
+    console.log("selectObj objectsByCatIds:", objectsByCatIds.length)
     return (
         <select
             className={`addInput_Select ${Red_Border_Obj}`}
             value={objId}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => caller === 'MODIF' ? handleModifObjIdInput(e) : handleObjIdInput(e, caller)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleObjIdInput(e, caller)}
             title={objNameForTitle}
         >
             <option

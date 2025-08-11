@@ -11,8 +11,7 @@ import {
 import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions } from '../models/initialModel'
 import { ActionType, Categorie, ModifPriceInput, Month, MostUsedObj, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
 import { CatGql, MostUsedObjectGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
-import { formatCalendarDate, getCatById } from '../utils/helper'
-import { AddPriceInput } from '../components/add/add'
+import { formatCalendarDate, getCatById, getObjById } from '../utils/helper'
 
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
   switch (action.type) {
@@ -371,7 +370,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     case 'SET_CATID': {
       const catId = Number(action.payload.catId)
       const caller = action.payload.caller
-      const { addPriceInput, addObjectInput } = state
+      const { addPriceInput, objectInput } = state
       return {
         ...state,
         addPriceInput: caller === 'ADD' ? {
@@ -379,18 +378,18 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           catId,
           objId: -1
         } : addPriceInput,
-        addObjectInput: caller === 'HOME' ? {
-          ...addObjectInput,
+        objectInput: caller === 'HOME' ? {
+          ...objectInput,
           catId
         }
-          : addObjectInput
+          : objectInput
       }
     }
 
     case 'SET_OBJID': {
       const objId = Number(action.payload.objId)
       const caller = action.payload.caller
-      const { addPriceInput, addObjectInput } = state
+      const { addPriceInput, objectInput, modifPriceInput } = state
 
       return {
         ...state,
@@ -398,10 +397,16 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           ...addPriceInput,
           objId
         } : addPriceInput,
-        addObjectInput: caller === 'HOME' ? {
-          ...addObjectInput,
-          objId: objId
-        } : addObjectInput
+        objectInput: caller === 'HOME' ? {
+          ...objectInput,
+          objId,
+          objName: getObjById(state.objects, objId)
+        } : objectInput,
+        modifPriceInput: caller === 'MODIF_PRICE' ? {
+          ...modifPriceInput,
+          objId
+        } : modifPriceInput,
+
 
       }
     }
@@ -504,12 +509,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       }
     }
 
-    case 'MODIFPRICEINPUT_SET_OBJID': {
-      return {
-        ...state,
-        modifPriceInput: { ...state.modifPriceInput, objId: Number(action.payload) }
-      }
-    }
+
 
     case 'MODIFPRICEINPUT_SET_PRICE': {
       return {
@@ -564,7 +564,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const caller = action.payload as CALLER
       return {
         ...state,
-        modifPriceInput: caller === 'MODIF' ? initialModifPriceInput : state.modifPriceInput,
+        modifPriceInput: caller === 'MODIF_PRICE' ? initialModifPriceInput : state.modifPriceInput,
         addPriceInput: caller === 'ADD' ? initialAddPriceInput : state.addPriceInput,
         searchOptions: caller === 'SEARCH' ? {
           ...state.searchOptions,
@@ -682,13 +682,13 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'ADDOBJECTINPUT':
       {
-        const addObjectInput = {
-          ...state.addObjectInput,
+        const objectInput = {
+          ...state.objectInput,
           objName: action.payload
         }
         return {
           ...state,
-          addObjectInput
+          objectInput
         }
       }
 

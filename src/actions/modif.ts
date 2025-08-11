@@ -34,14 +34,7 @@ export const handleModifDateInput = (e: React.ChangeEvent<HTMLInputElement>) => 
   store.dispatch(action)
 }
 
-export const handleModifObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  const objId = e.target.value
-  const action = {
-    type: 'MODIFPRICEINPUT_SET_OBJID',
-    payload: objId
-  }
-  store.dispatch(action)
-}
+
 
 export const handleModifPriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   const valeur = e.target.value.replace(',', '.')

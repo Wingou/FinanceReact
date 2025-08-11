@@ -3,12 +3,13 @@ import { RootState } from '../store/store'
 import { HomeView } from '../components/home/homeView'
 
 const mapStateToProps = (state: RootState) => {
+  console.log("obj:", state.objects.length)
   return {
     addPriceInput: state.addPriceInput,
     categories: state.categories,
     objects: state.objects,
     mostUsedObjs: state.mostUsedObjects,
-    addObjectInput: state.addObjectInput
+    objectInput: state.objectInput
 
   }
 }

@@ -12,6 +12,7 @@ type Mutation {
   addPrice (insert : AddPriceInsertInput!):PriceGql!,
   modifPrice (update: ModifPriceUpdateInput!):PriceGql!
   addObject (insert : AddObjectInsertInput!):ObjGql!,
+  modifObject (update : ModifObjectInput!):ObjGql!,
 }
 
 type CatGql {
@@ -136,4 +137,10 @@ type MostUsedObjectGql {
 input AddObjectInsertInput  {
   objName: String!
   catId: String!
+}
+
+input ModifObjectInput  {
+  objName: String!
+  template: String!
+  id : String!
 }

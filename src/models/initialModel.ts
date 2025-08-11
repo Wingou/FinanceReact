@@ -2,7 +2,7 @@ import {
   CURRENT_DATE,
   PAGE
 } from '../types/constants'
-import { AddObjectInput, AddPriceInput, ModifPriceInput, OrderOptions, SearchOptions, StateType, ViewOptions, } from '../types/common'
+import { AddPriceInput, ModifPriceInput, ObjectInput, OrderOptions, SearchOptions, StateType, ViewOptions, } from '../types/common'
 
 export const initialModifPriceInput: ModifPriceInput = {
   id: -1,
@@ -24,11 +24,14 @@ export const initialAddPriceInput: AddPriceInput = {
   comment: ''
 }
 
-export const initialAddObjectInput: AddObjectInput = {
+
+export const initialObjectInput: ObjectInput = {
   objId: -1,
   catId: -1,
-  objName: ''
+  objName: '',
+  template: 0
 }
+
 export const initialSearchOptions: SearchOptions = {
   isMultiYears: false,
   isMultiMonths: false,
@@ -39,7 +42,7 @@ export const initialSearchOptions: SearchOptions = {
   top: 10,
   lastMutatedPriceId: -1,
   isSearchDeleted: false,
-  isSearchReserved: false
+  isSearchReserved: true
 }
 
 export const initialOrderOptions: OrderOptions = {
@@ -60,7 +63,7 @@ const initialView: ViewOptions = {
   isLast: false,
   isColAmount: true,
   isColCat: true,
-  isColComment: false,
+  isColComment: true,
   isColDateCreate: false,
   isColDateModif: true,
   isColTemplate: false,
@@ -77,10 +80,11 @@ export const initialModel: StateType = {
   months: [],
   searchOptions: initialSearchOptions,
   addPriceInput: initialAddPriceInput,
-  addObjectInput: initialAddObjectInput,
   modifPriceInput: initialModifPriceInput,
+  objectInput: initialObjectInput,
   view: initialView,
   orderOptions: initialOrderOptions,
-  mostUsedObjects: []
+  mostUsedObjects: [],
+
 }
 

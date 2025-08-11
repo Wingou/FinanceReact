@@ -6,7 +6,9 @@ export interface HomeViewProps {
     categories: Categorie[],
     objects: Object[],
     mostUsedObjs: MostUsedObj[],
-    addObjectInput: AddObjectInput
+    objectInput: ObjectInput,
+
+
 
 }
 
@@ -14,6 +16,7 @@ export interface HomeViewProps {
 export interface InputObjProps {
     categories: Categorie[],
     objects: Object[],
-    addObjectInput: AddObjectInput
+    objectInput: ObjectInput,
+
 }
 

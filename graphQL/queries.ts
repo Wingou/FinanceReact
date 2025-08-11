@@ -4,6 +4,7 @@ export const sqlPricesTop = `SELECT TOP ? id, prix, commentaire, DateAction, id_
 export const sqlCategories = `SELECT id, Categorie, Ordre, template FROM categorie ORDER BY Ordre`
 
 export const sqlObjects = `SELECT id, Objet, id_categorie, template FROM objet ORDER BY Objet`
+export const sqlObjectById = `SELECT id, Objet, id_categorie, template FROM objet WHERE id=?`
 
 export const sqlYears = `SELECT distinct year(dateAction) as year FROM prix ORDER BY year(dateAction) DESC`
 
@@ -53,5 +54,9 @@ export const sqlMostUsedObjects = `SELECT TOP 10 COUNT(p.id_objet) as nb, p.id_o
                                     ORDER BY COUNT(p.id_objet) desc, o.Objet`
 
 export const sqlAddObject = `INSERT INTO objet (Objet, id_categorie) VALUES ('?',?)`
+
+
+export const sqlModifObject = `UPDATE objet SET Objet='?', template=? WHERE id=?`
+
 
 
