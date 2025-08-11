@@ -108,6 +108,12 @@ export type PriceByIdWhereInput = {
   id: Scalars['ID']['input'];
 };
 
+export type PriceCheckWhereInput = {
+  actionDate: Scalars['String']['input'];
+  amount: Scalars['String']['input'];
+  objId: Scalars['ID']['input'];
+};
+
 export type PriceGql = {
   __typename?: 'PriceGql';
   actionDate: Scalars['String']['output'];
@@ -140,6 +146,7 @@ export type Query = {
   mostUsedObjects?: Maybe<Array<MostUsedObjectGql>>;
   objects?: Maybe<Array<ObjGql>>;
   priceById?: Maybe<Array<PriceGql>>;
+  priceCheck?: Maybe<Array<PriceGql>>;
   pricesByDates?: Maybe<Array<PriceGql>>;
   years?: Maybe<Array<YearGql>>;
 };
@@ -152,6 +159,11 @@ export type QueryObjectsArgs = {
 
 export type QueryPriceByIdArgs = {
   where: PriceByIdWhereInput;
+};
+
+
+export type QueryPriceCheckArgs = {
+  where?: InputMaybe<PriceCheckWhereInput>;
 };
 
 

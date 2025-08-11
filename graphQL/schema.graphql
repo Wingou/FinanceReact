@@ -6,6 +6,7 @@ type Query {
   priceById(where: PriceByIdWhereInput!): [PriceGql!]
   lastPrices : [PriceGql!]
   mostUsedObjects : [MostUsedObjectGql!]
+  priceCheck(where: PriceCheckWhereInput) : [PriceGql!]
 }
 
 type Mutation {
@@ -69,7 +70,11 @@ input PriceByIdWhereInput {
   id: ID!
 }
 
-
+input PriceCheckWhereInput {
+    amount : String!,
+    actionDate : String!,
+    objId : ID!
+}
 
 input AddPriceInsertInput  {
   amount: String!

@@ -46,7 +46,7 @@ const BodyLines: React.FC<BodyLineProps> = ({ filteredPrices, selectedCats, modi
         return (
           p.id === modifPriceInput.id && isColObj && isColDay ?
             modifPriceInput.template === 2 ?
-              <DelLine key={`DelLine_${index}`} selectedCats={selectedCats} price={p} modifPriceInput={modifPriceInput} />
+              <DelLine key={`DelLine_${index}`} selectedCats={selectedCats} price={p} modifPriceInput={modifPriceInput} view={view} />
               :
               <ModifLine key={`ModifLine_${index}`} selectedCats={selectedCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} view={view} mostUsedObjs={mostUsedObjs} />
             :

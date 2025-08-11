@@ -38,6 +38,18 @@ export const sqlLastPrices = `SELECT TOP 60 p.id as priceId, p.prix, p.commentai
                             AND o.id_categorie = c.id
                             ORDER BY p.dateModif DESC, p.DateAction DESC, c.Ordre, o.Objet`
 
+export const sqlPriceCheck = `SELECT p.id as priceId, p.prix, p.commentaire, p.DateAction, p.dateCreate, p.dateModif, p.template as priceTemplate
+                            , o.id as objId, o.Objet, o.template as objTemplate
+                            , c.id as catId, c.categorie, c.Ordre, c.template as catTemplate
+                            FROM prix p, objet o, categorie c
+                            WHERE p.id_objet = o.id
+                            AND o.id_categorie = c.id
+                            AND o.template=0
+                            AND p.template=0
+                            AND p.prix=?
+                            AND p.DateAction=#?#
+                            AND o.id=?`
+
 export const sqlIdent = `SELECT @@IDENTITY as id`
 
 export const sqlModifPrice = `UPDATE prix set prix=?, commentaire='?', DateAction='?', id_objet=?, template=?, dateModif=Date() WHERE id=?`

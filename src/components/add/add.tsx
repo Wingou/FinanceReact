@@ -2,7 +2,8 @@ import {
   handleAddPrice,
   handleAddCommentInput,
   handleAddDateInput,
-  handleAddPriceInput
+  handleAddPriceInput,
+  handleAddPriceCheck
 } from '../../actions/add'
 import React from 'react'
 import { SelectCat, SelectObj } from '../common/selectList'
@@ -49,7 +50,7 @@ export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
       <div>
         <button
           onClick={() => {
-            handleAddPrice(addPriceInput)
+            handleAddPriceCheck(addPriceInput)
           }}
           title={btnOK_Title}
           disabled={isOKBtnDisabled}

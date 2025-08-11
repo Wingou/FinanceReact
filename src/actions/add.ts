@@ -19,9 +19,6 @@ export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller
   store.dispatch(action)
 }
 
-
-
-
 export const handleObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller: CALLER) => {
   const objId = e.target.value
   const action = {
@@ -62,6 +59,53 @@ export const handleAddCommentInput = (e: React.ChangeEvent<HTMLInputElement>) =>
     payload: e.target.value
   }
   store.dispatch(action)
+}
+
+export const handleAddPriceCheck = async (addPriceInput: AddPriceInput) => {
+  try {
+    const api = gql`query GetPriceCheck ($where:PriceCheckWhereInput!) {
+                      priceCheck(where: $where) {
+                        id
+                      }
+                    }`
+    const { amount, actionDate, objId } = addPriceInput
+    const dataInput = {
+      amount,
+      actionDate,
+      objId
+    }
+    const { data } = await apolloClient.query(
+      {
+        query: api,
+        variables: { where: dataInput },
+        fetchPolicy: 'network-only'
+      })
+    const result = data?.priceCheck as string[]
+    if (result.length > 0) {
+      toast.info(`Ce prix ${dataInput.amount}€ à cette date ${dataInput.actionDate} existe déjà !`, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        theme: "light",
+        style: {
+          fontFamily: 'Verdana',
+          fontSize: '12px',
+          width: '200px'
+        }
+      }
+      )
+    }
+    else {
+      handleAddPrice(addPriceInput)
+    }
+  }
+  catch (error) {
+    console.error('error addPriceCheck :', error)
+    toast.error('Erreur réseau ou serveur sur AddPriceCheck')
+  }
 }
 
 export const handleAddPrice = async (addPriceInput: AddPriceInput) => {

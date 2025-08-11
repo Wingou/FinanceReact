@@ -4,7 +4,8 @@ import { handleModifPrice } from "../../actions/modif"
 import { DelLineProps } from "./del.d"
 import { handleCancel } from "../../actions/cancel"
 
-export const DelLine: React.FC<DelLineProps> = ({ selectedCats, price, modifPriceInput }) => {
+export const DelLine: React.FC<DelLineProps> = ({ selectedCats, price, modifPriceInput, view }) => {
+    const { isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     return <tr key={`tr_DelLine`} className='trFocus'   >
         <td key={`td_admin`}>
             <button
@@ -27,14 +28,14 @@ export const DelLine: React.FC<DelLineProps> = ({ selectedCats, price, modifPric
             </button>
         </td>
         <td key={`td_date`}>{formatDateFR(price.actionDate)}</td>
-        <td key={`td_obj`}>{price.obj.name}</td>
-        <td
+        {isColObj && <td key={`td_obj`}>{price.obj.name}</td>}
+        {isColAmount && <td
             key={`td_amount`}
             className={'moneyCell ' + (price.amount < 0 ? 'negative' : 'positive')}
         >
             {formatPrice(price.amount)}
-        </td>
-        {selectedCats.map((cat, index) => {
+        </td>}
+        {isColCat && selectedCats.map((cat, index) => {
             const p = cat.id === price.cat.id ? price.amount : 0
             return (
                 <td
@@ -45,9 +46,9 @@ export const DelLine: React.FC<DelLineProps> = ({ selectedCats, price, modifPric
                 </td>
             )
         })}
-        <td key={`td_comment`}>{price.comment}</td>
-        <td key={`td_dateCreate`}>{formatDateFR(price.dateModif)}</td>
-        <td key={`td_dateModif`}>{formatDateFR(price.dateCreate)}</td>
-        <td key={`td_template`}>{price.template}</td>
-    </tr>
+        {isColComment && <td key={`td_comment`}>{price.comment}</td>}
+        {isColDateCreate && < td key={`td_dateCreate`}>{formatDateFR(price.dateModif)}</td>}
+        {isColDateModif && <td key={`td_dateModif`}>{formatDateFR(price.dateCreate)}</td>}
+        {isColTemplate && <td key={`td_template`}>{price.template}</td>}
+    </tr >
 }

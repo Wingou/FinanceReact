@@ -1,9 +1,9 @@
 import odbc, { Result } from "odbc"
 import { parseCategories, parseMostUsedObjects, parseObjects, parsePrices, parseYears } from "./parsers.js"
-import { sqlAddObject, sqlAddPrice, sqlCategories, sqlIdent, sqlLastPrices, sqlModifObject, sqlModifPrice, sqlMostUsedObjects, sqlObjectById, sqlObjects, sqlPriceById, sqlPricesByDates, sqlYears } from "./queries.js"
+import { sqlAddObject, sqlAddPrice, sqlCategories, sqlIdent, sqlLastPrices, sqlModifObject, sqlModifPrice, sqlMostUsedObjects, sqlObjectById, sqlObjects, sqlPriceById, sqlPriceCheck, sqlPricesByDates, sqlYears } from "./queries.js"
 import { setParamInSQL } from "./utils.js"
 import { CatRaw, MostUsedObjectsRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
-import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, YearGql, ModifPriceUpdateInput, MostUsedObjectGql, AddObjectInsertInput, ModifObjectInput } from "./types/graphql.js"
+import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, PriceCheckWhereInput, YearGql, ModifPriceUpdateInput, MostUsedObjectGql, AddObjectInsertInput, ModifObjectInput } from "./types/graphql.js"
 const cnx = await odbc.connect('DSN=financereact')
 
 export const resolvers = {
@@ -92,6 +92,18 @@ export const resolvers = {
                 throw new Error('Error resolver mostUsedObjects')
             }
         },
+        priceCheck: async (_: any, { where }: { where: PriceCheckWhereInput }) => {
+            try {
+                const { amount, actionDate, objId } = where
+                const rows = await cnx.query(setParamInSQL(sqlPriceCheck, [amount, actionDate, objId]))
+                const result = parsePrices(rows as PriceRaw[])
+                return result
+            }
+            catch (error) {
+                console.error('Error resolver priceCheck', error)
+                throw new Error('Error resolver priceCheck')
+            }
+        },
     },
     Mutation: {
         addPrice: async (_: any, { insert }: { insert: AddPriceInsertInput }) => {
@@ -151,8 +163,8 @@ export const resolvers = {
 
             }
             catch (error) {
-                console.error('Error resolver addObject')
-                throw new Error('Error resolver addObject')
+                console.error('Error resolver modifObject')
+                throw new Error('Error resolver modifObject')
             }
         }
     }
