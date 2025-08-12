@@ -85,6 +85,10 @@ export const handleUpdateSearchWord = (e: React.ChangeEvent<HTMLInputElement>) =
 }
 
 export const handleUpdateSearchMin = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const valeur = e.target.value.replace(',', '.')
+  if (!/^-?\d*\.?\d{0,2}$/.test(valeur)) {
+    e.target.value = e.target.value.slice(0, -1)
+  }
   const action = {
     type: 'UPDATE_SEARCH_MIN',
     payload: e.target.value
@@ -93,6 +97,10 @@ export const handleUpdateSearchMin = (e: React.ChangeEvent<HTMLInputElement>) =>
 }
 
 export const handleUpdateSearchMax = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const valeur = e.target.value.replace(',', '.')
+  if (!/^-?\d*\.?\d{0,2}$/.test(valeur)) {
+    e.target.value = e.target.value.slice(0, -1)
+  }
   const action = {
     type: 'UPDATE_SEARCH_MAX',
     payload: e.target.value
