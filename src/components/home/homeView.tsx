@@ -28,19 +28,17 @@ const InputObj: React.FC<InputObjProps> = ({ objects, categories, objectInput })
             !isObjExist ? 'Object already exists in this cateory !' : ''
     const isOKBtnDisabled = !(isObjOK && isCatOK && isObjExist)
     const invalidDisableBtn = !isCatOK || !isObjOK || !isObjExist ? 'btnDisabled' : 'btnEnabled'
-    console.log("InputObj obj : ", objects.length)
     return <div>
         <SelectCat caller={'HOME'} catId={catId} categories={categories} />
         <SelectObj caller={'HOME'} catId={catId} objId={objId} categories={categories} objects={objects} mostUsedObjs={[]} />
         <hr />
-        ADD <InputText
+        Add  <InputText
             name='object'
             placeholder='New Object'
             handleFC={handleAddObjectInput}
             value={objectInput.objName}
             width='w-60' />
-        in
-        <SelectCat caller={'HOME'} catId={catId} categories={categories} />
+        in  <SelectCat caller={'HOME'} catId={catId} categories={categories} />
         <button
             onClick={() => {
                 handleAddObject(objectInput)
@@ -52,13 +50,11 @@ const InputObj: React.FC<InputObjProps> = ({ objects, categories, objectInput })
             OK
         </button>
         <br />
-        EDIT
-        <SelectObj caller={'HOME'} catId={catId} objId={objId} categories={categories} objects={objects} mostUsedObjs={[]} />
-        TO
-        <InputText
+        Modify  <SelectObj caller={'HOME'} catId={catId} objId={objId} categories={categories} objects={objects} mostUsedObjs={[]} />
+        to  <InputText
             name='object'
             placeholder='New Object Name'
-            handleFC={handleModifObjectInput}
+            handleFC={handleAddObjectInput}
             value={objectInput.objName}
             width='w-60' />
         <button

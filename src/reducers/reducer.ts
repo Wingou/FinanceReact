@@ -388,6 +388,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'SET_OBJID': {
       const objId = Number(action.payload.objId)
+      const catId = state.objectInput.catId !== -1
+        ? state.objectInput.catId
+        : state.objects.find(o => o.id === objId)
+          ? state.objects.find(o => o.id === objId)?.cat.id
+          : -1
       const caller = action.payload.caller
       const { addPriceInput, objectInput, modifPriceInput } = state
 
@@ -400,7 +405,8 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         objectInput: caller === 'HOME' ? {
           ...objectInput,
           objId,
-          objName: getObjById(state.objects, objId)
+          objName: getObjById(state.objects, objId).name,
+          catId
         } : objectInput,
         modifPriceInput: caller === 'MODIF_PRICE' ? {
           ...modifPriceInput,
@@ -706,6 +712,21 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
             cat: catById
           }
         ]
+        return {
+          ...state,
+          objects
+        }
+      }
+
+    case 'SET_OBJECT_AFTER_MODIF':
+      {
+        const { id, name } = action.payload
+        const objects = state.objects.map((o) => {
+          return {
+            ...o,
+            name: o.id === id ? name : o.name
+          }
+        })
         return {
           ...state,
           objects

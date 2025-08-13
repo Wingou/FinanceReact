@@ -85,24 +85,25 @@ export const handleAddObject = async (objectInput: ObjectInput) => {
 export const handleModifObject = async (objectInput: ObjectInput) => {
     try {
         const api = gql`
-            mutation ModifObject($update: ModifObjectInput!) {
-                modifObject(update: $update) {
-                    id         
-                    name 
-                    template
-                }}
-                `
+                    mutation ModifObject($updateObj: ModifObjectInput!) {
+                    modifObject(update: $updateObj) {
+                        id
+                        name
+                        cat {
+                        id
+                        }}
+                    }`
         const dataInput = {
+            id: objectInput.objId.toString(),
             objName: objectInput.objName,
             template: objectInput.template.toString(),
         }
         const response = await apolloClient.mutate({
             mutation: api,
             variables: {
-                update: dataInput,
+                updateObj: dataInput,
             }
         })
-
         const result = response.data?.modifObject as ObjGql
         if (result) {
             toast.success(`Objet ${dataInput.objName} est modifié !`, {

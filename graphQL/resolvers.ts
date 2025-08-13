@@ -154,13 +154,9 @@ export const resolvers = {
             try {
                 const { objName, template, id } = update
                 await cnx.query(setParamInSQL(sqlModifObject, [objName, template, id]))
-
-
                 const rows = await cnx.query(setParamInSQL(sqlObjectById, [id]))
                 const result = parseObjects(rows as ObjRaw[])
                 return result[0] as ObjGql
-
-
             }
             catch (error) {
                 console.error('Error resolver modifObject')
