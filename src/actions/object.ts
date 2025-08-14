@@ -123,7 +123,10 @@ export const handleModifObject = async (objectInput: ObjectInput) => {
             )
             store.dispatch({
                 type: 'SET_OBJECT_AFTER_MODIF',
-                payload: result
+                payload: {
+                    id: parseInt(result.id) as Number,
+                    name: result.name
+                }
             })
         }
         else {

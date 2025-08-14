@@ -3,14 +3,12 @@ import { RootState } from '../store/store'
 import { HomeView } from '../components/home/homeView'
 
 const mapStateToProps = (state: RootState) => {
-  console.log("obj:", state.objects.length)
   return {
     addPriceInput: state.addPriceInput,
     categories: state.categories,
     objects: state.objects,
     mostUsedObjs: state.mostUsedObjects,
     objectInput: state.objectInput
-
   }
 }
 const HomeViewContainer = connect(mapStateToProps)(HomeView)

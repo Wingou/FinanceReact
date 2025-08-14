@@ -54,9 +54,6 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
             ? objectsAll
             : objectsAll.filter(o => o.cat.id === catId && o.template === 0)
 
-
-    console.log("selectObj obj:", objectsByCatIds)
-
     const objById = getObjById(objects, objId)
 
     const objNameForTitle =
@@ -72,7 +69,6 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
             : ' (' + getCatById(categories, catId).name + ')')
 
     const Red_Border_Obj = objId === -1 ? 'invalidValue' : ''
-    console.log("selectObj objectsByCatIds:", objectsByCatIds.length)
     return (
         <select
             className={`addInput_Select ${Red_Border_Obj}`}

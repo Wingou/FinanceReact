@@ -6,7 +6,8 @@ import {
   CURRENT_MONTH,
   PAGE,
   MONTHS,
-  CALLER
+  CALLER,
+  OBJECTS
 } from '../types/constants'
 import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions } from '../models/initialModel'
 import { ActionType, Categorie, ModifPriceInput, Month, MostUsedObj, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
@@ -721,7 +722,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     case 'SET_OBJECT_AFTER_MODIF':
       {
         const { id, name } = action.payload
-        const objects = state.objects.map((o) => {
+        const objects = state.objects.map((o: Object): Object => {
           return {
             ...o,
             name: o.id === id ? name : o.name
