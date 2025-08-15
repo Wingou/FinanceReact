@@ -15,6 +15,7 @@ type Mutation {
   addObject (insert : AddObjectInsertInput!):ObjGql!,
   modifObject (update : ModifObjectInput!):ObjGql!,
   addCategory (insert : AddCategoryInsertInput!):CatGql!,
+  modifCategory (update : ModifCategoryInput!):CatGql!,
 }
 
 type CatGql {
@@ -153,4 +154,11 @@ input ModifObjectInput  {
 
 input AddCategoryInsertInput  {
   catName: String!
+}
+
+input ModifCategoryInput {
+  catName : String!
+  template: String!
+  position:String!
+  id:ID!
 }

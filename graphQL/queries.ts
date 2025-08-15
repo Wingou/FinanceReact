@@ -2,6 +2,7 @@
 export const sqlPricesTop = `SELECT TOP ? id, prix, commentaire, DateAction, id_objet, dateCreate, dateModif, template FROM prix WHERE template=0 ORDER BY dateModif DESC`
 
 export const sqlCategories = `SELECT id, Categorie, Ordre, template FROM categorie ORDER BY Ordre`
+export const sqlCategoryById = `SELECT id, Categorie, Ordre, template FROM categorie WHERE id=?`
 
 export const sqlObjects = `SELECT id, Objet, id_categorie, template FROM objet ORDER BY Objet`
 export const sqlObjectById = `SELECT id, Objet, id_categorie, template FROM objet WHERE id=?`
@@ -71,5 +72,6 @@ export const sqlAddCategory = `INSERT INTO categorie (Categorie) VALUES ('?')`
 
 export const sqlModifObject = `UPDATE objet SET Objet='?', template=? WHERE id=?`
 
+export const sqlModifCategory = `UPDATE categorie SET Categorie='?', Ordre=?, Template=? WHERE id=?`
 
 

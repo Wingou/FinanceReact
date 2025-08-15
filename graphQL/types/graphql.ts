@@ -38,6 +38,13 @@ export type CatGql = {
   template: Scalars['Int']['output'];
 };
 
+export type ModifCategoryInput = {
+  catName: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
+  position: Scalars['String']['input'];
+  template: Scalars['String']['input'];
+};
+
 export type ModifObjectInput = {
   id: Scalars['String']['input'];
   objName: Scalars['String']['input'];
@@ -67,9 +74,11 @@ export type Mutation = {
   addCategory: CatGql;
   addObject: ObjGql;
   addPrice: PriceGql;
+  modifCategory: CatGql;
   modifObject: ObjGql;
   modifPrice: PriceGql;
 };
+
 
 export type MutationAddCategoryArgs = {
   insert: AddCategoryInsertInput;
@@ -83,6 +92,11 @@ export type MutationAddObjectArgs = {
 
 export type MutationAddPriceArgs = {
   insert: AddPriceInsertInput;
+};
+
+
+export type MutationModifCategoryArgs = {
+  update: ModifCategoryInput;
 };
 
 

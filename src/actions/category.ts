@@ -73,3 +73,63 @@ export const handleAddCategory = async (categoryInput: CategoryInput) => {
         toast.error('Erreur réseau ou serveur AddCategory')
     }
 }
+
+export const handleModifCategory = async (categoryInput: CategoryInput) => {
+    try {
+        const api = gql`
+                    mutation ModifCategory($updateCat: ModifCategoryInput!) {
+                    modifCategory(update: $updateCat) {
+                        id
+                        name
+                        position
+                        template
+                        }
+                    }`
+        const dataInput = {
+            id: categoryInput.catId.toString(),
+            catName: categoryInput.catName,
+            position: categoryInput.position.toString(),
+            template: categoryInput.template.toString(),
+        }
+        const response = await apolloClient.mutate({
+            mutation: api,
+            variables: {
+                updateCat: dataInput,
+            }
+        })
+        const result = response.data?.modifCategory as CatGql
+        if (result) {
+            toast.success(`Catégorie ${dataInput.catName} est modifié !`, {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                theme: "light",
+                style: {
+                    fontFamily: 'Verdana',
+                    fontSize: '12px',
+                    width: '200px'
+                }
+            }
+            )
+            const { id, name, position, template } = result
+            store.dispatch({
+                type: 'SET_CATEGORY_AFTER_MODIF',
+                payload: {
+                    id: id,
+                    name: name,
+                    position,
+                    template
+                } as CatGql
+            })
+        }
+        else {
+            toast.error('Erreur de modif de catégorie')
+        }
+    } catch (error) {
+        console.error('error modifCategory :', error)
+        toast.error('Erreur réseau ou serveur')
+    }
+}

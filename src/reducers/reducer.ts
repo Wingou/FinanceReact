@@ -370,8 +370,9 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'SET_CATID': {
       const catId = Number(action.payload.catId)
+      const catName = getCatById(state.categories, catId).name
       const caller = action.payload.caller
-      const { addPriceInput, objectInput } = state
+      const { addPriceInput, objectInput, categoryInput } = state
       return {
         ...state,
         addPriceInput: caller === 'ADD' ? {
@@ -384,6 +385,13 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           catId
         }
           : objectInput
+        ,
+        categoryInput: caller === 'HOME' ? {
+          ...categoryInput,
+          catId,
+          catName
+        }
+          : categoryInput
       }
     }
 
@@ -766,6 +774,23 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           ...state,
           categories: [...state.categories, cat],
           categoryInput
+        }
+      }
+    case 'SET_CATEGORY_AFTER_MODIF':
+      {
+        const { id, name, position, template } = action.payload as CatGql
+        const catId = parseInt(id)
+        const categories = state.categories.map((c: Categorie): Categorie => {
+          return {
+            ...c,
+            name: c.id === catId ? name : c.name,
+            position: c.id === catId ? position : c.position,
+            template: c.id === catId ? template : c.template
+          }
+        })
+        return {
+          ...state,
+          categories
         }
       }
 
