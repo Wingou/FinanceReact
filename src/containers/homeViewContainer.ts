@@ -8,7 +8,8 @@ const mapStateToProps = (state: RootState) => {
     categories: state.categories,
     objects: state.objects,
     mostUsedObjs: state.mostUsedObjects,
-    objectInput: state.objectInput
+    objectInput: state.objectInput,
+    categoryInput: state.categoryInput
   }
 }
 const HomeViewContainer = connect(mapStateToProps)(HomeView)

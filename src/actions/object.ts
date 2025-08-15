@@ -22,9 +22,6 @@ export const handleModifObjectInput = (e: React.ChangeEvent<HTMLInputElement>) =
     store.dispatch(action)
 }
 
-
-
-
 export const handleAddObject = async (objectInput: ObjectInput) => {
     try {
         const api = gql`

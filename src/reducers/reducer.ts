@@ -10,7 +10,7 @@ import {
   OBJECTS
 } from '../types/constants'
 import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions } from '../models/initialModel'
-import { ActionType, Categorie, ModifPriceInput, Month, MostUsedObj, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
+import { ActionType, Categorie, CategoryInput, ModifPriceInput, Month, MostUsedObj, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
 import { CatGql, MostUsedObjectGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById, getObjById } from '../utils/helper'
 
@@ -731,6 +731,41 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         return {
           ...state,
           objects
+        }
+      }
+
+
+    case 'ADDCATEGORYINPUT':
+      {
+        const categoryInput = {
+          ...state.categoryInput,
+          catName: action.payload
+        }
+        return {
+          ...state,
+          categoryInput
+        }
+      }
+
+    case 'SET_CATEGORY_AFTER_ADD':
+      {
+        const categoryInput = action.payload as CategoryInput
+        const { catId, catName, template, position } = categoryInput
+        const cat = {
+          id: catId,
+          name: catName,
+          position,
+          template,
+          recette: 0,
+          depense: 0,
+          reserve: 0,
+          isDisplayed: true,
+          isOn: true
+        }
+        return {
+          ...state,
+          categories: [...state.categories, cat],
+          categoryInput
         }
       }
 

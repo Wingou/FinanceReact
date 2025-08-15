@@ -12,6 +12,7 @@ export interface StateType {
   addPriceInput: AddPriceInput,
   modifPriceInput: ModifPriceInput,
   objectInput: ObjectInput,
+  categoryInput: CategoryInput,
   view: ViewOptions,
   orderOptions: OrderOptions
 }
@@ -63,6 +64,13 @@ export interface ObjectInput {
   catId: number,
   objName: string,
   template: number
+}
+
+export interface CategoryInput {
+  catId: number,
+  catName: string,
+  template: number,
+  position: number
 }
 
 export interface ModifPriceInput {

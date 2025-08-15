@@ -1,9 +1,9 @@
 import odbc, { Result } from "odbc"
 import { parseCategories, parseMostUsedObjects, parseObjects, parsePrices, parseYears } from "./parsers.js"
-import { sqlAddObject, sqlAddPrice, sqlCategories, sqlIdent, sqlLastPrices, sqlModifObject, sqlModifPrice, sqlMostUsedObjects, sqlObjectById, sqlObjects, sqlPriceById, sqlPriceCheck, sqlPricesByDates, sqlYears } from "./queries.js"
+import { sqlAddCategory, sqlAddObject, sqlAddPrice, sqlCategories, sqlIdent, sqlLastPrices, sqlModifObject, sqlModifPrice, sqlMostUsedObjects, sqlObjectById, sqlObjects, sqlPriceById, sqlPriceCheck, sqlPricesByDates, sqlYears } from "./queries.js"
 import { setParamInSQL } from "./utils.js"
 import { CatRaw, MostUsedObjectsRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
-import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, PriceCheckWhereInput, YearGql, ModifPriceUpdateInput, MostUsedObjectGql, AddObjectInsertInput, ModifObjectInput } from "./types/graphql.js"
+import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, PriceCheckWhereInput, YearGql, ModifPriceUpdateInput, MostUsedObjectGql, AddObjectInsertInput, ModifObjectInput, AddCategoryInsertInput } from "./types/graphql.js"
 const cnx = await odbc.connect('DSN=financereact')
 
 export const resolvers = {
@@ -161,6 +161,24 @@ export const resolvers = {
             catch (error) {
                 console.error('Error resolver modifObject')
                 throw new Error('Error resolver modifObject')
+            }
+        },
+        addCategory: async (_: any, { insert }: { insert: AddCategoryInsertInput }) => {
+            try {
+                const { catName } = insert
+                console.log('sql', setParamInSQL(sqlAddCategory, [catName]))
+                await cnx.query(setParamInSQL(sqlAddCategory, [catName]))
+                const res = await cnx.query(sqlIdent) as Result<{ id: string }>
+                return {
+                    id: res[0].id,
+                    name: catName,
+                    position: 99,
+                    template: 0
+                } as CatGql
+            }
+            catch (error) {
+                console.error('Error resolver addCategory')
+                throw new Error('Error resolver addCategory')
             }
         }
     }

@@ -67,6 +67,7 @@ export const sqlMostUsedObjects = `SELECT TOP 10 COUNT(p.id_objet) as nb, p.id_o
 
 export const sqlAddObject = `INSERT INTO objet (Objet, id_categorie) VALUES ('?',?)`
 
+export const sqlAddCategory = `INSERT INTO categorie (Categorie) VALUES ('?')`
 
 export const sqlModifObject = `UPDATE objet SET Objet='?', template=? WHERE id=?`
 

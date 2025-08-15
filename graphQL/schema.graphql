@@ -14,6 +14,7 @@ type Mutation {
   modifPrice (update: ModifPriceUpdateInput!):PriceGql!
   addObject (insert : AddObjectInsertInput!):ObjGql!,
   modifObject (update : ModifObjectInput!):ObjGql!,
+  addCategory (insert : AddCategoryInsertInput!):CatGql!,
 }
 
 type CatGql {
@@ -148,4 +149,8 @@ input ModifObjectInput  {
   objName: String!
   template: String!
   id : String!
+}
+
+input AddCategoryInsertInput  {
+  catName: String!
 }
