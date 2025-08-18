@@ -10,8 +10,9 @@ export interface CatRaw {
 export interface ObjRaw {
   id: number,
   Objet: string,
-  id_categorie: number
-  template: number
+  id_categorie: number,
+  template: number,
+  nbChild: number
 }
 
 export interface WhereObjets {
@@ -53,7 +54,7 @@ export interface WherePricesByDates {
 
 
 export interface MostUsedObjectsRaw {
-  nb: number,
+  nbChild: number,
   id_objet: number
   Objet: string,
   id_categorie: number,

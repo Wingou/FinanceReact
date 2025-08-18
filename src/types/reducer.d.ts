@@ -26,7 +26,8 @@ export interface CategoriesAPI extends CatRaw { }
 export interface ObjectsAPI extends ObjRaw {
   cat: {
     id: number
-  }
+  },
+  nbChild: number
 }
 
 export interface PricesAPI extends PriceRaw {

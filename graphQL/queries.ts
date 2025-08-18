@@ -4,7 +4,11 @@ export const sqlPricesTop = `SELECT TOP ? id, prix, commentaire, DateAction, id_
 export const sqlCategories = `SELECT id, Categorie, Ordre, template FROM categorie ORDER BY Ordre`
 export const sqlCategoryById = `SELECT id, Categorie, Ordre, template FROM categorie WHERE id=?`
 
-export const sqlObjects = `SELECT id, Objet, id_categorie, template FROM objet ORDER BY Objet`
+export const sqlObjects = `SELECT o.id, o.Objet, o.id_categorie, o.template, count(p.id_objet) as nbChild
+                                FROM objet o LEFT JOIN  prix p ON p.id_objet= o.id
+                                WHERE p.template = 2 OR p.template =0 OR p.template is NULL
+                                GROUP BY o.id, o.Objet, o.id_categorie, o.template 
+                                ORDER BY o.Objet`
 export const sqlObjectById = `SELECT id, Objet, id_categorie, template FROM objet WHERE id=?`
 
 export const sqlYears = `SELECT distinct year(dateAction) as year FROM prix ORDER BY year(dateAction) DESC`
@@ -55,7 +59,7 @@ export const sqlIdent = `SELECT @@IDENTITY as id`
 
 export const sqlModifPrice = `UPDATE prix set prix=?, commentaire='?', DateAction='?', id_objet=?, template=?, dateModif=Date() WHERE id=?`
 
-export const sqlMostUsedObjects = `SELECT TOP 10 COUNT(p.id_objet) as nb, p.id_objet, o.Objet, o.id_categorie, c.categorie
+export const sqlMostUsedObjects = `SELECT TOP 10 COUNT(p.id_objet) as nbChild, p.id_objet, o.Objet, o.id_categorie, c.categorie
                                     FROM prix p, objet o, categorie c
                                     WHERE o.id=p.id_objet 
                                     AND c.id=o.id_categorie
@@ -70,7 +74,8 @@ export const sqlAddObject = `INSERT INTO objet (Objet, id_categorie) VALUES ('?'
 
 export const sqlAddCategory = `INSERT INTO categorie (Categorie) VALUES ('?')`
 
-export const sqlModifObject = `UPDATE objet SET Objet='?', template=? WHERE id=?`
+export const sqlModifObject = `UPDATE objet SET Objet='?' WHERE id=?`
+export const sqlDelObject = `UPDATE objet SET template=? WHERE id=?`
 
 export const sqlModifCategory = `UPDATE categorie SET Categorie='?', Ordre=?, Template=? WHERE id=?`
 

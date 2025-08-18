@@ -60,13 +60,13 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
         objById.id === -1
             ? 'aucun objet sélectionné'
             : objById.name +
-            (catId === -1 ? ' (' + objById.cat.name + ')' : '')
+            (catId === -1 ? ' : ' + objById.cat.name + ' ' : '')
 
     const objLabel =
         '¤ OBJET ¤' +
         (catId === -1
             ? ''
-            : ' (' + getCatById(categories, catId).name + ')')
+            : ' : ' + getCatById(categories, catId).name + ' ')
 
     const Red_Border_Obj = objId === -1 ? 'invalidValue' : ''
     return (
@@ -87,7 +87,7 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
             {catId === -1 && mostUsedObjs.map((muObj: MostUsedObj, index: number) => {
                 return (
                     <option key={'option_mostUsedObjId_' + index} value={muObj.id.toString()} title={muObj.name}>
-                        {`${muObj.name} (${muObj.cat.name})`}
+                        {`${muObj.name} : ${muObj.cat.name} (${muObj.nbChild})`}
                     </option>
                 )
             }
@@ -96,7 +96,7 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
             {objectsByCatIds.map((obj_, index) => {
                 const objName =
                     obj_.name +
-                    (catId !== -1 ? '' : ' (' + obj_.cat.name + ')')
+                    (catId !== -1 ? ' ' : ' : ' + obj_.cat.name + ' ') + '(' + obj_.nbChild + ')'
 
                 return (
                     <option key={'option_objId_' + index} value={obj_.id.toString()} title={objName}>

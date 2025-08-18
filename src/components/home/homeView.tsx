@@ -37,20 +37,43 @@ export class HomeView extends Component<HomeViewProps, {}> {
 }
 
 const InputObj: React.FC<InputObjProps> = ({ objects, categories, objectInput }) => {
-    const { catId, objId } = objectInput
-    const selectedCatName = getCatById(categories, catId).name
-    const selectedObjName = getObjById(objects, objId).name
-    const isCatOK = objectInput.catId !== -1
-    const isObjOK = objectInput.objName.length > 0
-    const isObjNew = objects.filter(o => o.name === objectInput.objName && o.cat.id === catId).length === 0
+    const { catId, objId, objName } = objectInput
+    const isCatSelected = catId !== -1
     const isObjSelected = objId !== -1
-    const btnOK_Title = !isObjOK
-        ? 'Object is missing !'
-        : !isCatOK ? 'Category is missing !' :
-            !isObjNew ? 'Object already exists in this category !' :
-                !isObjSelected ? 'No Object selected' : ''
-    const isOKBtnDisabled = !isCatOK || !isObjOK || !isObjNew || !isObjSelected
-    const invalidDisableBtn = isOKBtnDisabled ? 'btnDisabled' : 'btnEnabled'
+    const isObjInput = objName.length > 0
+    const isObjNew = objects.filter(o => o.name === objectInput.objName && o.cat.id === catId).length === 0
+    const isObjOrphan = getObjById(objects, objId).nbChild === 0
+
+    const btnAjout_Title = !isCatSelected
+        ? 'Please, select a Category'
+        : !isObjInput
+            ? 'Object Input is missing'
+            : !isObjNew
+                ? 'Object already exists'
+                : 'Add new Object'
+    const isBtnAjout_Disabled = !isCatSelected || !isObjInput || !isObjNew
+    const btnAjoutStyle = isBtnAjout_Disabled ? 'btnDisabled' : 'btnEnabled'
+
+    const btnModif_Title = !isObjSelected
+        ? 'please, select an Object to modify'
+        : !isObjInput
+            ? 'Object Input is missing'
+            : !isObjNew
+                ? 'Object already exists'
+                : 'Modify Object'
+    const isBtnModif_Disabled = !isObjSelected || !isObjInput || !isObjNew
+    const btnModifStyle = isBtnModif_Disabled ? 'btnDisabled' : 'btnEnabled'
+
+    const btnDel_Title = !isObjSelected
+        ? 'Please, select an Object to delete'
+        : isObjInput
+            ? 'Object Input must be Empty '
+            : !isObjOrphan
+                ? 'Object has Prices, Deletion unauthorized'
+                : 'Delete Object'
+    const isBtnDel_Disabled = !isObjSelected || isObjInput || !isObjOrphan
+    const btnDelStyle = isBtnDel_Disabled ? 'btnDisabled' : 'btnEnabled'
+
     return <div className='
              bg-indigo-100
               text-left 
@@ -76,21 +99,31 @@ const InputObj: React.FC<InputObjProps> = ({ objects, categories, objectInput })
                 onClick={() => {
                     handleAddObject(objectInput)
                 }}
-                title={btnOK_Title}
-                disabled={isOKBtnDisabled}
-                className={`btnAdmin btnAdminSize1 ${invalidDisableBtn}`}
+                title={btnAjout_Title}
+                disabled={isBtnAjout_Disabled}
+                className={`btnAdmin btnAdminSize1 ${btnAjoutStyle}`}
             >
                 AJOUT
             </button>
             <button
                 onClick={() => {
-                    handleModifObject(objectInput)
+                    handleModifObject(objectInput, 1)
                 }}
-                title={btnOK_Title}
-                disabled={isOKBtnDisabled}
-                className={`btnAdmin btnAdminSize1 ${invalidDisableBtn}`}
+                title={btnModif_Title}
+                disabled={isBtnModif_Disabled}
+                className={`btnAdmin btnAdminSize1 ${btnModifStyle}`}
             >
                 MODIF
+            </button>
+            <button
+                onClick={() => {
+                    handleModifObject(objectInput, 2)
+                }}
+                title={btnDel_Title}
+                disabled={isBtnDel_Disabled}
+                className={`btnAdmin btnAdminSize1 ${btnDelStyle}`}
+            >
+                DELETE
             </button>
         </div>
     </div>
@@ -105,8 +138,8 @@ const InputCat: React.FC<InputCatProps> = ({ categories, categoryInput }) => {
         ? 'Category is missing !' :
         !isCatNew ? 'Category is already existed !' :
             !isCatSelected ? 'No Category selected' : ''
-    const isOKBtnDisabled = !isCatOK || !isCatNew || !isCatSelected
-    const invalidDisableBtn = isOKBtnDisabled ? 'btnDisabled' : 'btnEnabled'
+    const isAjoutBtnDisabled = !isCatOK || !isCatNew || !isCatSelected
+    const btnAjoutSisableStyle = isAjoutBtnDisabled ? 'btnDisabled' : 'btnEnabled'
     const selectedCatName = getCatById(categories, catId).name
     return <div className='
              bg-indigo-100
@@ -135,8 +168,8 @@ const InputCat: React.FC<InputCatProps> = ({ categories, categoryInput }) => {
                     handleAddCategory(categoryInput)
                 }}
                 title={btnOK_Title}
-                disabled={isOKBtnDisabled}
-                className={`btnAdmin btnAdminSize1 ${invalidDisableBtn}`}
+                disabled={isAjoutBtnDisabled}
+                className={`btnAdmin btnAdminSize1 ${btnAjoutSisableStyle}`}
             >
                 AJOUT
             </button>
@@ -145,8 +178,8 @@ const InputCat: React.FC<InputCatProps> = ({ categories, categoryInput }) => {
                     handleModifCategory(categoryInput)
                 }}
                 title={btnOK_Title}
-                disabled={isOKBtnDisabled}
-                className={`btnAdmin btnAdminSize1 ${invalidDisableBtn}`}
+                disabled={isAjoutBtnDisabled}
+                className={`btnAdmin btnAdminSize1 ${btnAjoutSisableStyle}`}
             >
                 MODIF
             </button>

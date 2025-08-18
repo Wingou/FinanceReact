@@ -39,7 +39,8 @@ export const objNone = {
   id: -1,
   name: 'NONE',
   template: 0,
-  cat: catRawNone
+  cat: catRawNone,
+  nbChild: 0
 }
 
 export const catNone: Categorie = {

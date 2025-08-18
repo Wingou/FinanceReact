@@ -64,7 +64,7 @@ export type MostUsedObjectGql = {
   __typename?: 'MostUsedObjectGql';
   catId: Scalars['Int']['output'];
   catName: Scalars['String']['output'];
-  nb: Scalars['Int']['output'];
+  nbChild: Scalars['Int']['output'];
   objId: Scalars['Int']['output'];
   objName: Scalars['String']['output'];
 };
@@ -119,6 +119,7 @@ export type ObjGql = {
   cat: ObjCatGql;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  nbChild: Scalars['Int']['output'];
   template: Scalars['Int']['output'];
 };
 

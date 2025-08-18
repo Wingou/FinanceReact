@@ -6,8 +6,7 @@ import {
   CURRENT_MONTH,
   PAGE,
   MONTHS,
-  CALLER,
-  OBJECTS
+  CALLER
 } from '../types/constants'
 import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions } from '../models/initialModel'
 import { ActionType, Categorie, CategoryInput, ModifPriceInput, Month, MostUsedObj, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
@@ -53,14 +52,15 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     case 'SET_OBJECTS': {
       const objectsApi = action.payload.objects as ObjGql[]
       const objects = objectsApi.map((o: ObjGql): Object => {
-        const { id, template, cat } = o
+        const { id, template, cat, nbChild } = o
         const { id: catId } = cat
         const cat_ = getCatById(state.categories, parseInt(catId))
         return {
           ...o,
           id: parseInt(id),
           template,
-          cat: cat_
+          cat: cat_,
+          nbChild
         }
       }
       )
@@ -382,7 +382,8 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         } : addPriceInput,
         objectInput: caller === 'HOME' ? {
           ...objectInput,
-          catId
+          catId,
+          objId: -1
         }
           : objectInput
         ,
@@ -414,7 +415,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         objectInput: caller === 'HOME' ? {
           ...objectInput,
           objId,
-          objName: getObjById(state.objects, objId).name,
+          objName: state.objectInput.objName === '' ? getObjById(state.objects, objId).name : state.objectInput.objName,
           catId
         } : objectInput,
         modifPriceInput: caller === 'MODIF_PRICE' ? {
@@ -677,16 +678,16 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const muObjsApi = action.payload.mostUsedObjects as MostUsedObjectGql[]
       const mostUsedObjects = muObjsApi
         .map((o: MostUsedObjectGql): MostUsedObj => {
-          const { nb, objId, objName, catId, catName } = o
+          const { nbChild, objId, objName, catId, catName } = o
           return {
-            nbUse: nb,
+            nbChild,
             id: objId,
             name: objName,
             template: 0,
             cat: {
               id: catId,
               name: catName
-            }
+            },
           }
         })
       return {
@@ -710,16 +711,18 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     case 'SET_OBJECT_AFTER_ADD':
       {
         const { id, name, cat } = action.payload
+        const objId = parseInt(id) as number
         const catId = parseInt(cat.id) as number
         const catById = getCatById(state.categories, catId)
         const objects = [
           ...state.objects,
           {
-            id,
+            id: objId,
             name,
             template: 0,
-            cat: catById
-          }
+            cat: catById,
+            nbChild: 0
+          } as Object
         ]
         return {
           ...state,
@@ -729,11 +732,12 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'SET_OBJECT_AFTER_MODIF':
       {
-        const { id, name } = action.payload
+        const { id, name, template } = action.payload
         const objects = state.objects.map((o: Object): Object => {
           return {
             ...o,
-            name: o.id === id ? name : o.name
+            name: o.id === id ? name as string : o.name,
+            template: o.id === id ? template as number : o.template
           }
         })
         return {

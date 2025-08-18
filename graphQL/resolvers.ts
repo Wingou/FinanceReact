@@ -1,6 +1,6 @@
 import odbc, { Result } from "odbc"
 import { parseCategories, parseMostUsedObjects, parseObjects, parsePrices, parseYears } from "./parsers.js"
-import { sqlAddCategory, sqlAddObject, sqlAddPrice, sqlCategories, sqlCategoryById, sqlIdent, sqlLastPrices, sqlModifCategory, sqlModifObject, sqlModifPrice, sqlMostUsedObjects, sqlObjectById, sqlObjects, sqlPriceById, sqlPriceCheck, sqlPricesByDates, sqlYears } from "./queries.js"
+import { sqlAddCategory, sqlAddObject, sqlAddPrice, sqlCategories, sqlCategoryById, sqlDelObject, sqlIdent, sqlLastPrices, sqlModifCategory, sqlModifObject, sqlModifPrice, sqlMostUsedObjects, sqlObjectById, sqlObjects, sqlPriceById, sqlPriceCheck, sqlPricesByDates, sqlYears } from "./queries.js"
 import { setParamInSQL } from "./utils.js"
 import { CatRaw, MostUsedObjectsRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
 import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, PriceCheckWhereInput, YearGql, ModifPriceUpdateInput, MostUsedObjectGql, AddObjectInsertInput, ModifObjectInput, AddCategoryInsertInput, ModifCategoryInput } from "./types/graphql.js"
@@ -153,7 +153,9 @@ export const resolvers = {
         modifObject: async (_: any, { update }: { update: ModifObjectInput }) => {
             try {
                 const { objName, template, id } = update
-                await cnx.query(setParamInSQL(sqlModifObject, [objName, template, id]))
+                const sql = template === '2' ? sqlDelObject : sqlModifObject
+                const value = template === '2' ? template : objName
+                await cnx.query(setParamInSQL(sql, [value, id]))
                 const rows = await cnx.query(setParamInSQL(sqlObjectById, [id]))
                 const result = parseObjects(rows as ObjRaw[])
                 return result[0] as ObjGql

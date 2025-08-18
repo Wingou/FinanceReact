@@ -121,6 +121,7 @@ const fetchList = async (coy_: COY, dispatch: Dispatch) => {
                     cat {
                       id
                     }
+                    nbChild
                   }
                 }`,
         type: 'SET_OBJECTS'
@@ -137,7 +138,7 @@ const fetchList = async (coy_: COY, dispatch: Dispatch) => {
       'MUOBJ': {
         api: gql`query MostUsedObjects {
                   mostUsedObjects {
-                    nb
+                    nbChild
                     objId
                     objName
                     catId

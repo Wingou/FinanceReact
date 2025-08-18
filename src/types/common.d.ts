@@ -94,7 +94,8 @@ export interface Categorie extends CatRaw {
 }
 
 export interface Object extends ObjRaw {
-  cat: CatRaw
+  cat: CatRaw,
+  nbChild: number
 }
 
 export interface Price extends PriceRaw {
@@ -131,5 +132,5 @@ export interface MostUsedObj extends ObjRaw {
     id: number,
     name: String
   },
-  nbUse: number
+  nbChild: number
 }

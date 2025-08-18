@@ -30,6 +30,7 @@ type ObjGql {
   name: String!
   template: Int!
   cat: ObjCatGql!
+  nbChild : Int!  
 }
 
 type ObjCatGql {
@@ -133,7 +134,7 @@ mutation ModifPrice(  $update: ModifPriceUpdateInput!) {
 }
 
 type MostUsedObjectGql {
-  nb: Int!
+  nbChild: Int!
   objId : Int!
   objName: String!
   catId : Int!

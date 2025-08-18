@@ -74,12 +74,7 @@ export const handleAddObject = async (objectInput: ObjectInput) => {
     }
 }
 
-
-
-
-
-
-export const handleModifObject = async (objectInput: ObjectInput) => {
+export const handleModifObject = async (objectInput: ObjectInput, template: Number) => {
     try {
         const api = gql`
                     mutation ModifObject($updateObj: ModifObjectInput!) {
@@ -87,13 +82,15 @@ export const handleModifObject = async (objectInput: ObjectInput) => {
                         id
                         name
                         cat {
-                        id
-                        }}
+                            id
+                        }
+                        template
+                        }
                     }`
         const dataInput = {
             id: objectInput.objId.toString(),
             objName: objectInput.objName,
-            template: objectInput.template.toString(),
+            template: template.toString()
         }
         const response = await apolloClient.mutate({
             mutation: api,
@@ -102,8 +99,9 @@ export const handleModifObject = async (objectInput: ObjectInput) => {
             }
         })
         const result = response.data?.modifObject as ObjGql
+        const msg = template === 2 ? 'supprimé' : 'modifié'
         if (result) {
-            toast.success(`Objet ${dataInput.objName} est modifié !`, {
+            toast.success(`Objet ${dataInput.objName} est ${msg} !`, {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -122,7 +120,8 @@ export const handleModifObject = async (objectInput: ObjectInput) => {
                 type: 'SET_OBJECT_AFTER_MODIF',
                 payload: {
                     id: parseInt(result.id) as Number,
-                    name: result.name
+                    name: result.name,
+                    template: result.template
                 }
             })
         }

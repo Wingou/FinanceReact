@@ -20,7 +20,8 @@ export const parseObjects = (rows: ObjRaw[]) => {
       template: rs.template,
       cat: {
         id: rs.id_categorie.toString()
-      }
+      },
+      nbChild: rs.nbChild
     }
   })
 }
@@ -56,9 +57,9 @@ export const parsePrices = (rows: PriceRaw[]): PriceGql[] => {
 
 export const parseMostUsedObjects = (rows: MostUsedObjectsRaw[]) => {
   return rows.map((rs: MostUsedObjectsRaw): MostUsedObjectGql => {
-    const { nb, id_objet, Objet, id_categorie, categorie } = rs
+    const { nbChild, id_objet, Objet, id_categorie, categorie } = rs
     return {
-      nb,
+      nbChild,
       objId: id_objet,
       objName: Objet,
       catId: id_categorie,
