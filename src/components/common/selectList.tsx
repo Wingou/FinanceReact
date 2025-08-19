@@ -1,8 +1,8 @@
 import React from "react"
 import { handleCatIdInput, handleObjIdInput } from "../../actions/add"
-import { getCatById, getObjById } from "../../utils/helper"
+import { getCatById, getObjById, getTopObjs } from "../../utils/helper"
 import { SelectCatProps, SelectObjProps } from "./selectList.d"
-import { MostUsedObj } from "../../types/common"
+import { Object } from "../../types/common"
 
 export const SelectCat: React.FC<SelectCatProps> = ({ categories, catId, caller }) => {
     const cat = categories
@@ -41,7 +41,9 @@ export const SelectCat: React.FC<SelectCatProps> = ({ categories, catId, caller 
     )
 }
 
-export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, objects, catId, objId, mostUsedObjs }) => {
+export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, objects, catId, objId }) => {
+
+    const topObjs = getTopObjs(objects, 10)
 
     const objectsAll = objects
         .filter(o => o.template === 0)
@@ -84,9 +86,9 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
                 {objLabel}
             </option>
 
-            {catId === -1 && mostUsedObjs.map((muObj: MostUsedObj, index: number) => {
+            {catId === -1 && topObjs.map((muObj: Object, index: number) => {
                 return (
-                    <option key={'option_mostUsedObjId_' + index} value={muObj.id.toString()} title={muObj.name}>
+                    <option key={'option_TopObjId_' + index} value={muObj.id.toString()} title={muObj.name}>
                         {`${muObj.name} : ${muObj.cat.name} (${muObj.nbChild})`}
                     </option>
                 )

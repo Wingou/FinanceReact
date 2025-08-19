@@ -7,7 +7,6 @@ export interface StateType {
   categories: Categorie[],
   years: Year[],
   months: Month[],
-  mostUsedObjects: MostUsedObj[],
   searchOptions: SearchOptions,
   addPriceInput: AddPriceInput,
   modifPriceInput: ModifPriceInput,
@@ -127,10 +126,3 @@ export interface OrderSelectValue {
   selectedPos: number
 }
 
-export interface MostUsedObj extends ObjRaw {
-  cat: {
-    id: number,
-    name: String
-  },
-  nbChild: number
-}

@@ -28,7 +28,6 @@ function App() {
         await fetchList('CAT', dispatch)
         await fetchList('OBJ', dispatch)
         await fetchList('YEARS', dispatch)
-        await fetchList('MUOBJ', dispatch)
         setIsCOYLoaded(true)
       } catch (error) {
         console.error('ERROR: fetchListsData : ', error)
@@ -134,18 +133,6 @@ const fetchList = async (coy_: COY, dispatch: Dispatch) => {
                 }
                 `,
         type: 'SET_YEARS'
-      },
-      'MUOBJ': {
-        api: gql`query MostUsedObjects {
-                  mostUsedObjects {
-                    nbChild
-                    objId
-                    objName
-                    catId
-                    catName
-                  }
-                }`,
-        type: 'SET_MUOBJ'
       }
     }[coy_]
     const { data } = await apolloClient.query({ query: coy.api })

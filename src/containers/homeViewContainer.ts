@@ -7,7 +7,6 @@ const mapStateToProps = (state: RootState) => {
     addPriceInput: state.addPriceInput,
     categories: state.categories,
     objects: state.objects,
-    mostUsedObjs: state.mostUsedObjects,
     objectInput: state.objectInput,
     categoryInput: state.categoryInput
   }

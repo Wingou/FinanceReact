@@ -1,5 +1,5 @@
 import { CALLER } from "../../types/constants"
-import { AddPriceInput, Categorie, MostUsedObj, Object } from "../../types/common"
+import { AddPriceInput, Categorie, Object } from "../../types/common"
 
 export interface SelectCatProps {
     caller: CALLER,
@@ -12,14 +12,12 @@ export interface SelectObjProps {
     catId: number,
     objId: number,
     categories: Categorie[],
-    objects: Object[],
-    mostUsedObjs: MostUsedObj[]
+    objects: Object[]
 }
 
 export interface AddLineProps {
     caller: CALLER,
     addPriceInput: AddPriceInput,
     categories: Categorie[],
-    objects: Object[],
-    mostUsedObjs: MostUsedObj[]
+    objects: Object[]
 }

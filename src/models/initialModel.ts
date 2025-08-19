@@ -91,8 +91,6 @@ export const initialModel: StateType = {
   objectInput: initialObjectInput,
   categoryInput: initialCategoryInput,
   view: initialView,
-  orderOptions: initialOrderOptions,
-  mostUsedObjects: [],
-
+  orderOptions: initialOrderOptions
 }
 

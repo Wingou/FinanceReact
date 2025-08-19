@@ -87,3 +87,11 @@ export const getCatById = (categories: Categorie[], id: number): Categorie => {
   const cat = categories.filter(c => c.id === id)
   return cat.length === 0 ? catNone : cat[0]
 }
+
+export const getTopObjs = (objects: Object[], nb: number): Object[] => {
+  const excludeCatIds = [39]
+  return objects
+    .filter((o: Object) => o.template !== 2 && !excludeCatIds.includes(o.cat.id))
+    .sort((a: Object, b: Object) => b.nbChild - a.nbChild)
+    .slice(0, nb)
+}

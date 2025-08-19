@@ -28,7 +28,7 @@ export class HomeView extends Component<HomeViewProps, {}> {
             </div>
             <div className='m-2'>
                 <SelectCat caller={'HOME'} catId={catId} categories={categories} />
-                <SelectObj caller={'HOME'} catId={catId} objId={objId} categories={categories} objects={objects} mostUsedObjs={[]} />
+                <SelectObj caller={'HOME'} catId={catId} objId={objId} categories={categories} objects={objects} />
             </div>
             <InputObj objects={objects} categories={categories} objectInput={objectInput} />
             <InputCat categories={categories} categoryInput={categoryInput} />

@@ -1,9 +1,9 @@
 import odbc, { Result } from "odbc"
-import { parseCategories, parseMostUsedObjects, parseObjects, parsePrices, parseYears } from "./parsers.js"
-import { sqlAddCategory, sqlAddObject, sqlAddPrice, sqlCategories, sqlCategoryById, sqlDelObject, sqlIdent, sqlLastPrices, sqlModifCategory, sqlModifObject, sqlModifPrice, sqlMostUsedObjects, sqlObjectById, sqlObjects, sqlPriceById, sqlPriceCheck, sqlPricesByDates, sqlYears } from "./queries.js"
+import { parseCategories, parseObjects, parsePrices, parseYears } from "./parsers.js"
+import { sqlAddCategory, sqlAddObject, sqlAddPrice, sqlCategories, sqlCategoryById, sqlDelObject, sqlIdent, sqlLastPrices, sqlModifCategory, sqlModifObject, sqlModifPrice, sqlObjectById, sqlObjects, sqlPriceById, sqlPriceCheck, sqlPricesByDates, sqlYears } from "./queries.js"
 import { setParamInSQL } from "./utils.js"
-import { CatRaw, MostUsedObjectsRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
-import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, PriceCheckWhereInput, YearGql, ModifPriceUpdateInput, MostUsedObjectGql, AddObjectInsertInput, ModifObjectInput, AddCategoryInsertInput, ModifCategoryInput } from "./types/graphql.js"
+import { CatRaw, ObjRaw, PriceRaw, YearRaw } from "./server.js"
+import { AddPriceInsertInput, CatGql, ObjectsWhereInput, ObjGql, PriceGql, PricesByDatesWhereInput, PriceByIdWhereInput, PriceCheckWhereInput, YearGql, ModifPriceUpdateInput, AddObjectInsertInput, ModifObjectInput, AddCategoryInsertInput, ModifCategoryInput } from "./types/graphql.js"
 const cnx = await odbc.connect('DSN=financereact')
 
 export const resolvers = {
@@ -79,17 +79,6 @@ export const resolvers = {
             catch (error) {
                 console.error('Error resolver lastPrices')
                 throw new Error('Error resolver lastPrices')
-            }
-        },
-        mostUsedObjects: async () => {
-            try {
-                const rows = await cnx.query(setParamInSQL(sqlMostUsedObjects, []))
-                const result = parseMostUsedObjects(rows as MostUsedObjectsRaw[])
-                return result as MostUsedObjectGql[]
-            }
-            catch (error) {
-                console.error('Error resolver mostUsedObjects')
-                throw new Error('Error resolver mostUsedObjects')
             }
         },
         priceCheck: async (_: any, { where }: { where: PriceCheckWhereInput }) => {

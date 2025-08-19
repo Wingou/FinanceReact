@@ -9,8 +9,8 @@ import {
   CALLER
 } from '../types/constants'
 import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions } from '../models/initialModel'
-import { ActionType, Categorie, CategoryInput, ModifPriceInput, Month, MostUsedObj, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
-import { CatGql, MostUsedObjectGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
+import { ActionType, Categorie, CategoryInput, ModifPriceInput, Month, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
+import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById, getObjById } from '../utils/helper'
 
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
@@ -673,28 +673,6 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
         }
       }
-
-    case 'SET_MUOBJ':
-      const muObjsApi = action.payload.mostUsedObjects as MostUsedObjectGql[]
-      const mostUsedObjects = muObjsApi
-        .map((o: MostUsedObjectGql): MostUsedObj => {
-          const { nbChild, objId, objName, catId, catName } = o
-          return {
-            nbChild,
-            id: objId,
-            name: objName,
-            template: 0,
-            cat: {
-              id: catId,
-              name: catName
-            },
-          }
-        })
-      return {
-        ...state,
-        mostUsedObjects
-      }
-
 
     case 'ADDOBJECTINPUT':
       {

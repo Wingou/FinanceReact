@@ -12,7 +12,7 @@ import { handleCancel } from '../../actions/cancel'
 import { InputDate, InputPrice, InputText } from '../common/inputForm'
 
 export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
-  const { addPriceInput, categories, objects, mostUsedObjs } = addLineProps
+  const { addPriceInput, categories, objects } = addLineProps
   const { catId, objId } = addPriceInput
   const isObjetOK = addPriceInput.objId !== -1
   const isPriceOK =
@@ -40,7 +40,7 @@ export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
         handleFC={handleAddDateInput}
       />
       <SelectCat caller='ADD' categories={categories} catId={catId} /><br />
-      <SelectObj caller='ADD' categories={categories} objects={objects} catId={catId} objId={objId} mostUsedObjs={mostUsedObjs} />
+      <SelectObj caller='ADD' categories={categories} objects={objects} catId={catId} objId={objId} />
       <InputText
         name='comment'
         placeholder='Commentaire ici...'

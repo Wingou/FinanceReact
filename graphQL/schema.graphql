@@ -5,7 +5,6 @@ type Query {
   pricesByDates(where: PricesByDatesWhereInput!): [PriceGql!]
   priceById(where: PriceByIdWhereInput!): [PriceGql!]
   lastPrices : [PriceGql!]
-  mostUsedObjects : [MostUsedObjectGql!]
   priceCheck(where: PriceCheckWhereInput) : [PriceGql!]
 }
 
@@ -132,15 +131,6 @@ mutation ModifPrice(  $update: ModifPriceUpdateInput!) {
     }
   }
 }
-
-type MostUsedObjectGql {
-  nbChild: Int!
-  objId : Int!
-  objName: String!
-  catId : Int!
-  catName: String!
-}
-
 
 input AddObjectInsertInput  {
   objName: String!

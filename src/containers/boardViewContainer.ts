@@ -1,11 +1,10 @@
 import { connect } from 'react-redux'
 import { BoardView } from '../components/board/boardView'
-import { Categorie, Month, MostUsedObj, Price, Year } from '../types/common'
+import { Categorie, Month, Price, Year } from '../types/common'
 import { ORDERDIR, SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
 import { BoardViewProps, NbObjPerCat } from '../components/board/boardView.d'
 import { formatDateYYYYMMDD, formatFirstDay, formatFirstMonth } from '../utils/helper'
-import { CatRaw, ObjRaw } from '../types/reducer'
 
 const mapStateToProps = (state: RootState): BoardViewProps => {
 
@@ -208,7 +207,6 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     isAllCatsChecked,
     searchOptions,
     objects,
-    mostUsedObjs: state.mostUsedObjects,
     categories,
     modifPriceInput,
     isAddOpen,

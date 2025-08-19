@@ -1,4 +1,4 @@
-import { AddPriceInput, Categorie, ModifPriceInput, Month, MostUsedObj, Object, OrderOptions, Price, SearchOptions, ViewOptions, Year } from '../../types/common'
+import { AddPriceInput, Categorie, ModifPriceInput, Month, Object, OrderOptions, Price, SearchOptions, ViewOptions, Year } from '../../types/common'
 import { SUM_TYPE } from '../../types/constants'
 
 export interface BoardProps {
@@ -9,8 +9,7 @@ export interface BoardProps {
   lastMutatedPriceId: number,
   addLineProps: AddLineProps,
   isSearchReserved: boolean,
-  view: ViewOptions,
-  mostUsedObjs: MostUsedObj[]
+  view: ViewOptions
 }
 
 export interface BoardViewProps {
@@ -24,7 +23,6 @@ export interface BoardViewProps {
   isAllCatsChecked: boolean,
   searchOptions: SearchOptions,
   objects: Object[],
-  mostUsedObjs: MostUsedObj[],
   categories: Categorie[],
   modifPriceInput: ModifPriceInput,
   isAddOpen: boolean,
@@ -42,15 +40,12 @@ export interface NbObjPerCat {
   nbDeletedObj: number
 }
 
-
-
 export interface ModifLineProps {
   modifPriceInput: ModifPriceInput,
   objects: Object[],
   selectedCats: Categorie[],
   lastMutatedPriceId: number,
-  view: ViewOptions,
-  mostUsedObjs: MostUsedObj[]
+  view: ViewOptions
 }
 
 export interface AddLineProps {
@@ -78,8 +73,7 @@ export interface BodyLineProps {
   lastMutatedPriceId: number,
   isAddOpen: boolean,
   addPriceInput: AddPriceInput,
-  view: ViewOptions,
-  mostUsedObjs: MostUsedObj[]
+  view: ViewOptions
 }
 
 export interface HeaderLineProps {
