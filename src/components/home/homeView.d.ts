@@ -12,7 +12,6 @@ export interface InputObjProps {
     categories: Categorie[],
     objects: Object[],
     objectInput: ObjectInput,
-
 }
 
 export interface InputCatProps {

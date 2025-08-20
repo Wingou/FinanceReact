@@ -140,7 +140,6 @@ const InputCat: React.FC<InputCatProps> = ({ categories, categoryInput }) => {
             !isCatSelected ? 'No Category selected' : ''
     const isAjoutBtnDisabled = !isCatOK || !isCatNew || !isCatSelected
     const btnAjoutSisableStyle = isAjoutBtnDisabled ? 'btnDisabled' : 'btnEnabled'
-    const selectedCatName = getCatById(categories, catId).name
     return <div className='
              bg-indigo-100
               text-left 

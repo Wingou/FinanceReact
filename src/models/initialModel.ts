@@ -2,7 +2,7 @@ import {
   CURRENT_DATE,
   PAGE
 } from '../types/constants'
-import { AddPriceInput, CategoryInput, ModifPriceInput, ObjectInput, OrderOptions, SearchOptions, StateType, ViewOptions, } from '../types/common'
+import { AddPriceInput, CategoryInput, ModifPriceInput, ObjectInput, OrderOptions, SearchOptions, StateType, ViewOptions } from '../types/common'
 
 export const initialModifPriceInput: ModifPriceInput = {
   id: -1,
@@ -23,7 +23,6 @@ export const initialAddPriceInput: AddPriceInput = {
   actionDate: CURRENT_DATE,
   comment: ''
 }
-
 
 export const initialObjectInput: ObjectInput = {
   objId: -1,
