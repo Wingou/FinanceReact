@@ -3,7 +3,8 @@ export interface CatRaw {
   id: number,
   Categorie: string,
   Ordre: number,
-  template: number
+  template: number,
+  nbChild: number
 }
 
 // Objects

@@ -7,7 +7,8 @@ export const parseCategories = (rows: CatRaw[]): CatGql[] => {
       id: rs.id.toString(),
       name: rs.Categorie,
       position: rs.Ordre,
-      template: rs.template
+      template: rs.template,
+      nbChild: rs.nbChild
     }
   })
 }

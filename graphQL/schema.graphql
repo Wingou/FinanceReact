@@ -22,6 +22,7 @@ type CatGql {
   name: String!
   position: Int!
   template: Int!
+  nbChild: Int!
 }
 
 type ObjGql {
@@ -54,12 +55,19 @@ type PriceGql {
   dateModif: String!
   template: Int!
   obj: PriceObjGql!
-  cat: CatGql!
+  cat: PriceCatGql!
 }
 
 type PriceObjGql {
   id: ID!
   name: String!
+  template: Int!
+}
+
+type PriceCatGql {
+  id: ID!
+  name: String!
+  position: Int!
   template: Int!
 }
 

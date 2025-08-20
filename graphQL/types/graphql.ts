@@ -34,6 +34,7 @@ export type CatGql = {
   __typename?: 'CatGql';
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  nbChild: Scalars['Int']['output'];
   position: Scalars['Int']['output'];
   template: Scalars['Int']['output'];
 };
@@ -123,6 +124,14 @@ export type PriceByIdWhereInput = {
   id: Scalars['ID']['input'];
 };
 
+export type PriceCatGql = {
+  __typename?: 'PriceCatGql';
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  position: Scalars['Int']['output'];
+  template: Scalars['Int']['output'];
+};
+
 export type PriceCheckWhereInput = {
   actionDate: Scalars['String']['input'];
   amount: Scalars['String']['input'];
@@ -133,7 +142,7 @@ export type PriceGql = {
   __typename?: 'PriceGql';
   actionDate: Scalars['String']['output'];
   amount: Scalars['String']['output'];
-  cat: CatGql;
+  cat: PriceCatGql;
   comment?: Maybe<Scalars['String']['output']>;
   dateCreate: Scalars['String']['output'];
   dateModif: Scalars['String']['output'];

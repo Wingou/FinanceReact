@@ -1,7 +1,11 @@
 
 export const sqlPricesTop = `SELECT TOP ? id, prix, commentaire, DateAction, id_objet, dateCreate, dateModif, template FROM prix WHERE template=0 ORDER BY dateModif DESC`
 
-export const sqlCategories = `SELECT id, Categorie, Ordre, template FROM categorie ORDER BY Ordre`
+export const sqlCategories = `SELECT c.id, c.Categorie, c.Ordre, c.template, count(o.id_categorie) as nbChild
+                                    FROM categorie c LEFT JOIN objet o ON c.id=o.id_categorie
+                                    WHERE  o.template=0 OR o.template is null
+                                    GROUP BY  c.id, c.Categorie, c.Ordre, c.template
+                                    ORDER BY c.Ordre`
 export const sqlCategoryById = `SELECT id, Categorie, Ordre, template FROM categorie WHERE id=?`
 
 export const sqlObjects = `SELECT o.id, o.Objet, o.id_categorie, o.template, count(p.id_objet) as nbChild
