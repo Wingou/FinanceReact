@@ -49,6 +49,7 @@ export const catNone: Categorie = {
   depense: 0,
   reserve: 0,
   isDisplayed: false,
-  isOn: false
+  isOn: false,
+  nbChild: 0
 }
 

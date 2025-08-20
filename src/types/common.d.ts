@@ -47,7 +47,6 @@ export interface SearchOptions {
   lastMutatedPriceId: number,
   isSearchDeleted: boolean,
   isSearchReserved: boolean
-
 }
 
 export interface AddPriceInput {
@@ -89,7 +88,8 @@ export interface Categorie extends CatRaw {
   depense: number,
   reserve: number,
   isDisplayed: boolean
-  isOn: boolean
+  isOn: boolean,
+  nbChild: number
 }
 
 export interface Object extends ObjRaw {
@@ -125,4 +125,3 @@ export interface OrderSelectValue {
   dir: ORDERDIR,
   selectedPos: number
 }
-

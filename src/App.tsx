@@ -107,6 +107,7 @@ const fetchList = async (coy_: COY, dispatch: Dispatch) => {
                     name
                     position
                     template
+                    nbChild
                   }
                 }`,
         type: 'SET_CATEGORIES'
@@ -188,8 +189,6 @@ const fetchPrices = async (years: Year[], months: Month[], dispatch: Dispatch) =
     console.error('ERROR: fetchPrices', error)
   }
 }
-
-
 
 const fetchLast = async (dispatch: Dispatch) => {
   try {

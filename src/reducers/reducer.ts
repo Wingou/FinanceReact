@@ -12,6 +12,7 @@ import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrde
 import { ActionType, Categorie, CategoryInput, ModifPriceInput, Month, Object, OrderSelectValue, Price, StateType, Year } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById, getObjById } from '../utils/helper'
+import { CatRaw } from '../types/reducer'
 
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
   switch (action.type) {
@@ -32,7 +33,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const categoriesApi = action.payload.categories as CatGql[]
       const categories = categoriesApi
         .map((c: CatGql): Categorie => {
-          const { id, position, template } = c
+          const { id, position, template, nbChild } = c
           return {
             ...c,
             id: parseInt(id),
@@ -42,11 +43,15 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
             depense: 0,
             reserve: 0,
             isDisplayed: false,
-            isOn: true
+            isOn: true,
+            nbChild
           }
         })
         .concat(catNone)
-      return { ...state, categories }
+      return {
+        ...state,
+        categories
+      }
     }
 
     case 'SET_OBJECTS': {
@@ -398,10 +403,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'SET_OBJID': {
       const objId = Number(action.payload.objId)
+      const objByIds = state.objects.filter(o => o.id === objId)
       const catId = state.objectInput.catId !== -1
         ? state.objectInput.catId
-        : state.objects.find(o => o.id === objId)
-          ? state.objects.find(o => o.id === objId)?.cat.id
+        : objByIds.length > 0
+          ? objByIds[0].cat.id
           : -1
       const caller = action.payload.caller
       const { addPriceInput, objectInput, modifPriceInput } = state
@@ -422,8 +428,6 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           ...modifPriceInput,
           objId
         } : modifPriceInput,
-
-
       }
     }
 
@@ -519,13 +523,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       return {
         ...state,
         modifPriceInput: {
-          ...state.modifPriceInput
-          , actionDate: action.payload
+          ...state.modifPriceInput,
+          actionDate: action.payload
         }
       }
     }
-
-
 
     case 'MODIFPRICEINPUT_SET_PRICE': {
       return {
@@ -688,17 +690,23 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'SET_OBJECT_AFTER_ADD':
       {
-        const { id, name, cat } = action.payload
+        const { id, name, cat: catId } = action.payload
         const objId = parseInt(id) as number
-        const catId = parseInt(cat.id) as number
-        const catById = getCatById(state.categories, catId)
+        const catId_ = parseInt(catId) as number
+        const catById = getCatById(state.categories, catId_)
+        const cat: CatRaw = {
+          id: catId,
+          name: catById.name,
+          position: catById.position,
+          template: catById.template
+        }
         const objects = [
           ...state.objects,
           {
             id: objId,
             name,
             template: 0,
-            cat: catById,
+            cat,
             nbChild: 0
           } as Object
         ]
@@ -727,7 +735,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'ADDCATEGORYINPUT':
       {
-        const categoryInput = {
+        const categoryInput: CategoryInput = {
           ...state.categoryInput,
           catName: action.payload
         }
@@ -739,9 +747,9 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'SET_CATEGORY_AFTER_ADD':
       {
-        const categoryInput = action.payload as CategoryInput
+        const categoryInput: CategoryInput = action.payload
         const { catId, catName, template, position } = categoryInput
-        const cat = {
+        const cat: Categorie = {
           id: catId,
           name: catName,
           position,
@@ -750,7 +758,8 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           depense: 0,
           reserve: 0,
           isDisplayed: true,
-          isOn: true
+          isOn: true,
+          nbChild: 0
         }
         return {
           ...state,
@@ -758,6 +767,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           categoryInput
         }
       }
+
     case 'SET_CATEGORY_AFTER_MODIF':
       {
         const { id, name, position, template } = action.payload as CatGql

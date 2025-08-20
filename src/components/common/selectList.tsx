@@ -33,7 +33,7 @@ export const SelectCat: React.FC<SelectCatProps> = ({ categories, catId, caller 
                         value={cat_.id}
                         title={cat_.name}
                     >
-                        {cat_.name}
+                        {`${cat_.name} (${cat_.nbChild})`}
                     </option>
                 )
             })}

@@ -20,17 +20,3 @@ export interface PriceRaw {
   dateModif: string,
   template: number
 }
-
-export interface CategoriesAPI extends CatRaw { }
-
-export interface ObjectsAPI extends ObjRaw {
-  cat: {
-    id: number
-  },
-  nbChild: number
-}
-
-export interface PricesAPI extends PriceRaw {
-  obj: ObjRaw,
-  cat: CatRaw
-}
