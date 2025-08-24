@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   handleUpdateYear,
   handleUpdateMonth,
@@ -7,28 +7,12 @@ import {
   handleUpdateMultipleYears,
   handleUpdateMultipleMonths
 } from '../../actions/search'
-import { Month, Year } from '../../types/common'
 import { CheckBox } from '../common/inputForm'
+import { BoardViewContext } from '../../containers/boardViewContainer'
 
-interface DateInputProps {
-  years: Year[],
-  months: Month[],
-  isAllYearsChecked: boolean,
-  isAllMonthsChecked: boolean,
-  isMultiYears: boolean,
-  isMultiMonths: boolean,
-  isLast: boolean
-}
-
-export const DateInput: React.FC<DateInputProps> = ({
-  years,
-  months,
-  isAllYearsChecked,
-  isAllMonthsChecked,
-  isMultiYears,
-  isMultiMonths,
-  isLast
-}) => {
+export const DateInput: React.FC = () => {
+  const { years, months, isAllYearsChecked, isAllMonthsChecked, isLast, searchOptions } = useContext(BoardViewContext)
+  const { isMultiYears, isMultiMonths } = searchOptions
   const disabledDiv = isLast ? 'disabledDiv' : ''
   return <div key='div_dateInput' title={isLast ? 'Dates cannot be changed when LAST mode is activated' : 'Select years and months to filter'}>
     <div className={`searchDiv ${disabledDiv}`} >

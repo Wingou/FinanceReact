@@ -1,13 +1,13 @@
-import React from "react"
-import { ModifLineProps } from "../board/boardView.d"
+import React, { useContext } from "react"
 import { handleModifCommentInput, handleModifDateInput, handleModifPrice, handleModifPriceInput } from "../../actions/modif"
 import { SelectObj } from "../common/selectList"
 import { handleCancel } from "../../actions/cancel"
 import { InputDate, InputPrice, InputText } from "../common/inputForm"
 import { formatDateFR, formatTemplate } from "../../utils/helper"
+import { BoardViewContext } from "../../containers/boardViewContainer"
 
-export const ModifLine: React.FC<ModifLineProps> = (ModifLineProps) => {
-    const { modifPriceInput, objects, selectedCats, view } = ModifLineProps
+export const ModifLine: React.FC = () => {
+    const { modifPriceInput, objects, selectedCats, view } = useContext(BoardViewContext)
     const { catId, objId } = modifPriceInput
     const { isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     return <tr key='tr_ModifLine' className='trFocus' title={modifPriceInput.comment}>

@@ -1,16 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
-    handleUpdateDislayCol,
     handleUpdateSearchDel,
     handleUpdateSearchReserved
 } from '../../actions/search'
 import { CheckBox } from '../common/inputForm'
-import { GroupByInputProps } from '../board/boardView.d'
+import { BoardViewContext } from '../../containers/boardViewContainer'
 
-export const GroupByInput: React.FC<GroupByInputProps> = ({ isSearchDeleted, isSearchReserved, view, isPricesFound }) => {
-    const { isColObj, isColDay, isColMonth, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
+export const GroupByInput: React.FC<{ isPricesFound: boolean }> = ({ isPricesFound }) => {
+    const { searchOptions } = useContext(BoardViewContext)
+    const { isSearchDeleted, isSearchReserved } = searchOptions
     const disabledDiv = isPricesFound ? '' : 'disabledDiv'
-
     const disabledDivTitle = isPricesFound ? '' : 'These options are not available when there is no data found'
     return <div className='searchDiv' title={disabledDivTitle}>
         <div className={`searchCheckboxAdmin ${disabledDiv}`}>

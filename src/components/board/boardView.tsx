@@ -9,112 +9,29 @@ import { AddPriceInput } from '../add/add'
 import { OrderInput } from '../inputs/orderInput'
 import { ColumnInput } from '../inputs/columnInput'
 import { GroupByInput } from '../inputs/rowInput'
+import { BoardViewContext } from '../../containers/boardViewContainer'
 
 export class BoardView extends Component<BoardViewProps, {}> {
   render() {
-    const {
-      years,
-      months,
-      filteredPrices,
-      displayedCats,
-      selectedCats,
-      isAllYearsChecked,
-      isAllMonthsChecked,
-      isAllCatsChecked,
-      searchOptions,
-      objects,
-      modifPriceInput,
-      addPriceInput,
-      isAddOpen,
-      categories,
-      isLast,
-      orderOptions,
-      view,
-      nbObjPerCats
-    } = this.props
-    const {
-      isMultiYears,
-      isMultiMonths,
-      isMultiCats,
-      searchWord,
-      searchMin,
-      searchMax,
-      isSearchDeleted,
-      isSearchReserved,
-      lastMutatedPriceId
-    } = searchOptions
-
-    const addLineProps = {
-      isAddOpen,
-      addPriceInput,
-      categories
-    }
-
+    const { filteredPrices, isAddOpen } = this.props
     const isPricesFound = filteredPrices.length !== 0
     return (
-      <div>
-        {isAddOpen
-          && <AddPriceInput
-            addPriceInput={addPriceInput}
-            caller={'ADD'}
-            categories={categories}
-            objects={objects}
-          />
-        }
-        <SearchWordInput
-          searchWord={searchWord}
-          searchMin={searchMin}
-          searchMax={searchMax}
-          isPricesFound={isPricesFound}
-        />
-        <DateInput
-          years={years}
-          months={months}
-          isAllYearsChecked={isAllYearsChecked}
-          isAllMonthsChecked={isAllMonthsChecked}
-          isMultiYears={isMultiYears}
-          isMultiMonths={isMultiMonths}
-          isLast={isLast}
-        />
-        <ActivatedCatsInput
-          displayedCats={displayedCats}
-          isAllCatsChecked={isAllCatsChecked}
-          isMultiCats={isMultiCats}
-          nbObjPerCats={nbObjPerCats}
-          isSearchReserved={isSearchReserved}
-          isSearchDeleted={isSearchDeleted}
-
-        />
-        <ColumnInput
-          searchWord={searchWord}
-          isSearchDeleted={isSearchDeleted}
-          isSearchReserved={isSearchReserved}
-          view={view}
-          isPricesFound={isPricesFound}
-        />
-        <GroupByInput
-          searchWord={searchWord}
-          isSearchDeleted={isSearchDeleted}
-          isSearchReserved={isSearchReserved}
-          view={view}
-          isPricesFound={isPricesFound}
-        />
-        <OrderInput orderOptions={orderOptions} />
-        {filteredPrices.length !== 0 ? (
-          <Board
-            filteredPrices={filteredPrices}
-            selectedCats={selectedCats}
-            modifPriceInput={modifPriceInput}
-            objects={objects}
-            lastMutatedPriceId={lastMutatedPriceId}
-            addLineProps={addLineProps}
-            isSearchReserved={isSearchReserved}
-            view={view}
-          />
-        ) : (
-          <NoBoard />
-        )}
-      </div>
+      <BoardViewContext.Provider value={this.props}>
+        <div>
+          {isAddOpen && <AddPriceInput />}
+          <SearchWordInput isPricesFound={isPricesFound} />
+          <DateInput />
+          <ActivatedCatsInput />
+          <ColumnInput isPricesFound={isPricesFound} />
+          <GroupByInput isPricesFound={isPricesFound} />
+          <OrderInput />
+          {filteredPrices.length !== 0 ? (
+            <Board />
+          ) : (
+            <NoBoard />
+          )}
+        </div>
+      </BoardViewContext.Provider>
     )
   }
 }

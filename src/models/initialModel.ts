@@ -63,7 +63,7 @@ export const initialOrderOptions: OrderOptions = {
   ]
 }
 
-const initialView: ViewOptions = {
+export const initialView: ViewOptions = {
   page: 'HOME' as PAGE,
   isAddOpen: false,
   isLast: false,

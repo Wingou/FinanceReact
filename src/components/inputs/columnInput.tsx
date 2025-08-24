@@ -1,16 +1,12 @@
-import React from 'react'
-import {
-  handleUpdateSearchDel,
-  handleUpdateSearchReserved,
-  handleUpdateDislayCol
-} from '../../actions/search'
+import React, { useContext } from 'react'
+import { handleUpdateDislayCol } from '../../actions/search'
 import { CheckBox } from '../common/inputForm'
-import { ColumnInputProps } from '../board/boardView.d'
+import { BoardViewContext } from '../../containers/boardViewContainer'
 
-export const ColumnInput: React.FC<ColumnInputProps> = ({ view, isPricesFound }) => {
+export const ColumnInput: React.FC<{ isPricesFound: boolean }> = ({ isPricesFound }) => {
+  const { view } = useContext(BoardViewContext)
   const { isColDay, isColMonth, isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
   const disabledDiv = isPricesFound ? '' : 'disabledDiv'
-
   const disabledDivTitle = isPricesFound ? '' : 'These options are not available when there is no data found'
   return <div className='searchDiv' title={disabledDivTitle}>
     <div className={`searchCheckboxAdmin ${disabledDiv}`}  >
@@ -75,7 +71,6 @@ export const ColumnInput: React.FC<ColumnInputProps> = ({ view, isPricesFound })
         checked={isColTemplate}
         handleFC={handleUpdateDislayCol}
         label='TYPE' />
-
     </div>
   </div>
 }

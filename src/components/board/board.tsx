@@ -1,21 +1,21 @@
-import React from 'react'
-import { BoardProps, HeaderLineProps, BodyLineProps } from './boardView.d'
+import React, { useContext } from 'react'
 import { ModifLine } from '../modif/modif'
 import { DelLine } from '../del/del'
 import { SimpleLine, SumLines } from '../boardLines/boardLines'
+import { BoardViewContext } from '../../containers/boardViewContainer'
 
-export const Board: React.FC<BoardProps> = ({ filteredPrices, selectedCats, modifPriceInput, objects, lastMutatedPriceId, addLineProps, isSearchReserved, view }) => {
-  const { isAddOpen, categories, addPriceInput } = addLineProps
+export const Board: React.FC = () => {
   return (
     <table className='boardTable'>
-      <HeaderLine selectedCats={selectedCats} view={view} />
-      <SumLines selectedCats={selectedCats} isSearchReserved={isSearchReserved} view={view} />
-      <BodyLines filteredPrices={filteredPrices} selectedCats={selectedCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} isAddOpen={isAddOpen} addPriceInput={addPriceInput} categories={categories} view={view} />
+      <HeaderLine />
+      <SumLines />
+      <BodyLines />
     </table>
   )
 }
 
-const HeaderLine: React.FC<HeaderLineProps> = ({ selectedCats, view }) => {
+const HeaderLine: React.FC = () => {
+  const { view, selectedCats } = useContext(BoardViewContext)
   const { isColDay, isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
   const isColDateModif_ = isColDateModif && isColObj && isColDay
   const isColDateCreate_ = isColDateCreate && isColObj && isColDay
@@ -38,7 +38,8 @@ const HeaderLine: React.FC<HeaderLineProps> = ({ selectedCats, view }) => {
   )
 }
 
-const BodyLines: React.FC<BodyLineProps> = ({ filteredPrices, selectedCats, modifPriceInput, objects, lastMutatedPriceId, view }) => {
+const BodyLines: React.FC = () => {
+  const { view, filteredPrices, modifPriceInput } = useContext(BoardViewContext)
   const { isColObj, isColDay } = view
   return (
     <tbody>
@@ -46,15 +47,13 @@ const BodyLines: React.FC<BodyLineProps> = ({ filteredPrices, selectedCats, modi
         return (
           p.id === modifPriceInput.id && isColObj && isColDay ?
             modifPriceInput.template === 2 ?
-              <DelLine key={`DelLine_${index}`} selectedCats={selectedCats} price={p} modifPriceInput={modifPriceInput} view={view} />
+              <DelLine key={`DelLine_${index}`} price={p} />
               :
-              <ModifLine key={`ModifLine_${index}`} selectedCats={selectedCats} modifPriceInput={modifPriceInput} objects={objects} lastMutatedPriceId={lastMutatedPriceId} view={view} />
+              <ModifLine key={`ModifLine_${index}`} />
             :
-            <SimpleLine key={`SimpleLine_${index}`} selectedCats={selectedCats} p={p} index={index} lastMutatedPriceId={lastMutatedPriceId} view={view} />
+            <SimpleLine key={`SimpleLine_${index}`} price={p} index={index} />
         )
       })}
     </tbody>
   )
 }
-
-

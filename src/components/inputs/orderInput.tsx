@@ -1,18 +1,15 @@
-import React from 'react'
-import { OrderInputProps } from '../board/boardView.d'
+import React, { useContext } from 'react'
 import { handleCancel } from '../../actions/cancel'
 import { OrderSelectValue } from '../../types/common'
 import { handleOrderInput, handleToggleOrderDir } from '../../actions/order'
-import { OrderSelectProps } from './input'
+import { BoardViewContext } from '../../containers/boardViewContainer'
 
-export const OrderInput: React.FC<OrderInputProps> = (props) => {
-  const { orderOptions } = props
+export const OrderInput: React.FC = () => {
+  const { orderOptions } = useContext(BoardViewContext)
   const { orderSelectValues } = orderOptions
-
   const orderSelectValuesSelected = orderSelectValues.filter((o) => o.selectedPos !== -1)
     .sort((a, b) => a.selectedPos - b.selectedPos)
   const orderSelectValuesNb = orderSelectValuesSelected.length
-
   return <div className='searchDivWrap' >
     <div className={`searchCheckboxAdmin`}>
       <div className='searchCheckboxLabel'>ORDER BY</div>
@@ -20,12 +17,11 @@ export const OrderInput: React.FC<OrderInputProps> = (props) => {
     <div className={`searchCheckboxOptions`}>
       {
         orderSelectValuesSelected.map((_c, index) => {
-          return <SelectOrder key={`selectOrder_${index}`} orderSelectValues={orderSelectValues} index={index} />
+          return <SelectOrder key={`selectOrder_${index}`} index={index} />
         }
         )
       }
-      <SelectOrder key={`selectOrder_${orderSelectValuesNb}`} orderSelectValues={orderSelectValues} index={orderSelectValuesNb} />
-
+      <SelectOrder key={`selectOrder_${orderSelectValuesNb}`} index={orderSelectValuesNb} />
       <div  >
         <button
           className={`btnAdmin btnAdminSize3 btnEnabled `}
@@ -42,7 +38,9 @@ export const OrderInput: React.FC<OrderInputProps> = (props) => {
   </div>
 }
 
-const SelectOrder: React.FC<OrderSelectProps> = ({ orderSelectValues, index }) => {
+const SelectOrder: React.FC<{ index: number }> = ({ index }) => {
+  const { orderOptions } = useContext(BoardViewContext)
+  const { orderSelectValues } = orderOptions
   const orderSelectValue = orderSelectValues.find((o: OrderSelectValue): boolean => o.selectedPos === index) as OrderSelectValue
   const selectedValue = orderSelectValue?.value as string
   return (

@@ -5,6 +5,8 @@ import { ORDERDIR, SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
 import { BoardViewProps, NbObjPerCat } from '../components/board/boardView.d'
 import { formatDateYYYYMMDD, formatFirstDay, formatFirstMonth } from '../utils/helper'
+import { createContext } from 'react'
+import { initialAddPriceInput, initialModifPriceInput, initialOrderOptions, initialSearchOptions, initialView } from '../models/initialModel'
 
 const mapStateToProps = (state: RootState): BoardViewProps => {
 
@@ -217,8 +219,30 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     nbObjPerCats
   }
 }
+
 const BoardViewContainer = connect(mapStateToProps)(BoardView)
 export default BoardViewContainer
+
+export const BoardViewContext = createContext<BoardViewProps>({
+  years: [],
+  months: [],
+  filteredPrices: [],
+  displayedCats: [],
+  selectedCats: [],
+  isAllYearsChecked: false,
+  isAllMonthsChecked: false,
+  isAllCatsChecked: false,
+  searchOptions: initialSearchOptions,
+  objects: [],
+  categories: [],
+  modifPriceInput: initialModifPriceInput,
+  isAddOpen: false,
+  addPriceInput: initialAddPriceInput,
+  isLast: false,
+  orderOptions: initialOrderOptions,
+  view: initialView,
+  nbObjPerCats: []
+})
 
 const sumPrices = (filteredPrices: Price[], cat: Categorie, sumType: SUM_TYPE): number => {
   const recettePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.amount < 0 && price.template === 0)

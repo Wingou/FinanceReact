@@ -1,23 +1,24 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   handleSelectedCat,
   handleUpdateAllCats,
   handleUpdateMultipleCats
 } from '../../actions/search'
 import { CheckBox } from '../common/inputForm'
-import { ActivatedCatsInputProps } from '../board/boardView.d'
+import { BoardViewContext } from '../../containers/boardViewContainer'
 
-export const ActivatedCatsInput: React.FC<ActivatedCatsInputProps> = (props) => {
-  const { isMultiCats, isAllCatsChecked, displayedCats, nbObjPerCats, isSearchReserved, isSearchDeleted } = props
-  return displayedCats.length === 0 ? <MsgNoCat /> : <SearchInputCat isMultiCats={isMultiCats} isAllCatsChecked={isAllCatsChecked} displayedCats={displayedCats} nbObjPerCats={nbObjPerCats} isSearchReserved={isSearchReserved} isSearchDeleted={isSearchDeleted} />
+export const ActivatedCatsInput: React.FC = () => {
+  const { displayedCats } = useContext(BoardViewContext)
+  return displayedCats.length === 0 ? <MsgNoCat /> : <SearchInputCat />
 }
 
 const MsgNoCat: React.FC = () => (
   <div className="MsgNoCatDiv">No category</div>
 )
 
-const SearchInputCat: React.FC<ActivatedCatsInputProps> = ({ isMultiCats, isAllCatsChecked, displayedCats, nbObjPerCats, isSearchReserved, isSearchDeleted }) => {
-
+const SearchInputCat: React.FC = () => {
+  const { isAllCatsChecked, displayedCats, nbObjPerCats, searchOptions } = useContext(BoardViewContext)
+  const { isMultiCats, isSearchReserved, isSearchDeleted, } = searchOptions
   return (
     <div className='searchDiv' >
       <div className='searchCheckboxAdmin'>

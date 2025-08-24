@@ -1,10 +1,12 @@
 import { formatDateFR, formatPrice } from "../../utils/helper"
-import React from "react"
+import React, { useContext } from "react"
 import { handleModifPrice } from "../../actions/modif"
-import { DelLineProps } from "./del.d"
 import { handleCancel } from "../../actions/cancel"
+import { BoardViewContext } from "../../containers/boardViewContainer"
+import { Price } from "../../types/common"
 
-export const DelLine: React.FC<DelLineProps> = ({ selectedCats, price, modifPriceInput, view }) => {
+export const DelLine: React.FC<{ price: Price }> = ({ price }) => {
+    const { view, selectedCats, modifPriceInput } = useContext(BoardViewContext)
     const { isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     return <tr key={`tr_DelLine`} className='trFocus'   >
         <td key={`td_admin`}>

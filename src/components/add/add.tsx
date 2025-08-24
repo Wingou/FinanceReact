@@ -5,14 +5,14 @@ import {
   handleAddPriceInput,
   handleAddPriceCheck
 } from '../../actions/add'
-import React from 'react'
+import React, { useContext } from 'react'
 import { SelectCat, SelectObj } from '../common/selectList'
-import { AddLineProps } from '../common/selectList.d'
 import { handleCancel } from '../../actions/cancel'
 import { InputDate, InputPrice, InputText } from '../common/inputForm'
+import { BoardViewContext } from '../../containers/boardViewContainer'
 
-export const AddPriceInput: React.FC<AddLineProps> = (addLineProps) => {
-  const { addPriceInput, categories, objects } = addLineProps
+export const AddPriceInput: React.FC = () => {
+  const { addPriceInput, categories, objects } = useContext(BoardViewContext)
   const { catId, objId } = addPriceInput
   const isObjetOK = addPriceInput.objId !== -1
   const isPriceOK =

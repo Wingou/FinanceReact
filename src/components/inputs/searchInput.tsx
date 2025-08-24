@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   handleUpdateSearchWord,
   handleUpdateSearchMin,
   handleUpdateSearchMax
 } from '../../actions/search'
 import { InputPrice, InputText } from '../common/inputForm'
-import { SearchWordInputProps } from '../board/boardView.d'
 import { handleCancel } from '../../actions/cancel'
+import { BoardViewContext } from '../../containers/boardViewContainer'
 
-export const SearchWordInput: React.FC<SearchWordInputProps> = ({ searchWord, searchMin, searchMax, isPricesFound }) => {
+export const SearchWordInput: React.FC<{ isPricesFound: boolean }> = ({ isPricesFound }) => {
+  const { searchOptions } = useContext(BoardViewContext)
+  const { searchWord, searchMin, searchMax } = searchOptions
   const minPrice = searchMin?.toString() ?? ''
   const maxPrice = searchMax?.toString() ?? ''
   const disabledDivTitle = isPricesFound ? '' : 'These options are not available when there is no data found'
