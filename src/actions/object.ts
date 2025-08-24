@@ -119,7 +119,7 @@ export const handleModifObject = async (objectInput: ObjectInput, template: Numb
             store.dispatch({
                 type: 'SET_OBJECT_AFTER_MODIF',
                 payload: {
-                    id: parseInt(result.id) as Number,
+                    id: parseInt(result.id),
                     name: result.name,
                     template: result.template
                 }

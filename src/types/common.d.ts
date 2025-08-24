@@ -52,7 +52,7 @@ export interface SearchOptions {
 export interface AddPriceInput {
   amount: string,
   actionDate: string,
-  comment: stringn
+  comment: string,
   catId: number,
   objId: number
 }
@@ -78,7 +78,7 @@ export interface ModifPriceInput {
   comment: string,
   dateCreate: string,
   dateModif: string,
-  template: number
+  template: number,
   catId: number,
   objId: number
 }
@@ -87,7 +87,7 @@ export interface Categorie extends CatRaw {
   recette: number,
   depense: number,
   reserve: number,
-  isDisplayed: boolean
+  isDisplayed: boolean,
   isOn: boolean,
   nbChild: number
 }
