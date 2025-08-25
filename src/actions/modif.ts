@@ -1,22 +1,36 @@
 import { gql } from "@apollo/client"
 import { store } from "../store/store"
-import { ModifPriceInput, Price } from "../types/common"
+import { CategoryInput, ModifPriceInput, ObjectInput, Price } from "../types/common"
 import { formatTextSQL } from "../utils/helper"
 import { apolloClient } from "../apollo-client"
 import { PriceGql } from "../types/graphql"
 import { toast } from "react-toastify"
 
 export const handleModif = (price: Price) => {
-  const payload: ModifPriceInput = {
-    id: price.id,
-    catId: price.cat.id,
-    objId: price.obj.id,
-    amount: price.amount.toString(),
-    actionDate: price.actionDate,
-    comment: price.comment,
-    dateCreate: price.dateCreate,
-    dateModif: price.dateModif,
-    template: price.template
+  const { id: priceId, amount, actionDate, comment, dateCreate, dateModif, template, obj, cat } = price
+  const { id: objId, name: objName, template: objTemplate } = obj
+  const { id: catId, name: catName, position, template: catTemplate } = cat
+  const payload: { modifPriceInput: ModifPriceInput, objectInput: ObjectInput, categoryInput: CategoryInput } = {
+    modifPriceInput: {
+      id: priceId,
+      amount: amount.toString(),
+      actionDate,
+      comment,
+      dateCreate,
+      dateModif,
+      template
+    },
+    objectInput: {
+      objId: objId,
+      objName,
+      template: objTemplate
+    },
+    categoryInput: {
+      catId,
+      catName,
+      template: catTemplate,
+      position
+    }
   }
   const action = {
     type: 'MODIFPRICEINPUT',
@@ -33,8 +47,6 @@ export const handleModifDateInput = (e: React.ChangeEvent<HTMLInputElement>) => 
   }
   store.dispatch(action)
 }
-
-
 
 export const handleModifPriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   const valeur = e.target.value.replace(',', '.')
@@ -57,7 +69,7 @@ export const handleModifCommentInput = (e: React.ChangeEvent<HTMLInputElement>) 
   store.dispatch(action)
 }
 
-export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
+export const handleModifPrice = async (modifPriceInput: ModifPriceInput, objectInput: ObjectInput) => {
   try {
     const api = gql`
           mutation ModifPrice ($update: ModifPriceUpdateInput!) {
@@ -79,9 +91,17 @@ export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
                           }
                         }
                       }`
-    const { id, amount, actionDate, comment, objId, template } = modifPriceInput
-    const dataInput = {
-      id,
+    const { id, amount, actionDate, comment, template } = modifPriceInput
+    const { objId } = objectInput
+    const dataInput: {
+      id: string,
+      amount: string,
+      objId: string,
+      actionDate: string,
+      comment: string,
+      template: string
+    } = {
+      id: id.toString(),
       amount,
       objId: objId.toString(),
       actionDate: actionDate,

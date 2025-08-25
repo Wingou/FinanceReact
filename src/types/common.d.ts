@@ -53,13 +53,10 @@ export interface AddPriceInput {
   amount: string,
   actionDate: string,
   comment: string,
-  catId: number,
-  objId: number
 }
 
 export interface ObjectInput {
   objId: number,
-  catId: number,
   objName: string,
   template: number
 }
@@ -79,8 +76,6 @@ export interface ModifPriceInput {
   dateCreate: string,
   dateModif: string,
   template: number,
-  catId: number,
-  objId: number
 }
 
 export interface Categorie extends CatRaw {

@@ -17,13 +17,11 @@ import { handleSearchObj } from '../../actions/search'
 import { BoardViewContext } from '../../containers/boardViewContainer'
 
 export const SimpleLine: React.FC<SimpleLineProps> = ({ price, index }) => {
-    const { selectedCats, view, searchOptions } = useContext(BoardViewContext)
+    const { selectedCats, view, searchOptions, objectInput } = useContext(BoardViewContext)
     const { isColMonth, isColDay, isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     const { lastMutatedPriceId } = searchOptions
     const modifPriceInputForReserve: ModifPriceInput = {
         ...price,
-        catId: price.cat.id,
-        objId: price.obj.id,
         amount: price.amount.toString(),
         template: price.template === 0 ? 1 : 0
     }
@@ -46,7 +44,7 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ price, index }) => {
 
     return <tr key={`tr_SimpleLine_${index}`} className={trSimpleLine + ' trhover ' + simpleLineStyleByTemplate + ' ' + groupbyLineStyle} title={commentTitle}>
         <td key={`td_admin_${index}`}>
-            <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={price.template === 2 || !isColObj || !isColDay} onClick={() => handleModifPrice(modifPriceInputForReserve)}>~</button>
+            <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={price.template === 2 || !isColObj || !isColDay} onClick={() => handleModifPrice(modifPriceInputForReserve, objectInput)}>~</button>
             <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={price.template === 2 || !isColObj || !isColDay} onClick={() => handleModif(price)}>...</button>
             <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={price.template === 2 || !isColObj || !isColDay} onClick={() => handleModif({ ...price, template: 2 })}>X</button>
         </td>

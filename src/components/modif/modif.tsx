@@ -7,15 +7,15 @@ import { formatDateFR, formatTemplate } from "../../utils/helper"
 import { BoardViewContext } from "../../containers/boardViewContainer"
 
 export const ModifLine: React.FC = () => {
-    const { modifPriceInput, objects, selectedCats, view } = useContext(BoardViewContext)
-    const { catId, objId } = modifPriceInput
+    const { modifPriceInput, selectedCats, view, categoryInput, objectInput } = useContext(BoardViewContext)
+    const { catId } = categoryInput
     const { isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     return <tr key='tr_ModifLine' className='trFocus' title={modifPriceInput.comment}>
         <td key='td_ModifLine_OK' >
             <button
                 className='btnAdmin btnAdminSize2 btnEnabled'
                 onClick={() => {
-                    handleModifPrice(modifPriceInput)
+                    handleModifPrice(modifPriceInput, objectInput)
                 }}
                 title='Cliquer pour modifier'
             >
@@ -39,7 +39,7 @@ export const ModifLine: React.FC = () => {
             />
         </td>
         {isColObj && <td key='td_ModifLine_Objects'>
-            <SelectObj caller='MODIF_PRICE' catId={-1} objId={objId} categories={[]} objects={objects} />
+            <SelectObj caller='MODIF_PRICE' />
         </td>}
         {isColAmount && <td key='td_ModifLine_Amount'>
             <InputPrice name='price'

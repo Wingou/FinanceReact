@@ -1,32 +1,26 @@
 import { toast } from 'react-toastify'
 import { store } from '../store/store'
-import { AddPriceInput } from '../types/common'
+import { AddPriceInput, ObjectInput } from '../types/common'
 import { formatTextSQL } from '../utils/helper'
 import { gql } from '@apollo/client'
 import { apolloClient } from '../apollo-client'
 import { PriceGql } from '../types/graphql'
 import { CALLER } from '../types/constants'
 
-export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller: CALLER) => {
+export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const catId: string = e.target.value
   const action = {
     type: 'SET_CATID',
-    payload: {
-      catId,
-      caller
-    }
+    payload: catId
   }
   store.dispatch(action)
 }
 
-export const handleObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller: CALLER) => {
+export const handleObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const objId: string = e.target.value
   const action = {
     type: 'SET_OBJID',
-    payload: {
-      caller,
-      objId
-    }
+    payload: objId
   }
   store.dispatch(action)
 }
@@ -41,14 +35,13 @@ export const handleAddDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 }
 
 export const handleAddPriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const value: string = e.target.value
-  const valeur = value.replace(',', '.')
+  const valeur = e.target.value.replace(',', '.')
   if (!/^-?\d*\.?\d{0,2}$/.test(valeur)) {
-    e.target.value = value.slice(0, -1)
+    e.target.value = e.target.value.slice(0, -1)
   }
   const action = {
     type: 'ADDPRICEINPUT_SET_PRICE',
-    payload: value
+    payload: e.target.value
   }
   store.dispatch(action)
 }
@@ -62,14 +55,15 @@ export const handleAddCommentInput = (e: React.ChangeEvent<HTMLInputElement>) =>
   store.dispatch(action)
 }
 
-export const handleAddPriceCheck = async (addPriceInput: AddPriceInput) => {
+export const handleAddPriceCheck = async (addPriceInput: AddPriceInput, objectInput: ObjectInput) => {
   try {
     const api = gql`query GetPriceCheck ($where:PriceCheckWhereInput!) {
                       priceCheck(where: $where) {
                         id
                       }
                     }`
-    const { amount, actionDate, objId } = addPriceInput
+    const { amount, actionDate } = addPriceInput
+    const { objId } = objectInput
     const dataInput: { amount: string, actionDate: string, objId: number } = { amount, actionDate, objId }
     const { data } = await apolloClient.query(
       {
@@ -96,7 +90,7 @@ export const handleAddPriceCheck = async (addPriceInput: AddPriceInput) => {
       )
     }
     else {
-      handleAddPrice(addPriceInput)
+      handleAddPrice(addPriceInput, objectInput)
     }
   }
   catch (error) {
@@ -105,7 +99,7 @@ export const handleAddPriceCheck = async (addPriceInput: AddPriceInput) => {
   }
 }
 
-export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
+export const handleAddPrice = async (addPriceInput: AddPriceInput, objectInput: ObjectInput) => {
   try {
     const api = gql`
           mutation AddPrice ($insert: AddPriceInsertInput!) {
@@ -124,11 +118,13 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
                           }
                         }
                       }`
+    const { amount, actionDate, comment } = addPriceInput
+    const { objId } = objectInput
     const dataInput: { amount: string, objId: string, actionDate: string, comment: string } = {
-      amount: addPriceInput.amount,
-      objId: addPriceInput.objId.toString(),
-      actionDate: addPriceInput.actionDate,
-      comment: formatTextSQL(addPriceInput.comment)
+      amount,
+      objId: objId.toString(),
+      actionDate,
+      comment: formatTextSQL(comment)
     }
     const response = await apolloClient.mutate({
       mutation: api,

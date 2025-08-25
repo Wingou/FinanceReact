@@ -40,12 +40,12 @@ const HeaderLine: React.FC = () => {
 
 const BodyLines: React.FC = () => {
   const { view, filteredPrices, modifPriceInput } = useContext(BoardViewContext)
-  const { isColObj, isColDay } = view
+  const { isColObj, isColDay, isAddOpen } = view
   return (
     <tbody>
       {filteredPrices.map((p, index) => {
         return (
-          p.id === modifPriceInput.id && isColObj && isColDay ?
+          p.id === modifPriceInput.id && isColObj && isColDay && !isAddOpen ?
             modifPriceInput.template === 2 ?
               <DelLine key={`DelLine_${index}`} price={p} />
               :

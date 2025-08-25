@@ -58,7 +58,7 @@ function App() {
       isLast ? fetchLastData() : fetchPricesData()
       : console.log('No fetchPricesData')
 
-  }, [view, years, months, dispatch])
+  }, [view.page, years, months, dispatch])
 
   const viewContainer = () => {
     switch (view.page) {

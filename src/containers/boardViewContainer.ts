@@ -232,7 +232,9 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     isLast,
     orderOptions,
     view,
-    nbObjPerCats
+    nbObjPerCats,
+    objectInput,
+    categoryInput
   }
 }
 
@@ -257,7 +259,9 @@ export const BoardViewContext = createContext<BoardViewProps>({
   isLast: false,
   orderOptions: initialOrderOptions,
   view: initialView,
-  nbObjPerCats: []
+  nbObjPerCats: [],
+  objectInput: initialObjectInput,
+  categoryInput: initialCategoryInput
 })
 
 const sumPrices = (filteredPrices: Price[], cat: Categorie, sumType: SUM_TYPE): number => {

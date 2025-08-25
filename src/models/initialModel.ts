@@ -1,13 +1,8 @@
-import {
-  CURRENT_DATE,
-  PAGE
-} from '../types/constants'
+import { CURRENT_DATE, ORDERDIR } from '../types/constants'
 import { AddPriceInput, CategoryInput, ModifPriceInput, ObjectInput, OrderOptions, OrderSelectValue, SearchOptions, StateType, ViewOptions } from '../types/common'
 
 export const initialModifPriceInput: ModifPriceInput = {
   id: -1,
-  catId: -1,
-  objId: -1,
   amount: '',
   actionDate: CURRENT_DATE,
   comment: '',
@@ -17,8 +12,6 @@ export const initialModifPriceInput: ModifPriceInput = {
 }
 
 export const initialAddPriceInput: AddPriceInput = {
-  catId: -1,
-  objId: -1,
   amount: '',
   actionDate: CURRENT_DATE,
   comment: ''
@@ -26,16 +19,15 @@ export const initialAddPriceInput: AddPriceInput = {
 
 export const initialObjectInput: ObjectInput = {
   objId: -1,
-  catId: -1,
   objName: '',
   template: 0
 }
 
 export const initialCategoryInput: CategoryInput = {
-  catName: '',
   catId: -1,
+  catName: '',
+  position: 99,
   template: 0,
-  position: 99
 }
 
 export const initialSearchOptions: SearchOptions = {
@@ -51,15 +43,20 @@ export const initialSearchOptions: SearchOptions = {
   isSearchReserved: true
 }
 
-export const initialOrderSelectValueHead = { name: 'DATE', value: 'dateAction', dir: 'DESC', selectedPos: 0 }
+const orderSelectValue = (name: string, value: string, dir: ORDERDIR, selectedPos: number): OrderSelectValue => {
+  const val: OrderSelectValue = { name, value, dir, selectedPos }
+  return val
+}
+
+export const initialOrderSelectValueHead = orderSelectValue('DATE', 'dateAction', 'DESC', 0)
 export const initialOrderSelectValues: OrderSelectValue[] = [
   initialOrderSelectValueHead,
-  { name: 'OBJET', value: 'obj', dir: 'DESC', selectedPos: -1 },
-  { name: 'MONTANT', value: 'price', dir: 'DESC', selectedPos: -1 },
-  { name: 'CATEGORIE', value: 'cat', dir: 'DESC', selectedPos: -1 },
-  { name: 'DATE CREATE', value: 'dateCreate', dir: 'DESC', selectedPos: -1 },
-  { name: 'DATE MODIF', value: 'dateModif', dir: 'DESC', selectedPos: -1 },
-  { name: 'TYPE', value: 'template', dir: 'DESC', selectedPos: -1 },
+  orderSelectValue('OBJET', 'obj', 'DESC', -1),
+  orderSelectValue('MONTANT', 'price', 'DESC', -1),
+  orderSelectValue('CATEGORIE', 'cat', 'DESC', -1),
+  orderSelectValue('DATE CREATE', 'dateCreate', 'DESC', -1),
+  orderSelectValue('DATE MODIF', 'dateModif', 'DESC', -1),
+  orderSelectValue('TYPE', 'template', 'DESC', -1),
 ]
 
 export const initialOrderOptions: OrderOptions = {

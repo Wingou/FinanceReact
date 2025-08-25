@@ -1,8 +1,8 @@
-import { catNone, objNone, CURRENT_DATE_TIME, CURRENT_YEAR, CURRENT_MONTH, PAGE, MONTHS, CALLER } from '../types/constants'
+import { catNone, objNone, CURRENT_DATE_TIME, CURRENT_YEAR, CURRENT_MONTH, MONTHS, CALLER } from '../types/constants'
 import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions } from '../models/initialModel'
 import { ActionType, AddPriceInput, Categorie, CategoryInput, ModifPriceInput, Month, Object, ObjectInput, OrderOptions, OrderSelectValue, Price, SearchOptions, StateType, ViewOptions, Year } from '../types/common'
-import { CatGql, Maybe, ObjGql, PriceCatGql, PriceGql, PriceObjGql, YearGql } from '../types/graphql'
-import { formatCalendarDate, getCatById, getObjById } from '../utils/helper'
+import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
+import { formatCalendarDate, getCatById } from '../utils/helper'
 import { CatRaw, ObjRaw } from '../types/reducer'
 
 export const mainReducer = (state: StateType = initialModel, action: ActionType) => {
@@ -409,70 +409,52 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_CATID': {
-      const { catId, caller }: { catId: string, caller: CALLER } = action.payload
-      const { addPriceInput, objectInput, categoryInput } = state
+      const catId: string = action.payload
+      const { objectInput, categoryInput } = state
       const catId_: number = parseInt(catId)
       const catName: string = getCatById(state.categories, catId_).name
-      const addPriceInput_: AddPriceInput = {
-        ...state.addPriceInput,
-        catId: catId_,
-        objId: -1
-      }
       const objectInput_: ObjectInput = {
         ...objectInput,
-        catId: catId_,
-        objId: -1
+        objId: -1,
+        objName: ''
       }
       const categoryInput_: CategoryInput = {
         ...categoryInput,
         catId: catId_,
         catName
       }
-      const addPriceInput_x: AddPriceInput = caller === 'ADD' ? addPriceInput_ : addPriceInput
-      const objectInput_x: ObjectInput = caller === 'HOME' ? objectInput_ : objectInput
-      const categoryInput_x: CategoryInput = caller === 'HOME' ? categoryInput_ : categoryInput
       return {
         ...state,
-        addPriceInput: addPriceInput_x,
-        objectInput: objectInput_x,
-        categoryInput: categoryInput_x
+        objectInput: objectInput_,
+        categoryInput: categoryInput_
       }
     }
 
     case 'SET_OBJID': {
-      const { objId, caller }: { objId: string, caller: CALLER } = action.payload
-      const { objects, addPriceInput, objectInput, modifPriceInput } = state
-      const { catId, objName } = objectInput
-      const objId_ = parseInt(objId)
-      const objByIds: Object[] = objects.filter(o => o.id === objId_)
-      const catId_: number = catId !== -1
-        ? catId
-        : objByIds.length > 0
-          ? objByIds[0].cat.id
-          : -1
-      const addPriceInput_: AddPriceInput = {
-        ...addPriceInput,
-        objId: objId_
+      const objId: string = action.payload
+      const { objects, categories } = state
+      const objId_: number = parseInt(objId)
+      const objects_: Object[] = objects.filter(o => o.id === objId_)
+      const objectHead = objects_.length > 0 ? objects_[0] : objNone
+      const { id: objId__, name: objName, template: objTemplate } = objectHead
+      const catId = objectHead.cat.id
+      const category: Categorie = getCatById(categories, catId)
+      const { id: catId_, name: catName, position, template: catTemplate } = category
+      const categoryInput_: CategoryInput = {
+        catId: catId_,
+        catName,
+        position,
+        template: catTemplate
       }
-      const objName_: string = objName === '' ? getObjById(objects, objId_).name : objName
       const objectInput_: ObjectInput = {
-        ...objectInput,
-        objId: objId_,
-        objName: objName_,
-        catId: catId_
+        objId: objId__,
+        objName,
+        template: objTemplate
       }
-      const modifPriceInput_: ModifPriceInput = {
-        ...modifPriceInput,
-        objId: objId_
-      }
-      const addPriceInput_x: AddPriceInput = caller === 'ADD' ? addPriceInput_ : addPriceInput
-      const objectInput_x: ObjectInput = caller === 'HOME' ? objectInput_ : objectInput
-      const modifPriceInput_x: ModifPriceInput = caller === 'MODIF_PRICE' ? modifPriceInput_ : modifPriceInput
       return {
         ...state,
-        addPriceInput: addPriceInput_x,
-        objectInput: objectInput_x,
-        modifPriceInput: modifPriceInput_x
+        objectInput: objectInput_,
+        categoryInput: categoryInput_
       }
     }
 
@@ -555,19 +537,26 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'MODIFPRICEINPUT': {
-      const p: ModifPriceInput = action.payload
-      const modifPriceInput: ModifPriceInput = {
-        ...p,
-        actionDate: formatCalendarDate(p.actionDate)
+      const payload: { modifPriceInput: ModifPriceInput, objectInput: ObjectInput, categoryInput: CategoryInput } = action.payload
+      const { modifPriceInput, objectInput, categoryInput } = payload
+      const { actionDate } = modifPriceInput
+
+      const actionDate_: string = formatCalendarDate(actionDate)
+      const modifPriceInput_: ModifPriceInput = {
+        ...modifPriceInput,
+        actionDate: actionDate_
       }
       const view: ViewOptions = {
         ...state.view,
+        isAddOpen: false,
         isColAmount: true
       }
       return {
         ...state,
-        modifPriceInput,
-        view
+        modifPriceInput: modifPriceInput_,
+        view,
+        objectInput,
+        categoryInput
       }
     }
 
@@ -621,7 +610,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const isMultiCats = categories.filter((c: Categorie): boolean => c.isOn).length > 1
       const lastMutatedPriceId: number = parseInt(priceId)
       const prices: Price[] = state.prices.map((p: Price): Price => {
-        const amount_: number = parseInt(amount)
+        const amount_: number = parseFloat(amount)
         const obj: ObjRaw = { id: objId_, name: objName, template: 0 }
         const cat: CatRaw = { id: catId_, name: catName, template: 0, position }
         return p.id === lastMutatedPriceId ?

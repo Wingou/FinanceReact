@@ -33,7 +33,12 @@ export type CALLER = 'MODIF_OBJ' | 'MODIF_PRICE' | 'ADD' | 'SEARCH' | 'LAST' | '
 export type ORDERDIR = 'ASC' | 'DESC'
 export type TEMPLATE = 'ACTIVATED' | 'RESERVED' | 'DELETED' | 'PREFERED'
 
-const catRawNone = { id: -1, name: 'NONE', position: 99, template: 0 }
+const catRawNone = {
+  id: -1,
+  name: 'NONE',
+  position: 99,
+  template: 0
+}
 
 export const objNone = {
   id: -1,

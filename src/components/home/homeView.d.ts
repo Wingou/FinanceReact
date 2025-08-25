@@ -7,15 +7,3 @@ export interface HomeViewProps {
     objectInput: ObjectInput,
     categoryInput: CategoryInput
 }
-
-export interface InputObjProps {
-    categories: Categorie[],
-    objects: Object[],
-    objectInput: ObjectInput,
-}
-
-export interface InputCatProps {
-    categories: Categorie[],
-    categoryInput: CategoryInput
-}
-

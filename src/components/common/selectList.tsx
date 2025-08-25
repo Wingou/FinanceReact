@@ -1,10 +1,21 @@
-import React from "react"
+import React, { useContext } from "react"
 import { handleCatIdInput, handleObjIdInput } from "../../actions/add"
 import { getCatById, getObjById, getTopObjs } from "../../utils/helper"
-import { SelectCatProps, SelectObjProps } from "./selectList.d"
 import { Object } from "../../types/common"
+import { HomeViewContext } from "../../containers/homeViewContainer"
+import { BoardViewContext } from "../../containers/boardViewContainer"
+import { CALLER } from "../../types/constants"
+import { HomeViewProps } from "../home/homeView.d"
+import { BoardViewProps } from "../board/boardView.d"
 
-export const SelectCat: React.FC<SelectCatProps> = ({ categories, catId, caller }) => {
+export const SelectCat: React.FC<{ caller: CALLER }> = ({ caller }) => {
+    const homeContext: HomeViewProps = useContext(HomeViewContext)
+    const boardContext: BoardViewProps = useContext(BoardViewContext)
+
+    const { categories, categoryInput } = caller === 'HOME'
+        ? homeContext
+        : boardContext
+    const { catId } = categoryInput
     const cat = categories
         .filter(c => c.template === 0 && c.id > 0 && c.position !== null)
         .sort((a, b) => a.id - b.id)
@@ -16,7 +27,7 @@ export const SelectCat: React.FC<SelectCatProps> = ({ categories, catId, caller 
         <select
             className='addInput_Select'
             value={catId}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleCatIdInput(e, caller)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleCatIdInput(e)}
             title={catNameForTitle}
         >
             <option
@@ -41,41 +52,41 @@ export const SelectCat: React.FC<SelectCatProps> = ({ categories, catId, caller 
     )
 }
 
-export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, objects, catId, objId }) => {
-
+export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
+    const homeContext: HomeViewProps = useContext(HomeViewContext)
+    const boardContext: BoardViewProps = useContext(BoardViewContext)
+    const { categories, categoryInput, objects, objectInput } = caller === 'HOME'
+        ? homeContext
+        : boardContext
+    const { catId } = categoryInput
+    const { objId } = objectInput
     const topObjs = getTopObjs(objects, 10)
-
     const objectsAll = objects
         .filter(o => o.template === 0)
         .sort((a, b) => {
             return a.name.localeCompare(b.name)
         })
-
     const objectsByCatIds =
         catId === -1
             ? objectsAll
             : objectsAll.filter(o => o.cat.id === catId && o.template === 0)
-
     const objById = getObjById(objects, objId)
-
     const objNameForTitle =
         objById.id === -1
             ? 'aucun objet sélectionné'
             : objById.name +
             (catId === -1 ? ' : ' + objById.cat.name + ' ' : '')
-
     const objLabel =
         '¤ OBJET ¤' +
         (catId === -1
             ? ''
             : ' : ' + getCatById(categories, catId).name + ' ')
-
     const Red_Border_Obj = objId === -1 ? 'invalidValue' : ''
     return (
         <select
             className={`addInput_Select ${Red_Border_Obj}`}
             value={objId}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleObjIdInput(e, caller)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleObjIdInput(e)}
             title={objNameForTitle}
         >
             <option
@@ -85,7 +96,6 @@ export const SelectObj: React.FC<SelectObjProps> = ({ caller, categories, object
             >
                 {objLabel}
             </option>
-
             {catId === -1 && topObjs.map((muObj: Object, index: number) => {
                 return (
                     <option key={'option_TopObjId_' + index} value={muObj.id.toString()} title={muObj.name}>

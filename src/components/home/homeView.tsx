@@ -1,43 +1,48 @@
-import React, { Component } from 'react'
+import React, { Component, useContext } from 'react'
 import { SelectCat, SelectObj } from '../common/selectList'
-import { HomeViewProps, InputObjProps, InputCatProps } from './homeView.d'
+import { HomeViewProps } from './homeView.d'
 import { InputText } from '../common/inputForm'
-import { handleAddObject, handleAddObjectInput, handleModifObject, handleModifObjectInput } from '../../actions/object'
+import { handleAddObject, handleAddObjectInput, handleModifObject } from '../../actions/object'
 import { handleAddCategory, handleAddCategoryInput, handleModifCategory } from '../../actions/category'
-import { getCatById, getObjById } from '../../utils/helper'
+import { getObjById } from '../../utils/helper'
+import { HomeViewContext } from '../../containers/homeViewContainer'
 
 export class HomeView extends Component<HomeViewProps, {}> {
     render() {
-        const { categories, objects, objectInput, categoryInput } = this.props
-        const { catId, objId } = objectInput
-        return <div className='
+        const { objectInput, categoryInput } = this.props
+        return <HomeViewContext.Provider value={this.props}>
+            <div className='
                     border-solid border-2 border-blue-500 
                     w-full  
                     flex
                     flex-col
                     items-center
                     '
-        >
-            <div className='
+            >
+                <div className='
                    font-bold
                    text-xl
                    mt-5
                    mb-3
                 '>
-                Catégories et Objets
+                    Catégories et Objets
+                </div>
+                <div className='m-2'>
+                    <SelectCat caller='HOME' />
+                    <SelectObj caller='HOME' />
+                </div>
+                <InputCat />
+                <InputObj />
             </div>
-            <div className='m-2'>
-                <SelectCat caller={'HOME'} catId={catId} categories={categories} />
-                <SelectObj caller={'HOME'} catId={catId} objId={objId} categories={categories} objects={objects} />
-            </div>
-            <InputObj objects={objects} categories={categories} objectInput={objectInput} />
-            <InputCat categories={categories} categoryInput={categoryInput} />
-        </div>
+        </HomeViewContext.Provider>
     }
 }
 
-const InputObj: React.FC<InputObjProps> = ({ objects, categories, objectInput }) => {
-    const { catId, objId, objName } = objectInput
+const InputObj: React.FC = () => {
+
+    const { categoryInput, objects, objectInput } = useContext(HomeViewContext)
+    const { catId } = categoryInput
+    const { objId, objName } = objectInput
     const isCatSelected = catId !== -1
     const isObjSelected = objId !== -1
     const isObjInput = objName.length > 0
@@ -73,6 +78,7 @@ const InputObj: React.FC<InputObjProps> = ({ objects, categories, objectInput })
                 : 'Delete Object'
     const isBtnDel_Disabled = !isObjSelected || isObjInput || !isObjOrphan
     const btnDelStyle = isBtnDel_Disabled ? 'btnDisabled' : 'btnEnabled'
+    const textInput = objName === 'NONE' ? '' : objName
 
     return <div className='
              bg-indigo-100
@@ -82,6 +88,7 @@ const InputObj: React.FC<InputObjProps> = ({ objects, categories, objectInput })
               border-2
               p-2
               m-1
+              mb-5
               w-8/12
               flex
               '>
@@ -93,7 +100,7 @@ const InputObj: React.FC<InputObjProps> = ({ objects, categories, objectInput })
                 name='object'
                 placeholder='New Object'
                 handleFC={handleAddObjectInput}
-                value={objectInput.objName}
+                value={textInput}
                 width='w-30' />
             <button
                 onClick={() => {
@@ -129,7 +136,8 @@ const InputObj: React.FC<InputObjProps> = ({ objects, categories, objectInput })
     </div>
 }
 
-const InputCat: React.FC<InputCatProps> = ({ categories, categoryInput }) => {
+const InputCat: React.FC = () => {
+    const { categoryInput, categories } = useContext(HomeViewContext)
     const { catId, catName } = categoryInput
     const isCatOK = catName.length > 0
     const isCatSelected = catId !== -1
@@ -140,6 +148,7 @@ const InputCat: React.FC<InputCatProps> = ({ categories, categoryInput }) => {
             !isCatSelected ? 'No Category selected' : ''
     const isAjoutBtnDisabled = !isCatOK || !isCatNew || !isCatSelected
     const btnAjoutSisableStyle = isAjoutBtnDisabled ? 'btnDisabled' : 'btnEnabled'
+    const textInput = catName === 'NONE' ? '' : catName
     return <div className='
              bg-indigo-100
               text-left 
@@ -149,7 +158,7 @@ const InputCat: React.FC<InputCatProps> = ({ categories, categoryInput }) => {
               w-8/12
               m-1
               p-2
-              mb-5
+            
               flex'>
         <div className='font-bold w-24'>
             Catégorie
@@ -158,7 +167,7 @@ const InputCat: React.FC<InputCatProps> = ({ categories, categoryInput }) => {
             <InputText
                 name={'category'}
                 placeholder={'New Category'}
-                value={categoryInput.catName}
+                value={textInput}
                 handleFC={handleAddCategoryInput}
                 width='w-30'
             />

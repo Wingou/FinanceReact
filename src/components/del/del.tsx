@@ -6,14 +6,14 @@ import { BoardViewContext } from "../../containers/boardViewContainer"
 import { Price } from "../../types/common"
 
 export const DelLine: React.FC<{ price: Price }> = ({ price }) => {
-    const { view, selectedCats, modifPriceInput } = useContext(BoardViewContext)
+    const { view, selectedCats, modifPriceInput, objectInput } = useContext(BoardViewContext)
     const { isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     return <tr key={`tr_DelLine`} className='trFocus'   >
         <td key={`td_admin`}>
             <button
                 className='btnAdmin btnAdminSize2 btnEnabled'
                 onClick={() => {
-                    handleModifPrice(modifPriceInput)
+                    handleModifPrice(modifPriceInput, objectInput)
                 }}
                 title='Cliquer pour supprimer'
             >
