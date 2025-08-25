@@ -11,9 +11,9 @@ import { BoardViewContext } from '../../containers/boardViewContainer'
 export const SearchWordInput: React.FC<{ isPricesFound: boolean }> = ({ isPricesFound }) => {
   const { searchOptions } = useContext(BoardViewContext)
   const { searchWord, searchMin, searchMax } = searchOptions
-  const minPrice = searchMin?.toString() ?? ''
-  const maxPrice = searchMax?.toString() ?? ''
-  const disabledDivTitle = isPricesFound ? '' : 'These options are not available when there is no data found'
+  const minPrice: string = searchMin?.toString() ?? ''
+  const maxPrice: string = searchMax?.toString() ?? ''
+  const disabledDivTitle: string = isPricesFound ? '' : 'These options are not available when there is no data found'
   return <div className='searchDiv' title={disabledDivTitle}>
     <div className={`searchCheckDiv`}  >
       <InputText
@@ -27,13 +27,13 @@ export const SearchWordInput: React.FC<{ isPricesFound: boolean }> = ({ isPrices
         name='searchMin'
         placeholder='MIN Price'
         handleFC={handleUpdateSearchMin}
-        value={minPrice as string}
+        value={minPrice}
       />
       <InputPrice
         name='searchMax'
         placeholder='MAX Price'
         handleFC={handleUpdateSearchMax}
-        value={maxPrice as string}
+        value={maxPrice}
       />
       <div  >
         <button

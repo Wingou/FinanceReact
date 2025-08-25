@@ -5,28 +5,28 @@ import { formatTextSQL } from "../utils/helper"
 import { apolloClient } from "../apollo-client"
 import { PriceGql } from "../types/graphql"
 import { toast } from "react-toastify"
-import { DateInput } from "../components/inputs/datesInput"
 
 export const handleModif = (price: Price) => {
+  const payload: ModifPriceInput = {
+    id: price.id,
+    catId: price.cat.id,
+    objId: price.obj.id,
+    amount: price.amount.toString(),
+    actionDate: price.actionDate,
+    comment: price.comment,
+    dateCreate: price.dateCreate,
+    dateModif: price.dateModif,
+    template: price.template
+  }
   const action = {
     type: 'MODIFPRICEINPUT',
-    payload: {
-      id: price.id,
-      catId: price.cat.id,
-      objId: price.obj.id,
-      amount: price.amount.toString(),
-      actionDate: price.actionDate,
-      comment: price.comment,
-      dateCreate: price.dateCreate,
-      dateModif: price.dateModif,
-      template: price.template
-    } as ModifPriceInput
+    payload
   }
   store.dispatch(action)
 }
 
 export const handleModifDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const actionDate = e.target.value.split('T')[0]
+  const actionDate: string = e.target.value.split('T')[0]
   const action = {
     type: 'MODIFPRICEINPUT_SET_DATE',
     payload: actionDate
@@ -94,7 +94,7 @@ export const handleModifPrice = async (modifPriceInput: ModifPriceInput) => {
         update: dataInput,
       }
     })
-    const result = response.data?.modifPrice as PriceGql
+    const result: PriceGql = response.data?.modifPrice
     if (result) {
 
       const msgToast = {

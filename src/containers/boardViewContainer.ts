@@ -3,10 +3,10 @@ import { BoardView } from '../components/board/boardView'
 import { Categorie, Month, Price, Year } from '../types/common'
 import { ORDERDIR, SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
-import { BoardViewProps, NbObjPerCat } from '../components/board/boardView.d'
+import { BoardViewProps, NbObjPerCat, TitleAmountMapPrices } from '../components/board/boardView.d'
 import { formatDateYYYYMMDD, formatFirstDay, formatFirstMonth } from '../utils/helper'
 import { createContext } from 'react'
-import { initialAddPriceInput, initialModifPriceInput, initialOrderOptions, initialSearchOptions, initialView } from '../models/initialModel'
+import { initialAddPriceInput, initialCategoryInput, initialModifPriceInput, initialObjectInput, initialOrderOptions, initialSearchOptions, initialView } from '../models/initialModel'
 
 const mapStateToProps = (state: RootState): BoardViewProps => {
 
@@ -20,7 +20,9 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     modifPriceInput,
     addPriceInput,
     view,
-    orderOptions
+    orderOptions,
+    objectInput,
+    categoryInput
   } = state
 
   const { isAddOpen, isLast, isColObj, isColDay, isColMonth } = view
@@ -92,39 +94,53 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
       }
     })
 
-  const filteredPrices__ = isColObj
+  const filteredPrices__: Price[] = isColObj
     ? filteredPrices_
     : filteredPrices_
       .reduce((acc: Price[], p: Price): Price[] => {
 
         const { actionDate, template, amount, comment } = p
-        const acc_ = acc.map((p) => { return { actionDate: p.actionDate, template: p.template } })
+        const acc_: { actionDate: string, template: number }[] = acc.map((p: Price) => {
+          return {
+            actionDate: p.actionDate,
+            template: p.template
+          }
+        })
 
         return acc_.filter((a) => a.actionDate === actionDate && a.template === template).length === 0 || acc.length === 0
           ? [...acc, p]
           : acc.map((a) => {
-            const isMatched = a.actionDate === actionDate && a.template === template
+            const isMatched: boolean = a.actionDate === actionDate && a.template === template
+            const amount_: number = isMatched ? a.amount + amount : a.amount
+            const comment_: string = isMatched && comment !== '' ? a.comment + ' ¤ ' + comment : a.comment
+            const isGroupby: boolean = isMatched ? true : a.isGroupby
             return {
               ...a,
-              amount: isMatched ? a.amount + amount : a.amount,
-              comment: isMatched && comment !== '' ? a.comment + ' ¤ ' + comment : a.comment,
-              isGroupby: isMatched ? true : a.isGroupby
+              amount: amount_,
+              comment: comment_,
+              isGroupby
             }
           }
           )
       }
-        , [] as Price[])
+        , [])
 
-  const filteredPrices___ = isColDay
+  const filteredPrices___: Price[] = isColDay
     ? filteredPrices__
     : filteredPrices__
       .reduce((acc: Price[], p: Price): Price[] => {
         const formatForReduce = isColMonth ? formatFirstDay : formatFirstMonth
         const { actionDate, template, amount, comment, obj } = p // YYYY-MM-DD 00:00:00
-        const objId = obj.id
-        const actionDay = formatForReduce(actionDate)
-        const acc_ = acc.map((p) => { return { actionDay: formatForReduce(p.actionDate), objId: p.obj.id, template: p.template } })
-        const isPriceInAcc = isColObj
+        const objId: number = obj.id
+        const actionDay: string = formatForReduce(actionDate)
+        const acc_: { actionDay: string, objId: number, template: number }[] = acc.map((p) => {
+          return {
+            actionDay: formatForReduce(p.actionDate),
+            objId: p.obj.id,
+            template: p.template
+          }
+        })
+        const isPriceInAcc: boolean = isColObj
           ? acc_.filter((a) =>
             a.actionDay === actionDay
             && a.template === template
@@ -137,7 +153,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
         return !isPriceInAcc || acc.length === 0
           ? [...acc, p]
           : acc.map((a) => {
-            const isMatched =
+            const isMatched: boolean =
               isColObj ?
                 formatForReduce(a.actionDate) === actionDay
                 && a.template === template
@@ -154,7 +170,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
           }
           )
       }
-        , [] as Price[])
+        , [])
 
   const filteredPrices = filteredPrices___
   const filteredPricesCatIds = [...new Set(filteredPrices.map((p: Price) => p.cat.id))]
@@ -250,12 +266,13 @@ const sumPrices = (filteredPrices: Price[], cat: Categorie, sumType: SUM_TYPE): 
   const totalPrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.template === 0)
   const reservePrices = filteredPrices.filter((price: Price) => price.cat.id === cat.id && price.template === 1)
 
-  const prices = {
+  const sumTypeMap: TitleAmountMapPrices = {
     'RECETTE': recettePrices,
     'DEPENSE': depensePrices,
     'RESERVE': reservePrices,
     'TOTAL': totalPrices
-  }[sumType as SUM_TYPE] as Price[]
+  }
+  const prices: Price[] = (sumTypeMap)[sumType as SUM_TYPE]
 
   return prices.reduce((acc: number, price: Price): number => acc + price.amount, 0)
 }

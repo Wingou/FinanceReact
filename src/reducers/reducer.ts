@@ -71,7 +71,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_YEARS': {
-      const years = action.payload.years as YearGql[]
+      const years: YearGql[] = action.payload.years
       return {
         ...state,
         years: years.map((y: YearGql): Year => {
@@ -88,42 +88,6 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         })
       }
     }
-
-    // case 'SET_PRICES': {
-    //   const prices: PriceGql[] = action.payload
-    //   const displayedCatIds: number[] = [...new Set(prices.map((p: PriceGql): number => parseInt(p.cat.id)))]
-    //   const categories: Categorie[] = state.categories.map(cat => {
-    //     const isDisplayed: boolean = displayedCatIds.includes(cat.id)
-    //     return {
-    //       ...cat,
-    //       isDisplayed
-    //     }
-    //   })
-    //   const prices_ = prices.map((p: PriceGql): Price => {
-    //       const { id, amount, comment, obj, cat } = p
-    //       const comment_ = comment ?? ''
-    //       return {
-    //         ...p,
-    //         id: parseInt(id),
-    //         amount: parseFloat(amount),
-    //         comment: comment_,
-    //         isGroupby: false,
-    //         obj: {
-    //           ...p.obj,
-    //           id: parseInt(obj.id)
-    //         },
-    //         cat: {
-    //           ...p.cat,
-    //           id: parseInt(cat.id)
-    //         }
-    //       }
-    //     })
-    //   return {
-    //     ...state,
-    //     prices: prices_,
-    //     categories
-    //   }
-    // }
 
     case 'SET_PRICES': {
       const prices: PriceGql[] = action.payload

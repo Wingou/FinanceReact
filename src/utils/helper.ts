@@ -36,11 +36,12 @@ export const formatDateFR = (d: string) => {
 }
 
 export const formatTemplate = (t: number): TEMPLATE => {
-  return {
-    0: 'ACTIVATED',
-    1: 'RESERVED',
-    2: 'DELETED',
-  }[t] as TEMPLATE || 'PREFERED'
+  const tMapTemplate: TEMPLATE[] = [
+    'ACTIVATED',
+    'RESERVED',
+    'DELETED',
+  ]
+  return tMapTemplate[t] || 'PREFERED'
 }
 
 export const formatCalendarDate = (d: string) => {

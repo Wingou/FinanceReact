@@ -33,9 +33,16 @@ export interface SimpleLineProps {
   index: number
 }
 
-export interface TitleAmountMap {
+export interface TitleAmountMapString {
   RECETTE: string,
   DEPENSE: string,
-  RESERVE: string
+  RESERVE: string,
   TOTAL: string
+}
+
+export interface TitleAmountMapPrices {
+  RECETTE: Price[],
+  DEPENSE: Price[],
+  RESERVE: Price[],
+  TOTAL: Price[]
 }

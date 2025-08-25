@@ -35,7 +35,7 @@ export const handleAddCategory = async (categoryInput: CategoryInput) => {
             }
         })
 
-        const result = response.data?.addCategory as CatGql
+        const result: CatGql = response.data?.addCategory
         if (result) {
             toast.success(`Categorie ${dataInput.catName} est ajoutée !`, {
                 position: "bottom-right",
@@ -97,7 +97,7 @@ export const handleModifCategory = async (categoryInput: CategoryInput) => {
                 updateCat: dataInput,
             }
         })
-        const result = response.data?.modifCategory as CatGql
+        const result: CatGql = response.data?.modifCategory
         if (result) {
             toast.success(`Catégorie ${dataInput.catName} est modifié !`, {
                 position: "bottom-right",
@@ -114,15 +114,17 @@ export const handleModifCategory = async (categoryInput: CategoryInput) => {
                 }
             }
             )
-            const { id, name, position, template } = result
+            const { id, name, position, template, nbChild } = result
+            const payload: CatGql = {
+                id: id,
+                name: name,
+                position,
+                template,
+                nbChild
+            }
             store.dispatch({
                 type: 'SET_CATEGORY_AFTER_MODIF',
-                payload: {
-                    id: id,
-                    name: name,
-                    position,
-                    template
-                } as CatGql
+                payload
             })
         }
         else {

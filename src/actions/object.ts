@@ -43,7 +43,7 @@ export const handleAddObject = async (objectInput: ObjectInput) => {
             }
         })
 
-        const result = response.data?.addObject as ObjGql
+        const result: ObjGql = response.data?.addObject
         if (result) {
             toast.success(`Objet ${dataInput.objName} est ajouté !`, {
                 position: "bottom-right",
@@ -98,7 +98,7 @@ export const handleModifObject = async (objectInput: ObjectInput, template: Numb
                 updateObj: dataInput,
             }
         })
-        const result = response.data?.modifObject as ObjGql
+        const result: ObjGql = response.data?.modifObject
         const msg = template === 2 ? 'supprimé' : 'modifié'
         if (result) {
             toast.success(`Objet ${dataInput.objName} est ${msg} !`, {

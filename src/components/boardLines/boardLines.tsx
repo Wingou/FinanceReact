@@ -11,7 +11,7 @@ import {
 } from '../../utils/helper'
 import { ModifPriceInput } from '../../types/common'
 import { handleModif, handleModifPrice } from '../../actions/modif'
-import { SimpleLineProps, TitleAmountMap } from '../board/boardView.d'
+import { SimpleLineProps, TitleAmountMapString } from '../board/boardView.d'
 import { SUM_TYPE } from '../../types/constants'
 import { handleSearchObj } from '../../actions/search'
 import { BoardViewContext } from '../../containers/boardViewContainer'
@@ -20,29 +20,29 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ price, index }) => {
     const { selectedCats, view, searchOptions } = useContext(BoardViewContext)
     const { isColMonth, isColDay, isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     const { lastMutatedPriceId } = searchOptions
-    const modifPriceInputForReserve = {
+    const modifPriceInputForReserve: ModifPriceInput = {
         ...price,
         catId: price.cat.id,
         objId: price.obj.id,
         amount: price.amount.toString(),
         template: price.template === 0 ? 1 : 0
-    } as ModifPriceInput
-    const simpleLineStyleByTemplate =
+    }
+    const simpleLineStyleByTemplate: string =
         {
             0: 'SimpleLineActivated',
             1: 'SimpleLineReserved',
             2: 'SimpleLineDeleted',
-        }[price.template]
-    const trSimpleLine = price.id === lastMutatedPriceId
+        }[price.template] || 'SimpleLineActivated'
+    const trSimpleLine: string = price.id === lastMutatedPriceId
         ? 'FocusedLine'
         : ''
-    const groupbyLineStyle = price.isGroupby ? 'GroupbyLine' : ''
-    const btnStyleDisabled = price.template === 2 || !isColObj || !isColDay ? 'btnDisabled' : 'btnEnabled'
-    const commentTitle = price.comment === '' ? 'no comment' : 'commentaire:\n' + price.comment
-    const rechObjTitle = `Copier sur le champ recherche :\n${price.obj.name}`
+    const groupbyLineStyle: string = price.isGroupby ? 'GroupbyLine' : ''
+    const btnStyleDisabled: string = price.template === 2 || !isColObj || !isColDay ? 'btnDisabled' : 'btnEnabled'
+    const commentTitle: string = price.comment === '' ? 'no comment' : 'commentaire:\n' + price.comment
+    const rechObjTitle: string = `Copier sur le champ recherche :\n${price.obj.name}`
 
-    const isColDateModif_ = isColDateModif && isColObj && isColDay
-    const isColDateCreate_ = isColDateCreate && isColObj && isColDay
+    const isColDateModif_: boolean = isColDateModif && isColObj && isColDay
+    const isColDateCreate_: boolean = isColDateCreate && isColObj && isColDay
 
     return <tr key={`tr_SimpleLine_${index}`} className={trSimpleLine + ' trhover ' + simpleLineStyleByTemplate + ' ' + groupbyLineStyle} title={commentTitle}>
         <td key={`td_admin_${index}`}>
@@ -116,13 +116,13 @@ const SumLine: React.FC<{ sumType: SUM_TYPE }> = ({ sumType }) => {
         }
     }, 0)
 
-    const titleAmount: string =
-        ({
-            'RECETTE': 'RECETTE',
-            'DEPENSE': 'DEPENSE',
-            'RESERVE': 'RESERVE',
-            'TOTAL': 'total (R-D)'
-        } as TitleAmountMap)[sumType as SUM_TYPE]
+    const titleAmountMap: TitleAmountMapString = {
+        'RECETTE': 'RECETTE',
+        'DEPENSE': 'DEPENSE',
+        'RESERVE': 'RESERVE',
+        'TOTAL': 'total (R-D)'
+    }
+    const titleAmount: string = (titleAmountMap)[sumType as SUM_TYPE]
 
     const formatPriceFunc = sumType === 'TOTAL' ? formatPriceWithZero : formatPrice
     const colspanSumLineEnd = [

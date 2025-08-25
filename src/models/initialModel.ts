@@ -2,7 +2,7 @@ import {
   CURRENT_DATE,
   PAGE
 } from '../types/constants'
-import { AddPriceInput, CategoryInput, ModifPriceInput, ObjectInput, OrderOptions, SearchOptions, StateType, ViewOptions } from '../types/common'
+import { AddPriceInput, CategoryInput, ModifPriceInput, ObjectInput, OrderOptions, OrderSelectValue, SearchOptions, StateType, ViewOptions } from '../types/common'
 
 export const initialModifPriceInput: ModifPriceInput = {
   id: -1,
@@ -51,20 +51,23 @@ export const initialSearchOptions: SearchOptions = {
   isSearchReserved: true
 }
 
+export const initialOrderSelectValueHead = { name: 'DATE', value: 'dateAction', dir: 'DESC', selectedPos: 0 }
+export const initialOrderSelectValues: OrderSelectValue[] = [
+  initialOrderSelectValueHead,
+  { name: 'OBJET', value: 'obj', dir: 'DESC', selectedPos: -1 },
+  { name: 'MONTANT', value: 'price', dir: 'DESC', selectedPos: -1 },
+  { name: 'CATEGORIE', value: 'cat', dir: 'DESC', selectedPos: -1 },
+  { name: 'DATE CREATE', value: 'dateCreate', dir: 'DESC', selectedPos: -1 },
+  { name: 'DATE MODIF', value: 'dateModif', dir: 'DESC', selectedPos: -1 },
+  { name: 'TYPE', value: 'template', dir: 'DESC', selectedPos: -1 },
+]
+
 export const initialOrderOptions: OrderOptions = {
-  orderSelectValues: [
-    { name: 'DATE', value: 'dateAction', dir: 'DESC', selectedPos: 0 },
-    { name: 'OBJET', value: 'obj', dir: 'DESC', selectedPos: -1 },
-    { name: 'MONTANT', value: 'price', dir: 'DESC', selectedPos: -1 },
-    { name: 'CATEGORIE', value: 'cat', dir: 'DESC', selectedPos: -1 },
-    { name: 'DATE CREATE', value: 'dateCreate', dir: 'DESC', selectedPos: -1 },
-    { name: 'DATE MODIF', value: 'dateModif', dir: 'DESC', selectedPos: -1 },
-    { name: 'TYPE', value: 'template', dir: 'DESC', selectedPos: -1 },
-  ]
+  orderSelectValues: initialOrderSelectValues
 }
 
 export const initialView: ViewOptions = {
-  page: 'HOME' as PAGE,
+  page: 'HOME',
   isAddOpen: false,
   isLast: false,
   isColAmount: true,

@@ -3,6 +3,7 @@ import { handleCancel } from '../../actions/cancel'
 import { OrderSelectValue } from '../../types/common'
 import { handleOrderInput, handleToggleOrderDir } from '../../actions/order'
 import { BoardViewContext } from '../../containers/boardViewContainer'
+import { initialOrderOptions, initialOrderSelectValueHead, initialOrderSelectValues } from '../../models/initialModel'
 
 export const OrderInput: React.FC = () => {
   const { orderOptions } = useContext(BoardViewContext)
@@ -41,8 +42,8 @@ export const OrderInput: React.FC = () => {
 const SelectOrder: React.FC<{ index: number }> = ({ index }) => {
   const { orderOptions } = useContext(BoardViewContext)
   const { orderSelectValues } = orderOptions
-  const orderSelectValue = orderSelectValues.find((o: OrderSelectValue): boolean => o.selectedPos === index) as OrderSelectValue
-  const selectedValue = orderSelectValue?.value as string
+  const orderSelectValue: OrderSelectValue = orderSelectValues.find((o: OrderSelectValue): boolean => o.selectedPos === index) ?? initialOrderSelectValueHead
+  const selectedValue: string = orderSelectValue?.value
   return (
     <div>
       {orderSelectValue && <button

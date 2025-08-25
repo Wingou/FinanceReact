@@ -8,7 +8,7 @@ import { PriceGql } from '../types/graphql'
 import { CALLER } from '../types/constants'
 
 export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller: CALLER) => {
-  const catId = e.target.value
+  const catId: string = e.target.value
   const action = {
     type: 'SET_CATID',
     payload: {
@@ -20,7 +20,7 @@ export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller
 }
 
 export const handleObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller: CALLER) => {
-  const objId = e.target.value
+  const objId: string = e.target.value
   const action = {
     type: 'SET_OBJID',
     payload: {
@@ -32,7 +32,7 @@ export const handleObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller
 }
 
 export const handleAddDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const actionDate = e.target.value.split('T')[0]
+  const actionDate: string = e.target.value.split('T')[0]
   const action = {
     type: 'ADDPRICEINPUT_SET_DATE',
     payload: actionDate
@@ -41,22 +41,23 @@ export const handleAddDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 }
 
 export const handleAddPriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const valeur = e.target.value.replace(',', '.')
+  const value: string = e.target.value
+  const valeur = value.replace(',', '.')
   if (!/^-?\d*\.?\d{0,2}$/.test(valeur)) {
-    e.target.value = e.target.value.slice(0, -1)
+    e.target.value = value.slice(0, -1)
   }
-
   const action = {
     type: 'ADDPRICEINPUT_SET_PRICE',
-    payload: e.target.value
+    payload: value
   }
   store.dispatch(action)
 }
 
 export const handleAddCommentInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const payload: string = e.target.value
   const action = {
     type: 'ADDPRICEINPUT_SET_COMMENT',
-    payload: e.target.value
+    payload
   }
   store.dispatch(action)
 }
@@ -69,18 +70,14 @@ export const handleAddPriceCheck = async (addPriceInput: AddPriceInput) => {
                       }
                     }`
     const { amount, actionDate, objId } = addPriceInput
-    const dataInput = {
-      amount,
-      actionDate,
-      objId
-    }
+    const dataInput: { amount: string, actionDate: string, objId: number } = { amount, actionDate, objId }
     const { data } = await apolloClient.query(
       {
         query: api,
         variables: { where: dataInput },
         fetchPolicy: 'network-only'
       })
-    const result = data?.priceCheck as string[]
+    const result: string[] = data?.priceCheck
     if (result.length > 0) {
       toast.info(`Ce prix ${dataInput.amount}€ à cette date ${dataInput.actionDate} existe déjà !`, {
         position: "bottom-right",
@@ -127,7 +124,7 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
                           }
                         }
                       }`
-    const dataInput = {
+    const dataInput: { amount: string, objId: string, actionDate: string, comment: string } = {
       amount: addPriceInput.amount,
       objId: addPriceInput.objId.toString(),
       actionDate: addPriceInput.actionDate,
@@ -139,7 +136,7 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput) => {
         insert: dataInput,
       }
     })
-    const result = response.data?.addPrice as PriceGql
+    const result: PriceGql = response.data?.addPrice
     if (result) {
       toast.success(`Prix ${dataInput.amount}€ ajouté !`, {
         position: "bottom-right",
