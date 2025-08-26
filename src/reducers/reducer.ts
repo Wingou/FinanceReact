@@ -1,6 +1,6 @@
 import { catNone, objNone, CURRENT_DATE_TIME, CURRENT_YEAR, CURRENT_MONTH, MONTHS, CALLER } from '../types/constants'
 import { initialPriceInput, initialModel, initialOrderOptions } from '../models/initialModel'
-import { ActionType, Categorie, CategoryInput, PriceInput, Month, Object, ObjectInput, Price, SearchOptions, StateType, ViewOptions, Year, OrderOption } from '../types/common'
+import { ActionType, Categorie, CategoryInput, PriceInput, Month, Object, ObjectInput, Price, SearchOption, StateType, ViewOption, Year, OrderOption } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
 import { CatRaw, ObjRaw } from '../types/reducer'
@@ -192,7 +192,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           isOn
         }
       })
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         isMultiYears: isAllYearsChecked
       }
@@ -213,7 +213,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           isOn
         }
       })
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         isMultiMonths: isAllMonthsChecked
       }
@@ -258,7 +258,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         }
       })
       const isMultiCats_: boolean = isMultiCatsPayload || isMultiCats
-      const searchOptions_: SearchOptions = {
+      const searchOptions_: SearchOption = {
         ...searchOptions,
         isMultiCats: isMultiCats_
       }
@@ -272,7 +272,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'UPDATE_MULTIPLE_YEARS': {
       const isMultiYears: boolean = action.payload
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         isMultiYears
       }
@@ -285,7 +285,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'UPDATE_MULTIPLE_MONTHS': {
       const isMultiMonths: boolean = action.payload
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         isMultiMonths
       }
@@ -298,7 +298,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'UPDATE_MULTIPLE_CATS': {
       const isMultiCats: boolean = action.payload
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         isMultiCats
       }
@@ -311,7 +311,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'UPDATE_SEARCH_WORD': {
       const searchWord: string = action.payload
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         searchWord
       }
@@ -326,7 +326,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const searchMinPayload: string = action.payload
       const searchMin: number = parseInt(searchMinPayload)
       const searchMin_: number | null = isNaN(searchMin) ? null : searchMin
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         searchMin: searchMin_
       }
@@ -341,7 +341,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const searchMaxPayload: string = action.payload
       const searchMax: number = parseInt(searchMaxPayload)
       const searchMax_: number | null = isNaN(searchMax) ? null : searchMax
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         searchMax: searchMax_
       }
@@ -354,7 +354,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'UPDATE_SEARCH_DEL': {
       const isSearchDeleted: boolean = action.payload
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         isSearchDeleted
       }
@@ -367,7 +367,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'UPDATE_SEARCH_RESERVED': {
       const isSearchReserved: boolean = action.payload
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         isSearchReserved
       }
@@ -379,7 +379,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'TO_HOME': {
-      const view: ViewOptions = {
+      const view: ViewOption = {
         ...state.view,
         isAddOpen: false,
         isLast: false,
@@ -394,7 +394,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'TOGGLE_ADD': {
       const isAddOpen: boolean = !state.view.isAddOpen
-      const view: ViewOptions = {
+      const view: ViewOption = {
         ...state.view,
         isAddOpen,
         page: 'BOARD'
@@ -408,7 +408,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'TOGGLE_LAST': {
       const isLast: boolean = !state.view.isLast
-      const view: ViewOptions = {
+      const view: ViewOption = {
         ...state.view,
         isLast,
         page: 'BOARD'
@@ -421,7 +421,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'TO_BOARD': {
-      const view: ViewOptions = {
+      const view: ViewOption = {
         ...state.view,
         page: 'BOARD'
       }
@@ -484,20 +484,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       return newState
     }
 
-    case 'ADDPRICEINPUT_SET_DATE': {
-      const actionDate: string = action.payload
-      const priceInput: PriceInput = {
-        ...state.priceInput,
-        actionDate
-      }
-      const newState: StateType = {
-        ...state,
-        priceInput
-      }
-      return newState
-    }
-
-    case 'ADDPRICEINPUT_SET_PRICE': {
+    case 'PRICE_INPUT_SET_PRICE': {
       const amount: string = action.payload
       const priceInput: PriceInput = {
         ...state.priceInput,
@@ -510,11 +497,24 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       return newState
     }
 
-    case 'ADDPRICEINPUT_SET_COMMENT': {
+    case 'PRICE_INPUT_SET_COMMENT': {
       const comment: string = action.payload
       const priceInput: PriceInput = {
         ...state.priceInput,
         comment
+      }
+      const newState: StateType = {
+        ...state,
+        priceInput
+      }
+      return newState
+    }
+
+    case 'PRICE_INPUT_SET_DATE': {
+      const actionDate: string = action.payload
+      const priceInput: PriceInput = {
+        ...state.priceInput,
+        actionDate
       }
       const newState: StateType = {
         ...state,
@@ -552,7 +552,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         amount: '',
         comment: ''
       }
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         isMultiCats,
         lastMutatedPriceId: parseInt(id)
@@ -577,7 +577,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...priceInput,
         actionDate: actionDate_
       }
-      const view: ViewOptions = {
+      const view: ViewOption = {
         ...state.view,
         isAddOpen: false,
         isColAmount: true
@@ -592,44 +592,6 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       return newState
     }
 
-    case 'MODIFPRICEINPUT_SET_DATE': {
-      const actionDate: string = action.payload
-      const priceInput: PriceInput = {
-        ...state.priceInput,
-        actionDate
-      }
-      const newState: StateType = {
-        ...state,
-        priceInput
-      }
-      return newState
-    }
-
-    case 'MODIFPRICEINPUT_SET_PRICE': {
-      const amount: string = action.payload
-      const priceInput: PriceInput = {
-        ...state.priceInput,
-        amount
-      }
-      const newState: StateType = {
-        ...state,
-        priceInput
-      }
-      return newState
-    }
-
-    case 'MODIFPRICEINPUT_SET_COMMENT': {
-      const comment: string = action.payload
-      const priceInput: PriceInput = {
-        ...state.priceInput,
-        comment
-      }
-      const newState: StateType = {
-        ...state,
-        priceInput
-      }
-      return newState
-    }
 
     case 'SET_PRICES_AFTER_MODIF': {
       const modifPrice: PriceGql = action.payload
@@ -661,7 +623,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           }
           : p
       })
-      const searchOptions: SearchOptions = {
+      const searchOptions: SearchOption = {
         ...state.searchOptions,
         isMultiCats,
         lastMutatedPriceId
@@ -678,14 +640,14 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'CANCEL_INPUT': {
       const caller: CALLER = action.payload
-      const searchOptions_: SearchOptions = {
+      const searchOptions_: SearchOption = {
         ...state.searchOptions,
         searchWord: '',
         searchMin: null,
         searchMax: null,
       }
       const priceInput: PriceInput = caller === 'MODIF_PRICE' || caller === 'ADD' ? initialPriceInput : state.priceInput
-      const searchOptions: SearchOptions = caller === 'SEARCH' ? searchOptions_ : state.searchOptions
+      const searchOptions: SearchOption = caller === 'SEARCH' ? searchOptions_ : state.searchOptions
       const orderOptions: OrderOption[] = caller === 'ORDER' ? initialOrderOptions : state.orderOptions
       const newState: StateType = {
         ...state,
@@ -752,14 +714,14 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'TOGGLE_VIEW_COL': {
       const colName: string = action.payload
-      const sView: ViewOptions = state.view
+      const sView: ViewOption = state.view
       const isColAmount: boolean = (colName === 'isColAmount' ? !sView.isColAmount : sView.isColAmount) || (colName === 'isColCat' && !sView.isColAmount && sView.isColCat)
       const isColCat: boolean = (colName === 'isColCat' ? !sView.isColCat : sView.isColCat) || (colName === 'isColAmount' && !sView.isColCat && sView.isColAmount)
       const isColDay: boolean = colName === 'isColDay' ? !sView.isColDay : sView.isColDay
       const isColMonth: boolean = colName === 'isColMonth' ? !sView.isColMonth : sView.isColMonth
       const isDetailDay_: boolean = colName === 'isColMonth' ? (isColMonth || !isColDay) && isColDay : isColDay
       const isDetailMonth_: boolean = colName === 'isColDay' ? (!isColDay || isColMonth ? isColMonth : true) : isColMonth
-      const view: ViewOptions = {
+      const view: ViewOption = {
         ...sView,
         isColAmount,
         isColCat,

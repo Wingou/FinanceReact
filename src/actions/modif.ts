@@ -42,7 +42,7 @@ export const handleModif = (price: Price) => {
 export const handleModifDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   const actionDate: string = e.target.value.split('T')[0]
   const action = {
-    type: 'MODIFPRICEINPUT_SET_DATE',
+    type: 'PRICE_INPUT_SET_DATE',
     payload: actionDate
   }
   store.dispatch(action)
@@ -55,7 +55,7 @@ export const handleModifPriceInput = (e: React.ChangeEvent<HTMLInputElement>) =>
   }
 
   const action = {
-    type: 'MODIFPRICEINPUT_SET_PRICE',
+    type: 'PRICE_INPUT_SET_PRICE',
     payload: e.target.value
   }
   store.dispatch(action)
@@ -63,7 +63,7 @@ export const handleModifPriceInput = (e: React.ChangeEvent<HTMLInputElement>) =>
 
 export const handleModifCommentInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   const action = {
-    type: 'MODIFPRICEINPUT_SET_COMMENT',
+    type: 'PRICE_INPUT_SET_COMMENT',
     payload: e.target.value
   }
   store.dispatch(action)

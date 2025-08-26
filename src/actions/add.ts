@@ -27,7 +27,7 @@ export const handleObjIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
 export const handleAddDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   const actionDate: string = e.target.value.split('T')[0]
   const action = {
-    type: 'ADDPRICEINPUT_SET_DATE',
+    type: 'PRICE_INPUT_SET_DATE',
     payload: actionDate
   }
   store.dispatch(action)
@@ -39,7 +39,7 @@ export const handleAddPriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.value = e.target.value.slice(0, -1)
   }
   const action = {
-    type: 'ADDPRICEINPUT_SET_PRICE',
+    type: 'PRICE_INPUT_SET_PRICE',
     payload: e.target.value
   }
   store.dispatch(action)
@@ -48,7 +48,7 @@ export const handleAddPriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 export const handleAddCommentInput = (e: React.ChangeEvent<HTMLInputElement>) => {
   const payload: string = e.target.value
   const action = {
-    type: 'ADDPRICEINPUT_SET_COMMENT',
+    type: 'PRICE_INPUT_SET_COMMENT',
     payload
   }
   store.dispatch(action)

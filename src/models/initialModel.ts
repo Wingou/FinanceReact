@@ -1,5 +1,5 @@
 import { CURRENT_DATE, ORDERDIR } from '../types/constants'
-import { CategoryInput, ObjectInput, OrderOption, PriceInput, SearchOptions, StateType, ViewOptions } from '../types/common'
+import { CategoryInput, ObjectInput, OrderOption, PriceInput, SearchOption, StateType, ViewOption } from '../types/common'
 
 export const initialPriceInput: PriceInput = {
   priceId: -1,
@@ -24,7 +24,7 @@ export const initialCategoryInput: CategoryInput = {
   template: 0,
 }
 
-export const initialSearchOptions: SearchOptions = {
+export const initialSearchOption: SearchOption = {
   isMultiYears: false,
   isMultiMonths: false,
   isMultiCats: true,
@@ -52,7 +52,7 @@ export const initialOrderOptions: OrderOption[] = [
   orderOption('TYPE', 'template', 'DESC', -1),
 ]
 
-export const initialView: ViewOptions = {
+export const initialViewOption: ViewOption = {
   page: 'HOME',
   isAddOpen: false,
   isLast: false,
@@ -73,11 +73,11 @@ export const initialModel: StateType = {
   categories: [],
   years: [],
   months: [],
-  searchOptions: initialSearchOptions,
+  searchOptions: initialSearchOption,
   priceInput: initialPriceInput,
   objectInput: initialObjectInput,
   categoryInput: initialCategoryInput,
-  view: initialView,
+  view: initialViewOption,
   orderOptions: initialOrderOptions
 }
 

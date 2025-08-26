@@ -1,4 +1,4 @@
-import { Categorie, CategoryInput, Month, Object, ObjectInput, OrderOption, Price, PriceInput, SearchOptions, ViewOptions, Year } from '../../types/common'
+import { Categorie, CategoryInput, Month, Object, ObjectInput, OrderOption, Price, PriceInput, SearchOption, ViewOption, Year } from '../../types/common'
 
 export interface BoardViewProps {
   years: Year[],
@@ -9,14 +9,14 @@ export interface BoardViewProps {
   isAllYearsChecked: boolean,
   isAllMonthsChecked: boolean,
   isAllCatsChecked: boolean,
-  searchOptions: SearchOptions,
+  searchOptions: SearchOption,
   objects: Object[],
   categories: Categorie[],
   priceInput: PriceInput,
   isAddOpen: boolean,
   isLast: boolean,
   orderOptions: OrderOption[],
-  view: ViewOptions,
+  view: ViewOption,
   nbObjPerCats: NbObjPerCat[],
   categoryInput: CategoryInput,
   objectInput: ObjectInput

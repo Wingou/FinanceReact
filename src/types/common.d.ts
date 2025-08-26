@@ -7,15 +7,15 @@ export interface StateType {
   categories: Categorie[],
   years: Year[],
   months: Month[],
-  searchOptions: SearchOptions,
+  searchOptions: SearchOption,
   priceInput: PriceInput,
   objectInput: ObjectInput,
   categoryInput: CategoryInput,
-  view: ViewOptions,
+  view: ViewOption,
   orderOptions: OrderOptions
 }
 
-export interface ViewOptions {
+export interface ViewOption {
   page: PAGE,
   isAddOpen: boolean,
   isLast: boolean,
@@ -35,7 +35,7 @@ export interface ActionType {
   payload: any
 }
 
-export interface SearchOptions {
+export interface SearchOption {
   isMultiYears: boolean,
   isMultiMonths: boolean,
   isMultiCats: boolean,
