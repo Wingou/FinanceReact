@@ -1,6 +1,6 @@
 import { catNone, objNone, CURRENT_DATE_TIME, CURRENT_YEAR, CURRENT_MONTH, MONTHS, CALLER } from '../types/constants'
-import { initialAddPriceInput, initialModel, initialModifPriceInput, initialOrderOptions } from '../models/initialModel'
-import { ActionType, AddPriceInput, Categorie, CategoryInput, ModifPriceInput, Month, Object, ObjectInput, OrderOptions, OrderSelectValue, Price, SearchOptions, StateType, ViewOptions, Year } from '../types/common'
+import { initialPriceInput, initialModel, initialOrderOptions } from '../models/initialModel'
+import { ActionType, Categorie, CategoryInput, PriceInput, Month, Object, ObjectInput, OrderOptions, OrderSelectValue, Price, SearchOptions, StateType, ViewOptions, Year } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
 import { CatRaw, ObjRaw } from '../types/reducer'
@@ -18,10 +18,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           isOn
         }
       })
-      return {
+      const newState: StateType = {
         ...initialModel,
         months
       }
+      return newState
     }
 
     case 'SET_CATEGORIES': {
@@ -43,10 +44,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           }
         })
         .concat(catNone)
-      return {
+      const newState: StateType = {
         ...state,
         categories
       }
+      return newState
     }
 
     case 'SET_OBJECTS': {
@@ -64,15 +66,16 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         }
       })
         .concat(objNone)
-      return {
+      const newState: StateType = {
         ...state,
         objects
       }
+      return newState
     }
 
     case 'SET_YEARS': {
       const years: YearGql[] = action.payload.years
-      return {
+      const newState: StateType = {
         ...state,
         years: years.map((y: YearGql): Year => {
           const { name: yearStr } = y
@@ -87,6 +90,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           }
         })
       }
+      return newState
     }
 
     case 'SET_PRICES': {
@@ -123,11 +127,12 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           cat: cat_
         }
       })
-      return {
+      const newState: StateType = {
         ...state,
         prices: prices_,
         categories
       }
+      return newState
     }
 
     case 'UPDATE_MONTH': {
@@ -148,10 +153,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           isOn: isOn_
         }
       })
-      return {
+      const newState: StateType = {
         ...state,
         months: months_
       }
+      return newState
     }
 
     case 'UPDATE_YEAR': {
@@ -170,10 +176,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           isOn: isOn_
         }
       })
-      return {
+      const newState: StateType = {
         ...state,
         years: years_
       }
+      return newState
     }
 
     case 'UPDATE_ALL_YEARS': {
@@ -189,11 +196,12 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.searchOptions,
         isMultiYears: isAllYearsChecked
       }
-      return {
+      const newState: StateType = {
         ...state,
         years,
         searchOptions
       }
+      return newState
     }
 
     case 'UPDATE_ALL_MONTHS': {
@@ -209,11 +217,12 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.searchOptions,
         isMultiMonths: isAllMonthsChecked
       }
-      return {
+      const newState: StateType = {
         ...state,
         months,
         searchOptions
       }
+      return newState
     }
 
     case 'UPDATE_FILTERED_CAT': {
@@ -231,10 +240,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           isOn
         }
       })
-      return {
+      const newState: StateType = {
         ...state,
         categories: categories_
       }
+      return newState
     }
 
     case 'UPDATE_ALL_CATS': {
@@ -252,11 +262,12 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...searchOptions,
         isMultiCats: isMultiCats_
       }
-      return {
+      const newState: StateType = {
         ...state,
         categories: categories_,
         searchOptions: searchOptions_
       }
+      return newState
     }
 
     case 'UPDATE_MULTIPLE_YEARS': {
@@ -265,10 +276,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.searchOptions,
         isMultiYears
       }
-      return {
+      const newState: StateType = {
         ...state,
         searchOptions
       }
+      return newState
     }
 
     case 'UPDATE_MULTIPLE_MONTHS': {
@@ -277,10 +289,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.searchOptions,
         isMultiMonths
       }
-      return {
+      const newState: StateType = {
         ...state,
         searchOptions
       }
+      return newState
     }
 
     case 'UPDATE_MULTIPLE_CATS': {
@@ -289,10 +302,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.searchOptions,
         isMultiCats
       }
-      return {
+      const newState: StateType = {
         ...state,
         searchOptions
       }
+      return newState
     }
 
     case 'UPDATE_SEARCH_WORD': {
@@ -301,10 +315,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.searchOptions,
         searchWord
       }
-      return {
+      const newState: StateType = {
         ...state,
         searchOptions
       }
+      return newState
     }
 
     case 'UPDATE_SEARCH_MIN': {
@@ -315,10 +330,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.searchOptions,
         searchMin: searchMin_
       }
-      return {
+      const newState: StateType = {
         ...state,
         searchOptions
       }
+      return newState
     }
 
     case 'UPDATE_SEARCH_MAX': {
@@ -329,10 +345,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.searchOptions,
         searchMax: searchMax_
       }
-      return {
+      const newState: StateType = {
         ...state,
         searchOptions
       }
+      return newState
     }
 
     case 'UPDATE_SEARCH_DEL': {
@@ -341,10 +358,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.searchOptions,
         isSearchDeleted
       }
-      return {
+      const newState: StateType = {
         ...state,
         searchOptions
       }
+      return newState
     }
 
     case 'UPDATE_SEARCH_RESERVED': {
@@ -353,10 +371,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.searchOptions,
         isSearchReserved
       }
-      return {
+      const newState: StateType = {
         ...state,
         searchOptions
       }
+      return newState
     }
 
     case 'TO_HOME': {
@@ -366,10 +385,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         isLast: false,
         page: 'HOME'
       }
-      return {
+      const newState: StateType = {
         ...state,
         view
       }
+      return newState
     }
 
     case 'TOGGLE_ADD': {
@@ -379,11 +399,13 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         isAddOpen,
         page: 'BOARD'
       }
-      return {
+      const newState: StateType = {
         ...state,
         view
       }
+      return newState
     }
+
     case 'TOGGLE_LAST': {
       const isLast: boolean = !state.view.isLast
       const view: ViewOptions = {
@@ -391,10 +413,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         isLast,
         page: 'BOARD'
       }
-      return {
+      const newState: StateType = {
         ...state,
         view
       }
+      return newState
     }
 
     case 'TO_BOARD': {
@@ -402,10 +425,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.view,
         page: 'BOARD'
       }
-      return {
+      const newState: StateType = {
         ...state,
         view
       }
+      return newState
     }
 
     case 'SET_CATID': {
@@ -423,11 +447,12 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         catId: catId_,
         catName
       }
-      return {
+      const newState: StateType = {
         ...state,
         objectInput: objectInput_,
         categoryInput: categoryInput_
       }
+      return newState
     }
 
     case 'SET_OBJID': {
@@ -451,46 +476,51 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         objName,
         template: objTemplate
       }
-      return {
+      const newState: StateType = {
         ...state,
         objectInput: objectInput_,
         categoryInput: categoryInput_
       }
+      return newState
     }
 
     case 'ADDPRICEINPUT_SET_DATE': {
       const actionDate: string = action.payload
-      const addPriceInput: AddPriceInput = {
-        ...state.addPriceInput,
+      const priceInput: PriceInput = {
+        ...state.priceInput,
         actionDate
       }
-      return {
+      const newState: StateType = {
         ...state,
-        addPriceInput
+        priceInput
       }
+      return newState
     }
+
     case 'ADDPRICEINPUT_SET_PRICE': {
       const amount: string = action.payload
-      const addPriceInput: AddPriceInput = {
-        ...state.addPriceInput,
+      const priceInput: PriceInput = {
+        ...state.priceInput,
         amount
       }
-      return {
+      const newState: StateType = {
         ...state,
-        addPriceInput
+        priceInput
       }
+      return newState
     }
 
     case 'ADDPRICEINPUT_SET_COMMENT': {
       const comment: string = action.payload
-      const addPriceInput: AddPriceInput = {
-        ...state.addPriceInput,
+      const priceInput: PriceInput = {
+        ...state.priceInput,
         comment
       }
-      return {
+      const newState: StateType = {
         ...state,
-        addPriceInput
+        priceInput
       }
+      return newState
     }
 
     case 'SET_PRICES_AFTER_ADD': {
@@ -517,8 +547,8 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         isGroupby: false
       }
       ]
-      const addPriceInput: AddPriceInput = {
-        ...state.addPriceInput,
+      const priceInput: PriceInput = {
+        ...state.priceInput,
         amount: '',
         comment: ''
       }
@@ -527,23 +557,24 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         isMultiCats,
         lastMutatedPriceId: parseInt(id)
       }
-      return {
+      const newState: StateType = {
         ...state,
         prices,
-        addPriceInput,
+        priceInput,
         searchOptions,
         categories
       }
+      return newState
     }
 
     case 'MODIFPRICEINPUT': {
-      const payload: { modifPriceInput: ModifPriceInput, objectInput: ObjectInput, categoryInput: CategoryInput } = action.payload
-      const { modifPriceInput, objectInput, categoryInput } = payload
-      const { actionDate } = modifPriceInput
+      const payload: { priceInput: PriceInput, objectInput: ObjectInput, categoryInput: CategoryInput } = action.payload
+      const { priceInput, objectInput, categoryInput } = payload
+      const { actionDate } = priceInput
 
       const actionDate_: string = formatCalendarDate(actionDate)
-      const modifPriceInput_: ModifPriceInput = {
-        ...modifPriceInput,
+      const priceInput_: PriceInput = {
+        ...priceInput,
         actionDate: actionDate_
       }
       const view: ViewOptions = {
@@ -551,49 +582,53 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         isAddOpen: false,
         isColAmount: true
       }
-      return {
+      const newState: StateType = {
         ...state,
-        modifPriceInput: modifPriceInput_,
+        priceInput: priceInput_,
         view,
         objectInput,
         categoryInput
       }
+      return newState
     }
 
     case 'MODIFPRICEINPUT_SET_DATE': {
       const actionDate: string = action.payload
-      const modifPriceInput: ModifPriceInput = {
-        ...state.modifPriceInput,
+      const priceInput: PriceInput = {
+        ...state.priceInput,
         actionDate
       }
-      return {
+      const newState: StateType = {
         ...state,
-        modifPriceInput
+        priceInput
       }
+      return newState
     }
 
     case 'MODIFPRICEINPUT_SET_PRICE': {
       const amount: string = action.payload
-      const modifPriceInput: ModifPriceInput = {
-        ...state.modifPriceInput,
+      const priceInput: PriceInput = {
+        ...state.priceInput,
         amount
       }
-      return {
+      const newState: StateType = {
         ...state,
-        modifPriceInput
+        priceInput
       }
+      return newState
     }
 
     case 'MODIFPRICEINPUT_SET_COMMENT': {
       const comment: string = action.payload
-      const modifPriceInput: ModifPriceInput = {
-        ...state.modifPriceInput,
+      const priceInput: PriceInput = {
+        ...state.priceInput,
         comment
       }
-      return {
+      const newState: StateType = {
         ...state,
-        modifPriceInput
+        priceInput
       }
+      return newState
     }
 
     case 'SET_PRICES_AFTER_MODIF': {
@@ -631,13 +666,14 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         isMultiCats,
         lastMutatedPriceId
       }
-      return {
+      const newState: StateType = {
         ...state,
         prices,
-        modifPriceInput: initialModifPriceInput,
+        priceInput: initialPriceInput,
         searchOptions,
         categories
       }
+      return newState
     }
 
     case 'CANCEL_INPUT': {
@@ -648,17 +684,16 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         searchMin: null,
         searchMax: null,
       }
-      const modifPriceInput: ModifPriceInput = caller === 'MODIF_PRICE' ? initialModifPriceInput : state.modifPriceInput
-      const addPriceInput: AddPriceInput = caller === 'ADD' ? initialAddPriceInput : state.addPriceInput
+      const priceInput: PriceInput = caller === 'MODIF_PRICE' || caller === 'ADD' ? initialPriceInput : state.priceInput
       const searchOptions: SearchOptions = caller === 'SEARCH' ? searchOptions_ : state.searchOptions
       const orderOptions: OrderOptions = caller === 'ORDER' ? initialOrderOptions : state.orderOptions
-      return {
+      const newState: StateType = {
         ...state,
-        modifPriceInput,
-        addPriceInput,
+        priceInput,
         searchOptions,
         orderOptions
       }
+      return newState
     }
 
     case 'UPDATE_ORDER_INPUT': {
@@ -699,26 +734,29 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         ...state.orderOptions,
         orderSelectValues
       }
-      return {
+      const newState: StateType = {
         ...state,
         orderOptions
       }
+      return newState
     }
 
-    case 'TOGGLE_ORDER_DIR':
+    case 'TOGGLE_ORDER_DIR': {
       const newOrderSelectValue: OrderSelectValue = action.payload
       const orderSelectValues: OrderSelectValue[] = state.orderOptions.orderSelectValues
         .map((o: OrderSelectValue): OrderSelectValue =>
           o.value === newOrderSelectValue.value ? newOrderSelectValue : o
         )
-      return {
+      const newState: StateType = {
         ...state,
         orderOptions: {
           orderSelectValues
         }
       }
+      return newState
+    }
 
-    case 'TOGGLE_VIEW_COL':
+    case 'TOGGLE_VIEW_COL': {
       const colName: string = action.payload
       const sView: ViewOptions = state.view
       const isColAmount: boolean = (colName === 'isColAmount' ? !sView.isColAmount : sView.isColAmount) || (colName === 'isColCat' && !sView.isColAmount && sView.isColCat)
@@ -739,127 +777,129 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         isColDay: isDetailDay_,
         isColMonth: isDetailMonth_
       }
-      return {
+      const newState: StateType = {
         ...state,
         view
       }
+      return newState
+    }
 
-    case 'ADDOBJECTINPUT':
-      {
-        const objName: string = action.payload
-        const objectInput: ObjectInput = {
-          ...state.objectInput,
-          objName
-        }
-        return {
-          ...state,
-          objectInput
-        }
+    case 'ADDOBJECTINPUT': {
+      const objName: string = action.payload
+      const objectInput: ObjectInput = {
+        ...state.objectInput,
+        objName
       }
+      const newState: StateType = {
+        ...state,
+        objectInput
+      }
+      return newState
+    }
 
-    case 'SET_OBJECT_AFTER_ADD':
-      {
-        const { id, name, cat: catId }: { id: string, name: string, cat: string } = action.payload
-        const objId: number = parseInt(id)
-        const catId_: number = parseInt(catId)
-        const catById: Categorie = getCatById(state.categories, catId_)
-        const cat: CatRaw = {
-          id: catId_,
-          name: catById.name,
-          position: catById.position,
-          template: catById.template
-        }
-        const newObj: Object = {
-          id: objId,
-          name,
-          template: 0,
-          cat,
-          nbChild: 0
-        }
-        const objects: Object[] = [...state.objects, newObj]
-        return {
-          ...state,
-          objects
-        }
+    case 'SET_OBJECT_AFTER_ADD': {
+      const { id, name, cat: catId }: { id: string, name: string, cat: string } = action.payload
+      const objId: number = parseInt(id)
+      const catId_: number = parseInt(catId)
+      const catById: Categorie = getCatById(state.categories, catId_)
+      const cat: CatRaw = {
+        id: catId_,
+        name: catById.name,
+        position: catById.position,
+        template: catById.template
       }
+      const newObj: Object = {
+        id: objId,
+        name,
+        template: 0,
+        cat,
+        nbChild: 0
+      }
+      const objects: Object[] = [...state.objects, newObj]
+      const newState: StateType = {
+        ...state,
+        objects
+      }
+      return newState
+    }
 
-    case 'SET_OBJECT_AFTER_MODIF':
-      {
-        const { id, name, template }: { id: number, name: string, template: number } = action.payload
-        const objects: Object[] = state.objects
-          .map((o: Object): Object => {
-            const name_: string = o.id === id ? name : o.name
-            const template_: number = o.id === id ? template : o.template
-            return {
-              ...o,
-              name: name_,
-              template: template_
-            }
-          })
-        return {
-          ...state,
-          objects
-        }
+    case 'SET_OBJECT_AFTER_MODIF': {
+      const { id, name, template }: { id: number, name: string, template: number } = action.payload
+      const objects: Object[] = state.objects
+        .map((o: Object): Object => {
+          const name_: string = o.id === id ? name : o.name
+          const template_: number = o.id === id ? template : o.template
+          return {
+            ...o,
+            name: name_,
+            template: template_
+          }
+        })
+      const newState: StateType = {
+        ...state,
+        objects
       }
+      return newState
+    }
 
-    case 'ADDCATEGORYINPUT':
-      {
-        const catName: string = action.payload
-        const categoryInput: CategoryInput = {
-          ...state.categoryInput,
-          catName
-        }
-        return {
-          ...state,
-          categoryInput
-        }
+    case 'ADDCATEGORYINPUT': {
+      const catName: string = action.payload
+      const categoryInput: CategoryInput = {
+        ...state.categoryInput,
+        catName
       }
+      const newState: StateType = {
+        ...state,
+        categoryInput
+      }
+      return newState
+    }
 
-    case 'SET_CATEGORY_AFTER_ADD':
-      {
-        const categoryInput: CategoryInput = action.payload
-        const { catId, catName, template, position } = categoryInput
-        const cat: Categorie = {
-          id: catId,
-          name: catName,
-          position,
-          template,
-          recette: 0,
-          depense: 0,
-          reserve: 0,
-          isDisplayed: true,
-          isOn: true,
-          nbChild: 0
-        }
-        const categories: Categorie[] = [...state.categories, cat]
-        return {
-          ...state,
-          categories,
-          categoryInput
-        }
+    case 'SET_CATEGORY_AFTER_ADD': {
+      const categoryInput: CategoryInput = action.payload
+      const { catId, catName, template, position } = categoryInput
+      const cat: Categorie = {
+        id: catId,
+        name: catName,
+        position,
+        template,
+        recette: 0,
+        depense: 0,
+        reserve: 0,
+        isDisplayed: true,
+        isOn: true,
+        nbChild: 0
       }
+      const categories: Categorie[] = [...state.categories, cat]
+      const newState: StateType = {
+        ...state,
+        categories,
+        categoryInput
+      }
+      return newState
+    }
 
-    case 'SET_CATEGORY_AFTER_MODIF':
-      {
-        const { id, name, position, template }: CatGql = action.payload
-        const catId: number = parseInt(id)
-        const categories: Categorie[] = state.categories
-          .map((c: Categorie): Categorie => {
-            const name_: string = c.id === catId ? name : c.name
-            const position_: number = c.id === catId ? position : c.position
-            const template_: number = c.id === catId ? template : c.template
-            return {
-              ...c,
-              name: name_,
-              position: position_,
-              template: template_
-            }
-          })
-        return {
-          ...state,
-          categories
-        }
+    case 'SET_CATEGORY_AFTER_MODIF': {
+      const { id, name, position, template }: CatGql = action.payload
+      const catId: number = parseInt(id)
+      const categories: Categorie[] = state.categories
+        .map((c: Categorie): Categorie => {
+          const name_: string = c.id === catId ? name : c.name
+          const position_: number = c.id === catId ? position : c.position
+          const template_: number = c.id === catId ? template : c.template
+          return {
+            ...c,
+            name: name_,
+            position: position_,
+            template: template_
+          }
+        })
+      const newState: StateType = {
+        ...state,
+        categories
       }
+      return newState
+    }
 
     default:
       return state

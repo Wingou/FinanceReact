@@ -6,7 +6,7 @@ import { RootState } from '../store/store'
 import { BoardViewProps, NbObjPerCat, TitleAmountMapPrices } from '../components/board/boardView.d'
 import { formatDateYYYYMMDD, formatFirstDay, formatFirstMonth } from '../utils/helper'
 import { createContext } from 'react'
-import { initialAddPriceInput, initialCategoryInput, initialModifPriceInput, initialObjectInput, initialOrderOptions, initialSearchOptions, initialView } from '../models/initialModel'
+import { initialPriceInput, initialCategoryInput, initialObjectInput, initialOrderOptions, initialSearchOptions, initialView } from '../models/initialModel'
 
 const mapStateToProps = (state: RootState): BoardViewProps => {
 
@@ -17,8 +17,7 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     months,
     searchOptions,
     objects,
-    modifPriceInput,
-    addPriceInput,
+    priceInput,
     view,
     orderOptions,
     objectInput,
@@ -226,9 +225,8 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     searchOptions,
     objects,
     categories,
-    modifPriceInput,
     isAddOpen,
-    addPriceInput,
+    priceInput,
     isLast,
     orderOptions,
     view,
@@ -253,9 +251,8 @@ export const BoardViewContext = createContext<BoardViewProps>({
   searchOptions: initialSearchOptions,
   objects: [],
   categories: [],
-  modifPriceInput: initialModifPriceInput,
+  priceInput: initialPriceInput,
   isAddOpen: false,
-  addPriceInput: initialAddPriceInput,
   isLast: false,
   orderOptions: initialOrderOptions,
   view: initialView,

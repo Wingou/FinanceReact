@@ -3,6 +3,7 @@ import { ModifLine } from '../modif/modif'
 import { DelLine } from '../del/del'
 import { SimpleLine, SumLines } from '../boardLines/boardLines'
 import { BoardViewContext } from '../../containers/boardViewContainer'
+import { Price } from '../../types/common'
 
 export const Board: React.FC = () => {
   return (
@@ -39,19 +40,18 @@ const HeaderLine: React.FC = () => {
 }
 
 const BodyLines: React.FC = () => {
-  const { view, filteredPrices, modifPriceInput } = useContext(BoardViewContext)
+  const { view, filteredPrices, priceInput } = useContext(BoardViewContext)
   const { isColObj, isColDay, isAddOpen } = view
+  const { priceId, template } = priceInput
   return (
     <tbody>
-      {filteredPrices.map((p, index) => {
+      {filteredPrices.map((p: Price, index: number) => {
         return (
-          p.id === modifPriceInput.id && isColObj && isColDay && !isAddOpen ?
-            modifPriceInput.template === 2 ?
-              <DelLine key={`DelLine_${index}`} price={p} />
-              :
-              <ModifLine key={`ModifLine_${index}`} />
-            :
-            <SimpleLine key={`SimpleLine_${index}`} price={p} index={index} />
+          p.id === priceId && isColObj && isColDay && !isAddOpen
+            ? template === 2
+              ? <DelLine key={`DelLine_${index}`} price={p} />
+              : <ModifLine key={`ModifLine_${index}`} />
+            : <SimpleLine key={`SimpleLine_${index}`} price={p} index={index} />
         )
       })}
     </tbody>

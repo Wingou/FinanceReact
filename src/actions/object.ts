@@ -1,6 +1,6 @@
 import React from "react"
 import { store } from "../store/store"
-import { ObjectInput } from "../types/common"
+import { CategoryInput, ObjectInput } from "../types/common"
 import { gql } from "@apollo/client"
 import { apolloClient } from "../apollo-client"
 import { ObjGql } from "../types/graphql"
@@ -22,7 +22,7 @@ export const handleModifObjectInput = (e: React.ChangeEvent<HTMLInputElement>) =
     store.dispatch(action)
 }
 
-export const handleAddObject = async (objectInput: ObjectInput) => {
+export const handleAddObject = async (objectInput: ObjectInput, categoryInput: CategoryInput) => {
     try {
         const api = gql`
             mutation AddObject($insert: AddObjectInsertInput!) {
@@ -34,7 +34,7 @@ export const handleAddObject = async (objectInput: ObjectInput) => {
                 `
         const dataInput = {
             objName: objectInput.objName,
-            catId: objectInput.catId.toString(),
+            catId: categoryInput.catId.toString(),
         }
         const response = await apolloClient.mutate({
             mutation: api,

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 import { store } from "../store/store"
-import { CategoryInput, ModifPriceInput, ObjectInput, Price } from "../types/common"
+import { CategoryInput, PriceInput, ObjectInput, Price } from "../types/common"
 import { formatTextSQL } from "../utils/helper"
 import { apolloClient } from "../apollo-client"
 import { PriceGql } from "../types/graphql"
@@ -10,9 +10,9 @@ export const handleModif = (price: Price) => {
   const { id: priceId, amount, actionDate, comment, dateCreate, dateModif, template, obj, cat } = price
   const { id: objId, name: objName, template: objTemplate } = obj
   const { id: catId, name: catName, position, template: catTemplate } = cat
-  const payload: { modifPriceInput: ModifPriceInput, objectInput: ObjectInput, categoryInput: CategoryInput } = {
-    modifPriceInput: {
-      id: priceId,
+  const payload: { priceInput: PriceInput, objectInput: ObjectInput, categoryInput: CategoryInput } = {
+    priceInput: {
+      priceId,
       amount: amount.toString(),
       actionDate,
       comment,
@@ -69,7 +69,7 @@ export const handleModifCommentInput = (e: React.ChangeEvent<HTMLInputElement>) 
   store.dispatch(action)
 }
 
-export const handleModifPrice = async (modifPriceInput: ModifPriceInput, objectInput: ObjectInput) => {
+export const handleModifPrice = async (priceInput: PriceInput, objectInput: ObjectInput) => {
   try {
     const api = gql`
           mutation ModifPrice ($update: ModifPriceUpdateInput!) {
@@ -91,7 +91,7 @@ export const handleModifPrice = async (modifPriceInput: ModifPriceInput, objectI
                           }
                         }
                       }`
-    const { id, amount, actionDate, comment, template } = modifPriceInput
+    const { priceId, amount, actionDate, comment, template } = priceInput
     const { objId } = objectInput
     const dataInput: {
       id: string,
@@ -101,7 +101,7 @@ export const handleModifPrice = async (modifPriceInput: ModifPriceInput, objectI
       comment: string,
       template: string
     } = {
-      id: id.toString(),
+      id: priceId.toString(),
       amount,
       objId: objId.toString(),
       actionDate: actionDate,

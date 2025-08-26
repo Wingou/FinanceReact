@@ -11,9 +11,9 @@ import { InputDate, InputPrice, InputText } from '../common/inputForm'
 import { BoardViewContext } from '../../containers/boardViewContainer'
 
 export const AddPriceInput: React.FC = () => {
-  const { addPriceInput, categoryInput, objectInput } = useContext(BoardViewContext)
+  const { priceInput, objectInput } = useContext(BoardViewContext)
   const { objId } = objectInput
-  const { amount } = addPriceInput
+  const { amount, actionDate, comment } = priceInput
   const isObjetOK = objId !== -1
   const isPriceOK =
     /^-?\d*\.?\d{0,2}$/.test(amount) &&
@@ -32,11 +32,11 @@ export const AddPriceInput: React.FC = () => {
         name='price'
         placeholder='Prix en'
         handleFC={handleAddPriceInput}
-        value={addPriceInput.amount}
+        value={amount}
       />
       <InputDate
         name='dateAction'
-        value={addPriceInput.actionDate}
+        value={actionDate}
         handleFC={handleAddDateInput}
       />
       <SelectCat caller='ADD' /><br />
@@ -45,12 +45,12 @@ export const AddPriceInput: React.FC = () => {
         name='comment'
         placeholder='Commentaire ici...'
         handleFC={handleAddCommentInput}
-        value={addPriceInput.comment}
+        value={comment}
         width='w-60' />
       <div>
         <button
           onClick={() => {
-            handleAddPriceCheck(addPriceInput, objectInput)
+            handleAddPriceCheck(priceInput, objectInput)
           }}
           title={btnOK_Title}
           disabled={isOKBtnDisabled}

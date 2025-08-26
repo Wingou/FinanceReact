@@ -1,11 +1,10 @@
 import { toast } from 'react-toastify'
 import { store } from '../store/store'
-import { AddPriceInput, ObjectInput } from '../types/common'
+import { PriceInput, ObjectInput } from '../types/common'
 import { formatTextSQL } from '../utils/helper'
 import { gql } from '@apollo/client'
 import { apolloClient } from '../apollo-client'
 import { PriceGql } from '../types/graphql'
-import { CALLER } from '../types/constants'
 
 export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const catId: string = e.target.value
@@ -55,14 +54,14 @@ export const handleAddCommentInput = (e: React.ChangeEvent<HTMLInputElement>) =>
   store.dispatch(action)
 }
 
-export const handleAddPriceCheck = async (addPriceInput: AddPriceInput, objectInput: ObjectInput) => {
+export const handleAddPriceCheck = async (priceInput: PriceInput, objectInput: ObjectInput) => {
   try {
     const api = gql`query GetPriceCheck ($where:PriceCheckWhereInput!) {
                       priceCheck(where: $where) {
                         id
                       }
                     }`
-    const { amount, actionDate } = addPriceInput
+    const { amount, actionDate } = priceInput
     const { objId } = objectInput
     const dataInput: { amount: string, actionDate: string, objId: number } = { amount, actionDate, objId }
     const { data } = await apolloClient.query(
@@ -90,7 +89,7 @@ export const handleAddPriceCheck = async (addPriceInput: AddPriceInput, objectIn
       )
     }
     else {
-      handleAddPrice(addPriceInput, objectInput)
+      handleAddPrice(priceInput, objectInput)
     }
   }
   catch (error) {
@@ -99,7 +98,7 @@ export const handleAddPriceCheck = async (addPriceInput: AddPriceInput, objectIn
   }
 }
 
-export const handleAddPrice = async (addPriceInput: AddPriceInput, objectInput: ObjectInput) => {
+export const handleAddPrice = async (priceInput: PriceInput, objectInput: ObjectInput) => {
   try {
     const api = gql`
           mutation AddPrice ($insert: AddPriceInsertInput!) {
@@ -118,7 +117,7 @@ export const handleAddPrice = async (addPriceInput: AddPriceInput, objectInput: 
                           }
                         }
                       }`
-    const { amount, actionDate, comment } = addPriceInput
+    const { amount, actionDate, comment } = priceInput
     const { objId } = objectInput
     const dataInput: { amount: string, objId: string, actionDate: string, comment: string } = {
       amount,

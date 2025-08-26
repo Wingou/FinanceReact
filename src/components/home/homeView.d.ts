@@ -1,5 +1,4 @@
-import { AddObjectInput, AddPriceInput, Categorie, CategoryInput, ModifPriceInput, Month, Object, Object, OrderOptions, Price, SearchOptions, ViewOptions, Year } from '../../types/common'
-import { SUM_TYPE } from '../../types/constants'
+import { Categorie, CategoryInput, Object, ObjectInput } from '../../types/common'
 
 export interface HomeViewProps {
     categories: Categorie[],

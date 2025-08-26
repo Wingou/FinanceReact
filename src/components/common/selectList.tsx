@@ -58,7 +58,7 @@ export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
     const { categories, categoryInput, objects, objectInput } = caller === 'HOME'
         ? homeContext
         : boardContext
-    const { catId } = categoryInput
+    const { catId, catName } = categoryInput
     const { objId } = objectInput
     const topObjs = getTopObjs(objects, 10)
     const objectsAll = objects
@@ -66,21 +66,22 @@ export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
         .sort((a, b) => {
             return a.name.localeCompare(b.name)
         })
+    const isCatSelected = catId !== -1
     const objectsByCatIds =
-        catId === -1
-            ? objectsAll
-            : objectsAll.filter(o => o.cat.id === catId && o.template === 0)
+        isCatSelected
+            ? objectsAll.filter(o => o.cat.id === catId && o.template === 0)
+            : objectsAll
     const objById = getObjById(objects, objId)
     const objNameForTitle =
         objById.id === -1
             ? 'aucun objet sélectionné'
-            : objById.name +
-            (catId === -1 ? ' : ' + objById.cat.name + ' ' : '')
+            : objById.name + ' : ' + catName
+    // (isCatSelected ? ' : ' + objById.cat.name + ' ' : '')
     const objLabel =
         '¤ OBJET ¤' +
-        (catId === -1
-            ? ''
-            : ' : ' + getCatById(categories, catId).name + ' ')
+        (isCatSelected
+            ? ' : ' + getCatById(categories, catId).name + ' '
+            : '')
     const Red_Border_Obj = objId === -1 ? 'invalidValue' : ''
     return (
         <select
@@ -96,7 +97,7 @@ export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
             >
                 {objLabel}
             </option>
-            {catId === -1 && topObjs.map((muObj: Object, index: number) => {
+            {!isCatSelected && topObjs.map((muObj: Object, index: number) => {
                 return (
                     <option key={'option_TopObjId_' + index} value={muObj.id.toString()} title={muObj.name}>
                         {`${muObj.name} : ${muObj.cat.name} (${muObj.nbChild})`}
@@ -104,14 +105,13 @@ export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
                 )
             }
             )}
-            {catId === -1 && <option disabled={true} className="text-center" >¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤</option>}
+            {!isCatSelected && <option disabled={true} className="text-center" >¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤</option>}
             {objectsByCatIds.map((obj_, index) => {
-                const objName =
-                    obj_.name +
-                    (catId !== -1 ? ' ' : ' : ' + obj_.cat.name + ' ') + '(' + obj_.nbChild + ')'
-
+                const objName = obj_.name
+                const objTitle = `${obj_.name} (${obj_.nbChild}) : ${obj_.cat.name}`
+                // (isCatSelected ? ' ' : ' : ' + obj_.cat.name + ' ') + '(' + obj_.nbChild + ')'
                 return (
-                    <option key={'option_objId_' + index} value={obj_.id.toString()} title={objName}>
+                    <option key={'option_objId_' + index} value={obj_.id.toString()} title={objTitle}>
                         {objName}
                     </option>
                 )

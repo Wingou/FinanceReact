@@ -1,21 +1,16 @@
 import { CURRENT_DATE, ORDERDIR } from '../types/constants'
-import { AddPriceInput, CategoryInput, ModifPriceInput, ObjectInput, OrderOptions, OrderSelectValue, SearchOptions, StateType, ViewOptions } from '../types/common'
+import { CategoryInput, ObjectInput, OrderOptions, OrderSelectValue, PriceInput, SearchOptions, StateType, ViewOptions } from '../types/common'
 
-export const initialModifPriceInput: ModifPriceInput = {
-  id: -1,
+export const initialPriceInput: PriceInput = {
+  priceId: -1,
   amount: '',
   actionDate: CURRENT_DATE,
   comment: '',
+  template: 0,
   dateCreate: CURRENT_DATE,
-  dateModif: CURRENT_DATE,
-  template: 0
+  dateModif: CURRENT_DATE
 }
 
-export const initialAddPriceInput: AddPriceInput = {
-  amount: '',
-  actionDate: CURRENT_DATE,
-  comment: ''
-}
 
 export const initialObjectInput: ObjectInput = {
   objId: -1,
@@ -85,8 +80,7 @@ export const initialModel: StateType = {
   years: [],
   months: [],
   searchOptions: initialSearchOptions,
-  addPriceInput: initialAddPriceInput,
-  modifPriceInput: initialModifPriceInput,
+  priceInput: initialPriceInput,
   objectInput: initialObjectInput,
   categoryInput: initialCategoryInput,
   view: initialView,

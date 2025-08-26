@@ -8,8 +8,7 @@ export interface StateType {
   years: Year[],
   months: Month[],
   searchOptions: SearchOptions,
-  addPriceInput: AddPriceInput,
-  modifPriceInput: ModifPriceInput,
+  priceInput: PriceInput,
   objectInput: ObjectInput,
   categoryInput: CategoryInput,
   view: ViewOptions,
@@ -49,12 +48,6 @@ export interface SearchOptions {
   isSearchReserved: boolean
 }
 
-export interface AddPriceInput {
-  amount: string,
-  actionDate: string,
-  comment: string,
-}
-
 export interface ObjectInput {
   objId: number,
   objName: string,
@@ -68,14 +61,14 @@ export interface CategoryInput {
   position: number
 }
 
-export interface ModifPriceInput {
-  id: number,
+export interface PriceInput {
+  priceId: number,
   amount: string,
   actionDate: string,
   comment: string,
   dateCreate: string,
   dateModif: string,
-  template: number,
+  template: number
 }
 
 export interface Categorie extends CatRaw {

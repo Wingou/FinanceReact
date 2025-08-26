@@ -7,15 +7,16 @@ import { formatDateFR, formatTemplate } from "../../utils/helper"
 import { BoardViewContext } from "../../containers/boardViewContainer"
 
 export const ModifLine: React.FC = () => {
-    const { modifPriceInput, selectedCats, view, categoryInput, objectInput } = useContext(BoardViewContext)
+    const { priceInput, selectedCats, view, categoryInput, objectInput } = useContext(BoardViewContext)
     const { catId } = categoryInput
+    const { amount, actionDate, comment, template, dateCreate, dateModif } = priceInput
     const { isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
-    return <tr key='tr_ModifLine' className='trFocus' title={modifPriceInput.comment}>
+    return <tr key='tr_ModifLine' className='trFocus' title={priceInput.comment}>
         <td key='td_ModifLine_OK' >
             <button
                 className='btnAdmin btnAdminSize2 btnEnabled'
                 onClick={() => {
-                    handleModifPrice(modifPriceInput, objectInput)
+                    handleModifPrice(priceInput, objectInput)
                 }}
                 title='Cliquer pour modifier'
             >
@@ -34,7 +35,7 @@ export const ModifLine: React.FC = () => {
         <td key='td_ModifLine_Date'>
             <InputDate
                 name='dateAction'
-                value={modifPriceInput.actionDate}
+                value={actionDate}
                 handleFC={e => handleModifDateInput(e)}
             />
         </td>
@@ -44,12 +45,12 @@ export const ModifLine: React.FC = () => {
         {isColAmount && <td key='td_ModifLine_Amount'>
             <InputPrice name='price'
                 placeholder='Prix en'
-                value={modifPriceInput.amount}
+                value={amount}
                 handleFC={e => handleModifPriceInput(e)} />
         </td>}
         {isColCat && selectedCats.map((fcat) => {
             return fcat.id === catId
-                ? <td key='td_ModifLine_Price'>{modifPriceInput.amount}</td>
+                ? <td key='td_ModifLine_Price'>{amount}</td>
                 : <td key={`td_ModifLine_by_${fcat.id}_blank`}></td>
         })}
         {isColComment && <td key='td_ModifLine_Comment'>
@@ -57,12 +58,12 @@ export const ModifLine: React.FC = () => {
                 name='comment'
                 placeholder='Commentaire ici...'
                 handleFC={e => handleModifCommentInput(e)}
-                value={modifPriceInput.comment}
+                value={comment}
                 width='w-60' />
         </td>}
-        {isColDateCreate && isColObj && <td key='td_ModifLine_DateCreate'>{formatDateFR(modifPriceInput.dateCreate)}</td>}
-        {isColDateModif && isColObj && <td key='td_ModifLine_DateModif'>{formatDateFR(modifPriceInput.dateModif)}</td>}
-        {isColTemplate && <td key='td_ModifLine_Template'>{formatTemplate(modifPriceInput.template)}</td>}
+        {isColDateCreate && isColObj && <td key='td_ModifLine_DateCreate'>{formatDateFR(dateCreate)}</td>}
+        {isColDateModif && isColObj && <td key='td_ModifLine_DateModif'>{formatDateFR(dateModif)}</td>}
+        {isColTemplate && <td key='td_ModifLine_Template'>{formatTemplate(template)}</td>}
     </tr >
 
 
