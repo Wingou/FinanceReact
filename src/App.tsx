@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { RootState } from './store/store'
 import BoardViewContainer from './containers/boardViewContainer'
-import HomeViewContainer from './containers/homeViewContainer'
 import React from 'react'
 import { COY } from './types/constants'
 import { Menu } from './components/common/menu'
@@ -12,6 +11,7 @@ import { ToastContainer } from 'react-toastify'
 import { gql } from '@apollo/client'
 import { apolloClient } from './apollo-client'
 import 'react-toastify/dist/ReactToastify.css';
+import { HomeView } from './components/home/homeView'
 
 function App() {
   const dispatch = useDispatch()
@@ -65,7 +65,7 @@ function App() {
       case 'BOARD':
         return <BoardViewContainer />;
       case 'HOME':
-        return <HomeViewContainer />;
+        return <HomeView />;
       default:
         throw new Error('Switch PAGE Error !')
     }

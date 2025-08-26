@@ -1,41 +1,56 @@
-import React, { Component, useContext } from 'react'
+import React, { Component, createContext, useContext } from 'react'
 import { SelectCat, SelectObj } from '../common/selectList'
 import { HomeViewProps } from './homeView.d'
 import { InputText } from '../common/inputForm'
 import { handleAddObject, handleAddObjectInput, handleModifObject } from '../../actions/object'
 import { handleAddCategory, handleAddCategoryInput, handleModifCategory } from '../../actions/category'
 import { getObjById } from '../../utils/helper'
-import { HomeViewContext } from '../../containers/homeViewContainer'
+import { useSelector } from 'react-redux'
+import { StateType } from '../../types/common'
+import { initialCategoryInput, initialObjectInput } from '../../models/initialModel'
 
-export class HomeView extends Component<HomeViewProps, {}> {
-    render() {
-        const { objectInput, categoryInput } = this.props
-        return <HomeViewContext.Provider value={this.props}>
-            <div className='
+export const HomeViewContext = createContext<HomeViewProps>({
+    categories: [],
+    objects: [],
+    objectInput: initialObjectInput,
+    categoryInput: initialCategoryInput
+})
+
+export const HomeView: React.FC = () => {
+    const props = useSelector((state: StateType) => {
+        return {
+            categories: state.categories,
+            objects: state.objects,
+            objectInput: state.objectInput,
+            categoryInput: state.categoryInput
+        }
+    })
+    return <HomeViewContext.Provider value={props}>
+        <div className='
                     border-solid border-2 border-blue-500 
                     w-full  
                     flex
                     flex-col
                     items-center
                     '
-            >
-                <div className='
+        >
+            <div className='
                    font-bold
                    text-xl
                    mt-5
                    mb-3
                 '>
-                    Catégories et Objets
-                </div>
-                <div className='m-2'>
-                    <SelectCat caller='HOME' />
-                    <SelectObj caller='HOME' />
-                </div>
-                <InputCat />
-                <InputObj />
+                Catégories et Objets
             </div>
-        </HomeViewContext.Provider>
-    }
+            <div className='m-2'>
+                <SelectCat caller='HOME' />
+                <SelectObj caller='HOME' />
+            </div>
+            <InputCat />
+            <InputObj />
+        </div>
+    </HomeViewContext.Provider>
+
 }
 
 const InputObj: React.FC = () => {
@@ -104,7 +119,7 @@ const InputObj: React.FC = () => {
                 width='w-30' />
             <button
                 onClick={() => {
-                    handleAddObject(objectInput)
+                    handleAddObject(objectInput, categoryInput)
                 }}
                 title={btnAjout_Title}
                 disabled={isBtnAjout_Disabled}

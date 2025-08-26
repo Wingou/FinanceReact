@@ -2,11 +2,11 @@ import React, { useContext } from "react"
 import { handleCatIdInput, handleObjIdInput } from "../../actions/add"
 import { getCatById, getObjById, getTopObjs } from "../../utils/helper"
 import { Object } from "../../types/common"
-import { HomeViewContext } from "../../containers/homeViewContainer"
 import { BoardViewContext } from "../../containers/boardViewContainer"
 import { CALLER } from "../../types/constants"
 import { HomeViewProps } from "../home/homeView.d"
 import { BoardViewProps } from "../board/boardView.d"
+import { HomeViewContext } from "../home/homeView"
 
 export const SelectCat: React.FC<{ caller: CALLER }> = ({ caller }) => {
     const homeContext: HomeViewProps = useContext(HomeViewContext)
