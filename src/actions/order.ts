@@ -1,5 +1,5 @@
 import { store } from "../store/store"
-import { OrderSelectValue } from "../types/common"
+import { OrderOption } from "../types/common"
 
 export const handleOrderInput = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
     store.dispatch({
@@ -12,14 +12,14 @@ export const handleOrderInput = (e: React.ChangeEvent<HTMLSelectElement>, index:
     )
 }
 
-export const handleToggleOrderDir = (orderSelectValue: OrderSelectValue) => {
-    const newOrderSelectValue = {
-        ...orderSelectValue,
-        dir: orderSelectValue.dir === 'ASC' ? 'DESC' : 'ASC'
+export const handleToggleOrderDir = (orderOption: OrderOption) => {
+    const newOrderOption: OrderOption = {
+        ...orderOption,
+        dir: orderOption.dir === 'ASC' ? 'DESC' : 'ASC'
     }
 
     store.dispatch({
         type: 'TOGGLE_ORDER_DIR',
-        payload: newOrderSelectValue
+        payload: newOrderOption
     })
 }

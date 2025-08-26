@@ -1,6 +1,6 @@
 import { catNone, objNone, CURRENT_DATE_TIME, CURRENT_YEAR, CURRENT_MONTH, MONTHS, CALLER } from '../types/constants'
 import { initialPriceInput, initialModel, initialOrderOptions } from '../models/initialModel'
-import { ActionType, Categorie, CategoryInput, PriceInput, Month, Object, ObjectInput, OrderOptions, OrderSelectValue, Price, SearchOptions, StateType, ViewOptions, Year } from '../types/common'
+import { ActionType, Categorie, CategoryInput, PriceInput, Month, Object, ObjectInput, Price, SearchOptions, StateType, ViewOptions, Year, OrderOption } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
 import { CatRaw, ObjRaw } from '../types/reducer'
@@ -686,7 +686,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       }
       const priceInput: PriceInput = caller === 'MODIF_PRICE' || caller === 'ADD' ? initialPriceInput : state.priceInput
       const searchOptions: SearchOptions = caller === 'SEARCH' ? searchOptions_ : state.searchOptions
-      const orderOptions: OrderOptions = caller === 'ORDER' ? initialOrderOptions : state.orderOptions
+      const orderOptions: OrderOption[] = caller === 'ORDER' ? initialOrderOptions : state.orderOptions
       const newState: StateType = {
         ...state,
         priceInput,
@@ -698,8 +698,8 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
 
     case 'UPDATE_ORDER_INPUT': {
       const { value, index: selectedPosCurrent }: { value: string, index: number } = action.payload
-      const cols = state.orderOptions.orderSelectValues
-      const orderSelectValuesReinit: OrderSelectValue[] = cols.map((c: OrderSelectValue): OrderSelectValue => {
+      const cols = state.orderOptions
+      const orderInitiatedOptions: OrderOption[] = cols.map((c: OrderOption): OrderOption => {
         const selectedPos: number = c.selectedPos === selectedPosCurrent
           ? -1
           : c.selectedPos
@@ -708,7 +708,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
           selectedPos
         }
       })
-        .map((c: OrderSelectValue) => {
+        .map((c: OrderOption) => {
           const selectedPos: number = c.selectedPos > selectedPosCurrent && c.value === 'NONE'
             ? c.selectedPos - 1
             : c.selectedPos
@@ -717,23 +717,19 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
             selectedPos
           }
         })
-      const orderSelectValues_: OrderSelectValue[] = orderSelectValuesReinit
-        .map((c: OrderSelectValue): OrderSelectValue => {
+      const orderOptions_: OrderOption[] = orderInitiatedOptions
+        .map((c: OrderOption): OrderOption => {
           const selectedPos: number = c.value === value ? selectedPosCurrent : c.selectedPos
           return {
             ...c,
             selectedPos,
           }
         })
-      const orderNeg: OrderSelectValue[] = orderSelectValues_.filter((o) => o.selectedPos === -1)
-      const orderPos: OrderSelectValue[] = orderSelectValues_.filter((o) => o.selectedPos >= 0)
+      const orderNeg: OrderOption[] = orderOptions_.filter((o) => o.selectedPos === -1)
+      const orderPos: OrderOption[] = orderOptions_.filter((o) => o.selectedPos >= 0)
         .sort((a, b) => a.selectedPos - b.selectedPos)
         .map((o, i) => { return { ...o, selectedPos: i } })
-      const orderSelectValues: OrderSelectValue[] = [...orderPos, ...orderNeg]
-      const orderOptions: OrderOptions = {
-        ...state.orderOptions,
-        orderSelectValues
-      }
+      const orderOptions: OrderOption[] = [...orderPos, ...orderNeg]
       const newState: StateType = {
         ...state,
         orderOptions
@@ -742,16 +738,14 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'TOGGLE_ORDER_DIR': {
-      const newOrderSelectValue: OrderSelectValue = action.payload
-      const orderSelectValues: OrderSelectValue[] = state.orderOptions.orderSelectValues
-        .map((o: OrderSelectValue): OrderSelectValue =>
-          o.value === newOrderSelectValue.value ? newOrderSelectValue : o
+      const newOrderSelectOption: OrderOption = action.payload
+      const orderOptions: OrderOption[] = state.orderOptions
+        .map((o: OrderOption): OrderOption =>
+          o.value === newOrderSelectOption.value ? newOrderSelectOption : o
         )
       const newState: StateType = {
         ...state,
-        orderOptions: {
-          orderSelectValues
-        }
+        orderOptions
       }
       return newState
     }

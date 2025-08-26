@@ -1,5 +1,5 @@
 import { CURRENT_DATE, ORDERDIR } from '../types/constants'
-import { CategoryInput, ObjectInput, OrderOptions, OrderSelectValue, PriceInput, SearchOptions, StateType, ViewOptions } from '../types/common'
+import { CategoryInput, ObjectInput, OrderOption, PriceInput, SearchOptions, StateType, ViewOptions } from '../types/common'
 
 export const initialPriceInput: PriceInput = {
   priceId: -1,
@@ -10,7 +10,6 @@ export const initialPriceInput: PriceInput = {
   dateCreate: CURRENT_DATE,
   dateModif: CURRENT_DATE
 }
-
 
 export const initialObjectInput: ObjectInput = {
   objId: -1,
@@ -38,25 +37,20 @@ export const initialSearchOptions: SearchOptions = {
   isSearchReserved: true
 }
 
-const orderSelectValue = (name: string, value: string, dir: ORDERDIR, selectedPos: number): OrderSelectValue => {
-  const val: OrderSelectValue = { name, value, dir, selectedPos }
+const orderOption = (name: string, value: string, dir: ORDERDIR, selectedPos: number): OrderOption => {
+  const val: OrderOption = { name, value, dir, selectedPos }
   return val
 }
 
-export const initialOrderSelectValueHead = orderSelectValue('DATE', 'dateAction', 'DESC', 0)
-export const initialOrderSelectValues: OrderSelectValue[] = [
-  initialOrderSelectValueHead,
-  orderSelectValue('OBJET', 'obj', 'DESC', -1),
-  orderSelectValue('MONTANT', 'price', 'DESC', -1),
-  orderSelectValue('CATEGORIE', 'cat', 'DESC', -1),
-  orderSelectValue('DATE CREATE', 'dateCreate', 'DESC', -1),
-  orderSelectValue('DATE MODIF', 'dateModif', 'DESC', -1),
-  orderSelectValue('TYPE', 'template', 'DESC', -1),
+export const initialOrderOptions: OrderOption[] = [
+  orderOption('DATE', 'dateAction', 'DESC', 0),
+  orderOption('OBJET', 'obj', 'DESC', -1),
+  orderOption('MONTANT', 'price', 'DESC', -1),
+  orderOption('CATEGORIE', 'cat', 'DESC', -1),
+  orderOption('DATE CREATE', 'dateCreate', 'DESC', -1),
+  orderOption('DATE MODIF', 'dateModif', 'DESC', -1),
+  orderOption('TYPE', 'template', 'DESC', -1),
 ]
-
-export const initialOrderOptions: OrderOptions = {
-  orderSelectValues: initialOrderSelectValues
-}
 
 export const initialView: ViewOptions = {
   page: 'HOME',

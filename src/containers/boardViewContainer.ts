@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { BoardView } from '../components/board/boardView'
-import { Categorie, Month, Price, Year } from '../types/common'
+import { Categorie, Month, OrderOption, Price, Year } from '../types/common'
 import { ORDERDIR, SUM_TYPE } from '../types/constants'
 import { RootState } from '../store/store'
 import { BoardViewProps, NbObjPerCat, TitleAmountMapPrices } from '../components/board/boardView.d'
@@ -26,9 +26,8 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
 
   const { isAddOpen, isLast, isColObj, isColDay, isColMonth } = view
   const { searchMin, searchMax, isSearchDeleted, isSearchReserved } = searchOptions
-  const { orderSelectValues } = orderOptions
-  const orderRefs = orderSelectValues.filter((v) => v.selectedPos >= 0)
-    .sort((a, b) => a.selectedPos - b.selectedPos)
+  const orderRefs = orderOptions.filter((v: OrderOption) => v.selectedPos >= 0)
+    .sort((a: OrderOption, b: OrderOption) => a.selectedPos - b.selectedPos)
   const deletedPricesCatIds = [...new Set(
     prices.filter((price: Price) => price.template === 2)
       .map((price: Price) => price.cat.id))]
@@ -87,8 +86,8 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
         return a.dateModif.localeCompare(b.dateModif)
       }
       else {
-        return orderRefs.reduce((acc, ref) => {
-          return acc !== 0 ? acc : compareValue(ref.value, ref.dir, a, b)
+        return orderRefs.reduce((acc: number, orderRef: OrderOption) => {
+          return acc !== 0 ? acc : compareValue(orderRef.value, orderRef.dir, a, b)
         }, 0)
       }
     })

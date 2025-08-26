@@ -1,14 +1,12 @@
 import React, { useContext } from 'react'
 import { handleCancel } from '../../actions/cancel'
-import { OrderSelectValue } from '../../types/common'
+import { OrderOption, } from '../../types/common'
 import { handleOrderInput, handleToggleOrderDir } from '../../actions/order'
 import { BoardViewContext } from '../../containers/boardViewContainer'
-import { initialOrderOptions, initialOrderSelectValueHead, initialOrderSelectValues } from '../../models/initialModel'
 
 export const OrderInput: React.FC = () => {
   const { orderOptions } = useContext(BoardViewContext)
-  const { orderSelectValues } = orderOptions
-  const orderSelectValuesSelected = orderSelectValues.filter((o) => o.selectedPos !== -1)
+  const orderSelectValuesSelected = orderOptions.filter((o: OrderOption) => o.selectedPos !== -1)
     .sort((a, b) => a.selectedPos - b.selectedPos)
   const orderSelectValuesNb = orderSelectValuesSelected.length
   return <div className='searchDivWrap' >
@@ -41,34 +39,34 @@ export const OrderInput: React.FC = () => {
 
 const SelectOrder: React.FC<{ index: number }> = ({ index }) => {
   const { orderOptions } = useContext(BoardViewContext)
-  const { orderSelectValues } = orderOptions
-  const orderSelectValue: OrderSelectValue = orderSelectValues.find((o: OrderSelectValue): boolean => o.selectedPos === index) ?? initialOrderSelectValueHead
-  const selectedValue: string = orderSelectValue?.value
+  const orderOptions_: OrderOption[] = orderOptions.filter((o: OrderOption): boolean => o.selectedPos === index)
+  const isOrderOption = orderOptions_.length > 0
+  const orderOptionValue: string = isOrderOption ? orderOptions_[0].value : 'NONE'
   return (
     <div>
-      {orderSelectValue && <button
+      {isOrderOption && <button
         className={`btnOrderDir`}
         onClick={() => {
-          handleToggleOrderDir(orderSelectValue)
+          handleToggleOrderDir(orderOptions_[0])
         }}
         title='Order by ASC or DESC'
       >
-        {orderSelectValue?.dir === 'ASC' ? '#' : '¤'}
+        {orderOptions_[0].dir === 'ASC' ? '#' : '¤'}
       </button>}
       <select
         key={`selectOrder_${index}`}
         className='orderInput_Select'
         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleOrderInput(e, index)}
-        value={selectedValue}
+        value={orderOptionValue}
       >
         <option
           key={`selectOption_${index}_NONE`}
           value='NONE'
-          title={selectedValue ? `Remove this order criteria` : `Add this order criteria`}
+          title={orderOptionValue ? `Remove this order criteria` : `Add this order criteria`}
         >
-          {selectedValue ? `- criteria` : `+ criteria`}
+          {isOrderOption ? `- criteria` : `+ criteria`}
         </option>
-        {orderSelectValues
+        {orderOptions
           .map((col, i) => {
             return (
               <option

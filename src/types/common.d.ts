@@ -103,11 +103,7 @@ export interface Month {
   isOn: boolean
 }
 
-export interface OrderOptions {
-  orderSelectValues: OrderSelectValue[],
-}
-
-export interface OrderSelectValue {
+export interface OrderOption {
   name: string,
   value: string,
   dir: ORDERDIR,
