@@ -5,6 +5,7 @@ import { formatTextSQL } from "../utils/helper"
 import { apolloClient } from "../apollo-client"
 import { PriceGql } from "../types/graphql"
 import { toast } from "react-toastify"
+import { CALLER } from "../types/constants"
 
 export const handleModif = (price: Price) => {
   const { id: priceId, amount, actionDate, comment, dateCreate, dateModif, template, obj, cat } = price
@@ -138,9 +139,13 @@ export const handleModifPrice = async (priceInput: PriceInput, objectInput: Obje
         }
       }
       )
+      const payload: { caller: CALLER, price: PriceGql } = {
+        caller: 'MODIF_PRICE',
+        price: result
+      }
       store.dispatch({
-        type: 'SET_PRICES_AFTER_MODIF',
-        payload: result
+        type: 'SET_PRICES_AFTER',
+        payload
       })
     }
     else {

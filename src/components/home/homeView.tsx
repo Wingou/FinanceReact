@@ -86,10 +86,10 @@ const InputObj: React.FC = () => {
 
     const btnDel_Title = !isObjSelected
         ? 'Please, select an Object to delete'
-        : isObjInput
-            ? 'Object Input must be Empty '
-            : !isObjOrphan
-                ? 'Object has Prices, Deletion unauthorized'
+        : !isObjOrphan
+            ? 'Object has Prices, Deletion unauthorized'
+            : isObjInput
+                ? 'Object Input must be Empty '
                 : 'Delete Object'
     const isBtnDel_Disabled = !isObjSelected || isObjInput || !isObjOrphan
     const btnDelStyle = isBtnDel_Disabled ? 'btnDisabled' : 'btnEnabled'

@@ -5,6 +5,7 @@ import { formatTextSQL } from '../utils/helper'
 import { gql } from '@apollo/client'
 import { apolloClient } from '../apollo-client'
 import { PriceGql } from '../types/graphql'
+import { CALLER } from '../types/constants'
 
 export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const catId: string = e.target.value
@@ -148,9 +149,13 @@ export const handleAddPrice = async (priceInput: PriceInput, objectInput: Object
         }
       }
       )
+      const payload: { caller: CALLER, price: PriceGql } = {
+        caller: 'ADD',
+        price: result
+      }
       store.dispatch({
-        type: 'SET_PRICES_AFTER_ADD',
-        payload: result
+        type: 'SET_PRICES_AFTER',
+        payload
       })
     }
     else {

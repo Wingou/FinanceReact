@@ -13,7 +13,7 @@ import { apolloClient } from './apollo-client'
 import 'react-toastify/dist/ReactToastify.css';
 import { HomeView } from './components/home/homeView'
 
-function App() {
+const App = () => {
   const dispatch = useDispatch()
   const years = useSelector((state: RootState) => state.years)
   const months = useSelector((state: RootState) => state.months)
@@ -58,7 +58,7 @@ function App() {
       isLast ? fetchLastData() : fetchPricesData()
       : console.log('No fetchPricesData')
 
-  }, [view.page, years, months, dispatch])
+  }, [view.page, view.isLast, years, months, dispatch])
 
   const viewContainer = () => {
     switch (view.page) {

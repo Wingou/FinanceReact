@@ -1,5 +1,5 @@
 import { catNone, objNone, CURRENT_DATE_TIME, CURRENT_YEAR, CURRENT_MONTH, MONTHS, CALLER } from '../types/constants'
-import { initialPriceInput, initialModel, initialOrderOptions } from '../models/initialModel'
+import { initialPriceInput, initialModel, initialOrderOptions, initialObjectInput, initialCategoryInput } from '../models/initialModel'
 import { ActionType, Categorie, CategoryInput, PriceInput, Month, Object, ObjectInput, Price, SearchOption, StateType, ViewOption, Year, OrderOption } from '../types/common'
 import { CatGql, ObjGql, PriceGql, YearGql } from '../types/graphql'
 import { formatCalendarDate, getCatById } from '../utils/helper'
@@ -401,7 +401,10 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       }
       const newState: StateType = {
         ...state,
-        view
+        view,
+        objectInput: initialObjectInput,
+        categoryInput: initialCategoryInput,
+        priceInput: initialPriceInput
       }
       return newState
     }
@@ -523,39 +526,65 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       return newState
     }
 
-    case 'SET_PRICES_AFTER_ADD': {
-      const newPrice: PriceGql = action.payload
-      const { id, amount, comment, actionDate, obj, cat } = newPrice
+    case 'SET_PRICES_AFTER': {
+      const { caller, price } = action.payload
+      const { id: priceId, amount, comment, actionDate, obj, cat, template, dateModif } = price
       const comment_: string = comment ?? ''
       const { id: objId, name: objName } = obj
-      const { id: catId, name: catName } = cat
+      const { id: catId, name: catName, position } = cat
+      const objId_: number = parseInt(objId)
+      const catId_: number = parseInt(catId)
       const categories: Categorie[] = state.categories.map((c: Categorie): Categorie => {
         return c.id === parseInt(catId) ? { ...c, isOn: true, isDisplayed: true } : c
       })
       const isMultiCats: boolean = categories.filter((c: Categorie): boolean => c.isOn).length > 1
-      const prices: Price[] = [...state.prices,
+      const lastMutatedPriceId: number = parseInt(priceId)
+      const amount_: number = parseFloat(amount)
+      const obj_: ObjRaw = { id: objId_, name: objName, template: 0 }
+      const cat_: CatRaw = { id: catId_, name: catName, template: 0, position: position }
+
+      const doAddPrices: Price[] = [...state.prices,
       {
-        id: Number(id),
-        amount: Number(amount),
+        id: Number(priceId),
+        amount: amount_,
         comment: comment_,
         actionDate,
         template: 0,
         dateCreate: CURRENT_DATE_TIME,
         dateModif: CURRENT_DATE_TIME,
-        obj: { id: Number(objId), name: objName, template: 0 },
-        cat: { id: Number(catId), name: catName, template: 0, position: 99 },
+        obj: obj_,
+        cat: cat_,
         isGroupby: false
       }
       ]
-      const priceInput: PriceInput = {
-        ...state.priceInput,
-        amount: '',
-        comment: ''
-      }
+
+      const doModifPrices: Price[] = state.prices.map((p: Price): Price => {
+        return p.id === lastMutatedPriceId ?
+          {
+            ...p,
+            amount: amount_,
+            comment: comment_,
+            actionDate,
+            dateModif,
+            template,
+            obj: obj_,
+            cat: cat_
+          }
+          : p
+      })
+
+      const prices: Price[] = caller === 'ADD' ? doAddPrices : doModifPrices
+
+      const priceInput: PriceInput = caller === 'ADD'
+        ? {
+          ...state.priceInput,
+          amount: ''
+        }
+        : initialPriceInput
       const searchOptions: SearchOption = {
         ...state.searchOptions,
         isMultiCats,
-        lastMutatedPriceId: parseInt(id)
+        lastMutatedPriceId
       }
       const newState: StateType = {
         ...state,
@@ -593,51 +622,6 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
 
-    case 'SET_PRICES_AFTER_MODIF': {
-      const modifPrice: PriceGql = action.payload
-      const { id: priceId, amount, comment, actionDate, obj, cat, template, dateModif } = modifPrice
-      const comment_: string = comment ?? ''
-      const { id: objId, name: objName } = obj
-      const { id: catId, name: catName, position } = cat
-      const objId_: number = parseInt(objId)
-      const catId_: number = parseInt(catId)
-      const categories: Categorie[] = state.categories.map((c: Categorie): Categorie => {
-        return c.id === parseInt(catId) ? { ...c, isOn: true, isDisplayed: true } : c
-      })
-      const isMultiCats = categories.filter((c: Categorie): boolean => c.isOn).length > 1
-      const lastMutatedPriceId: number = parseInt(priceId)
-      const prices: Price[] = state.prices.map((p: Price): Price => {
-        const amount_: number = parseFloat(amount)
-        const obj: ObjRaw = { id: objId_, name: objName, template: 0 }
-        const cat: CatRaw = { id: catId_, name: catName, template: 0, position }
-        return p.id === lastMutatedPriceId ?
-          {
-            ...p,
-            amount: amount_,
-            comment: comment_,
-            actionDate,
-            dateModif,
-            template,
-            obj,
-            cat
-          }
-          : p
-      })
-      const searchOptions: SearchOption = {
-        ...state.searchOptions,
-        isMultiCats,
-        lastMutatedPriceId
-      }
-      const newState: StateType = {
-        ...state,
-        prices,
-        priceInput: initialPriceInput,
-        searchOptions,
-        categories
-      }
-      return newState
-    }
-
     case 'CANCEL_INPUT': {
       const caller: CALLER = action.payload
       const searchOptions_: SearchOption = {
@@ -649,11 +633,15 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       const priceInput: PriceInput = caller === 'MODIF_PRICE' || caller === 'ADD' ? initialPriceInput : state.priceInput
       const searchOptions: SearchOption = caller === 'SEARCH' ? searchOptions_ : state.searchOptions
       const orderOptions: OrderOption[] = caller === 'ORDER' ? initialOrderOptions : state.orderOptions
+      const objectInput: ObjectInput = caller === 'MODIF_PRICE' || caller === 'ADD' ? initialObjectInput : state.objectInput
+      const categoryInput: CategoryInput = caller === 'MODIF_PRICE' || caller === 'ADD' ? initialCategoryInput : state.categoryInput
       const newState: StateType = {
         ...state,
         priceInput,
         searchOptions,
-        orderOptions
+        orderOptions,
+        objectInput,
+        categoryInput
       }
       return newState
     }
