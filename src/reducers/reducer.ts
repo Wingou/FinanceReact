@@ -436,14 +436,14 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_CATID': {
-      const catId: string = action.payload
+      const { caller, catId }: { caller: CALLER, catId: string } = action.payload
       const { objectInput, categoryInput } = state
       const catId_: number = parseInt(catId)
       const catName: string = getCatById(state.categories, catId_).name
       const objectInput_: ObjectInput = {
         ...objectInput,
         objId: -1,
-        objName: ''
+        objName: caller === 'HOME' ? objectInput.objName : ''
       }
       const categoryInput_: CategoryInput = {
         ...categoryInput,
@@ -728,7 +728,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       return newState
     }
 
-    case 'ADDOBJECTINPUT': {
+    case 'SET_OBJECT_INPUT': {
       const objName: string = action.payload
       const objectInput: ObjectInput = {
         ...state.objectInput,
@@ -768,11 +768,12 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_OBJECT_AFTER_MODIF': {
-      const { id, name, template }: { id: number, name: string, template: number } = action.payload
+      const { id, name, template } = action.payload
+      const objId: number = parseInt(id)
       const objects: Object[] = state.objects
         .map((o: Object): Object => {
-          const name_: string = o.id === id ? name : o.name
-          const template_: number = o.id === id ? template : o.template
+          const name_: string = o.id === objId ? name : o.name
+          const template_: number = o.id === objId ? template : o.template
           return {
             ...o,
             name: name_,
@@ -786,7 +787,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
       return newState
     }
 
-    case 'ADDCATEGORYINPUT': {
+    case 'SET_CATEGORY_INPUT': {
       const catName: string = action.payload
       const categoryInput: CategoryInput = {
         ...state.categoryInput,

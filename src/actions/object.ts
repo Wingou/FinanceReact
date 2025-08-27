@@ -8,7 +8,7 @@ import { toast } from "react-toastify"
 
 export const handleAddObjectInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const action = {
-        type: 'ADDOBJECTINPUT',
+        type: 'SET_OBJECT_INPUT',
         payload: e.target.value
     }
     store.dispatch(action)
@@ -118,11 +118,7 @@ export const handleModifObject = async (objectInput: ObjectInput, template: Numb
             )
             store.dispatch({
                 type: 'SET_OBJECT_AFTER_MODIF',
-                payload: {
-                    id: parseInt(result.id),
-                    name: result.name,
-                    template: result.template
-                }
+                payload: result
             })
         }
         else {

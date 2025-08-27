@@ -4,8 +4,8 @@ import { HomeViewProps } from './homeView.d'
 import { InputText } from '../common/inputForm'
 import { handleAddObject, handleAddObjectInput, handleModifObject } from '../../actions/object'
 import { handleAddCategory, handleAddCategoryInput, handleModifCategory } from '../../actions/category'
-import { getObjById } from '../../utils/helper'
-import { useSelector } from 'react-redux'
+import { getCatById, getObjById } from '../../utils/helper'
+import { useDispatch, useSelector } from 'react-redux'
 import { StateType } from '../../types/common'
 import { initialCategoryInput, initialObjectInput } from '../../models/initialModel'
 
@@ -50,11 +50,10 @@ export const HomeView: React.FC = () => {
             <InputObj />
         </div>
     </HomeViewContext.Provider>
-
 }
 
 const InputObj: React.FC = () => {
-
+    const dispatch = useDispatch()
     const { categoryInput, objects, objectInput } = useContext(HomeViewContext)
     const { catId } = categoryInput
     const { objId, objName } = objectInput
@@ -93,8 +92,11 @@ const InputObj: React.FC = () => {
                 : 'Delete Object'
     const isBtnDel_Disabled = !isObjSelected || isObjInput || !isObjOrphan
     const btnDelStyle = isBtnDel_Disabled ? 'btnDisabled' : 'btnEnabled'
-    const textInput = objName === 'NONE' ? '' : objName
 
+    const isBtnEmpty_Disabled = !isObjInput
+    const btnEmptyStyle = isBtnEmpty_Disabled ? 'btnDisabled' : 'btnEnabled'
+
+    const textInput = objName === 'NONE' ? '' : objName
     return <div className='
              bg-indigo-100
               text-left 
@@ -104,7 +106,7 @@ const InputObj: React.FC = () => {
               p-2
               m-1
               mb-5
-              w-8/12
+              w-9/12
               flex
               '>
         <div className='font-bold w-24'>
@@ -129,7 +131,7 @@ const InputObj: React.FC = () => {
             </button>
             <button
                 onClick={() => {
-                    handleModifObject(objectInput, 1)
+                    handleModifObject(objectInput, 0)
                 }}
                 title={btnModif_Title}
                 disabled={isBtnModif_Disabled}
@@ -147,22 +149,58 @@ const InputObj: React.FC = () => {
             >
                 DELETE
             </button>
+            <button
+                className={`btnAdmin btnAdminSize3 ${btnEmptyStyle} `}
+                disabled={isBtnEmpty_Disabled}
+                onClick={() => dispatch({ type: 'SET_OBJECT_INPUT', payload: '' })}
+                title='Empty Object Input'
+            >
+                ¤
+            </button>
         </div>
     </div>
 }
 
 const InputCat: React.FC = () => {
+    const dispatch = useDispatch()
     const { categoryInput, categories } = useContext(HomeViewContext)
     const { catId, catName } = categoryInput
-    const isCatOK = catName.length > 0
     const isCatSelected = catId !== -1
-    const isCatNew = categories.filter(cat => cat.name === catName).length == 0
-    const btnOK_Title = !isCatOK
-        ? 'Category is missing !' :
-        !isCatNew ? 'Category is already existed !' :
-            !isCatSelected ? 'No Category selected' : ''
-    const isAjoutBtnDisabled = !isCatOK || !isCatNew || !isCatSelected
-    const btnAjoutSisableStyle = isAjoutBtnDisabled ? 'btnDisabled' : 'btnEnabled'
+    const isCatInput = catName.length > 0
+    const isCatNew = categories.filter(cat => cat.name === catName).length === 0
+    const isCatOrphan = getCatById(categories, catId).nbChild === 0
+
+    const btnAjout_Title = !isCatInput
+        ? 'Category Input is missing'
+        : !isCatNew
+            ? 'Category is already existed !'
+            : 'Add new Category'
+    const isAddBtnDisabled = !isCatInput || !isCatNew
+    const btnAjoutDisableStyle = isAddBtnDisabled ? 'btnDisabled' : 'btnEnabled'
+
+    const btnModif_Title = !isCatInput
+        ? 'Category Input is missing'
+        : !isCatSelected
+            ? 'Please, select a Category to modify'
+            : !isCatNew
+                ? 'Category is already existed'
+                : 'Modify category'
+    const isModifBtnDisabled = !isCatInput || !isCatSelected || !isCatNew
+    const btnModifDisableStyle = isModifBtnDisabled ? 'btnDisabled' : 'btnEnabled'
+
+    const btnDel_Title = !isCatSelected
+        ? 'Please, select a Category to delete '
+        : !isCatOrphan
+            ? 'Category has Objects, Deletion unauthorized'
+            : isCatInput
+                ? 'Category Input must be Empty '
+                : 'Delete Category'
+    const isBtnDel_Disabled = !isCatSelected || !isCatOrphan || isCatInput
+    const btnDelStyle = isBtnDel_Disabled ? 'btnDisabled' : 'btnEnabled'
+
+    const isBtnEmpty_Disabled = !isCatInput
+    const btnEmptyStyle = !isCatInput ? 'btnDisabled' : 'btnEnabled'
+
     const textInput = catName === 'NONE' ? '' : catName
     return <div className='
              bg-indigo-100
@@ -170,10 +208,9 @@ const InputCat: React.FC = () => {
               border-solid
               border-black
               border-2
-              w-8/12
+              w-9/12
               m-1
               p-2
-            
               flex'>
         <div className='font-bold w-24'>
             Catégorie
@@ -190,21 +227,39 @@ const InputCat: React.FC = () => {
                 onClick={() => {
                     handleAddCategory(categoryInput)
                 }}
-                title={btnOK_Title}
-                disabled={isAjoutBtnDisabled}
-                className={`btnAdmin btnAdminSize1 ${btnAjoutSisableStyle}`}
+                title={btnAjout_Title}
+                disabled={isAddBtnDisabled}
+                className={`btnAdmin btnAdminSize1 ${btnAjoutDisableStyle}`}
             >
                 AJOUT
             </button>
             <button
                 onClick={() => {
-                    handleModifCategory(categoryInput)
+                    handleModifCategory(categoryInput, 0)
                 }}
-                title={btnOK_Title}
-                disabled={isAjoutBtnDisabled}
-                className={`btnAdmin btnAdminSize1 ${btnAjoutSisableStyle}`}
+                title={btnModif_Title}
+                disabled={isModifBtnDisabled}
+                className={`btnAdmin btnAdminSize1 ${btnModifDisableStyle}`}
             >
                 MODIF
+            </button>
+            <button
+                onClick={() => {
+                    handleModifCategory(categoryInput, 2)
+                }}
+                title={btnDel_Title}
+                disabled={isBtnDel_Disabled}
+                className={`btnAdmin btnAdminSize1 ${btnDelStyle}`}
+            >
+                DELETE
+            </button>
+            <button
+                className={`btnAdmin btnAdminSize3 ${btnEmptyStyle} `}
+                disabled={isBtnEmpty_Disabled}
+                onClick={() => dispatch({ type: 'SET_CATEGORY_INPUT', payload: '' })}
+                title='Empty Category Input'
+            >
+                ¤
             </button>
         </div>
     </div>

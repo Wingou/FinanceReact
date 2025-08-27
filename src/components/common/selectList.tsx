@@ -27,7 +27,7 @@ export const SelectCat: React.FC<{ caller: CALLER }> = ({ caller }) => {
         <select
             className='addInput_Select'
             value={catId}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleCatIdInput(e)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleCatIdInput(e, caller)}
             title={catNameForTitle}
         >
             <option
@@ -55,6 +55,7 @@ export const SelectCat: React.FC<{ caller: CALLER }> = ({ caller }) => {
 export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
     const homeContext: HomeViewProps = useContext(HomeViewContext)
     const boardContext: BoardViewProps = useContext(BoardViewContext)
+
     const { categories, categoryInput, objects, objectInput } = caller === 'HOME'
         ? homeContext
         : boardContext
@@ -76,7 +77,6 @@ export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
         objById.id === -1
             ? 'aucun objet sélectionné'
             : objById.name + ' : ' + catName
-    // (isCatSelected ? ' : ' + objById.cat.name + ' ' : '')
     const objLabel =
         '¤ OBJET ¤' +
         (isCatSelected
@@ -106,10 +106,9 @@ export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
             }
             )}
             {!isCatSelected && <option disabled={true} className="text-center" >¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤</option>}
-            {objectsByCatIds.map((obj_, index) => {
-                const objName = obj_.name
+            {objectsByCatIds.map((obj_: Object, index: number) => {
+                const objName = obj_.name + (caller === 'HOME' ? ' (' + obj_.nbChild + ')' : '')
                 const objTitle = `${obj_.name} (${obj_.nbChild}) : ${obj_.cat.name}`
-                // (isCatSelected ? ' ' : ' : ' + obj_.cat.name + ' ') + '(' + obj_.nbChild + ')'
                 return (
                     <option key={'option_objId_' + index} value={obj_.id.toString()} title={objTitle}>
                         {objName}

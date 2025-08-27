@@ -7,11 +7,15 @@ import { apolloClient } from '../apollo-client'
 import { PriceGql } from '../types/graphql'
 import { CALLER } from '../types/constants'
 
-export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>) => {
+export const handleCatIdInput = (e: React.ChangeEvent<HTMLSelectElement>, caller: CALLER) => {
   const catId: string = e.target.value
+  const payload: { caller: CALLER, catId: string } = {
+    caller,
+    catId
+  }
   const action = {
     type: 'SET_CATID',
-    payload: catId
+    payload
   }
   store.dispatch(action)
 }

@@ -8,7 +8,7 @@ import { CatGql, ObjGql } from "../types/graphql"
 
 export const handleAddCategoryInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const action = {
-        type: 'ADDCATEGORYINPUT',
+        type: 'SET_CATEGORY_INPUT',
         payload: e.target.value
     }
     store.dispatch(action)
@@ -74,7 +74,7 @@ export const handleAddCategory = async (categoryInput: CategoryInput) => {
     }
 }
 
-export const handleModifCategory = async (categoryInput: CategoryInput) => {
+export const handleModifCategory = async (categoryInput: CategoryInput, template: number) => {
     try {
         const api = gql`
                     mutation ModifCategory($updateCat: ModifCategoryInput!) {
@@ -98,8 +98,9 @@ export const handleModifCategory = async (categoryInput: CategoryInput) => {
             }
         })
         const result: CatGql = response.data?.modifCategory
+        const msg = template === 2 ? 'supprimé' : 'modifié'
         if (result) {
-            toast.success(`Catégorie ${dataInput.catName} est modifié !`, {
+            toast.success(`Catégorie ${dataInput.catName} est ${msg} !`, {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -114,17 +115,9 @@ export const handleModifCategory = async (categoryInput: CategoryInput) => {
                 }
             }
             )
-            const { id, name, position, template, nbChild } = result
-            const payload: CatGql = {
-                id: id,
-                name: name,
-                position,
-                template,
-                nbChild
-            }
             store.dispatch({
                 type: 'SET_CATEGORY_AFTER_MODIF',
-                payload
+                payload: result
             })
         }
         else {
