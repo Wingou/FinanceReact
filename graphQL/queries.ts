@@ -10,7 +10,7 @@ export const sqlCategoryById = `SELECT id, Categorie, Ordre, template FROM categ
 
 export const sqlObjects = `SELECT o.id, o.Objet, o.id_categorie, o.template, count(p.id_objet) as nbChild
                                 FROM objet o LEFT JOIN  prix p ON p.id_objet= o.id
-                                WHERE p.template = 2 OR p.template =0 OR p.template is NULL
+                                WHERE p.template=2 OR p.template =0 OR p.template is NULL
                                 GROUP BY o.id, o.Objet, o.id_categorie, o.template 
                                 ORDER BY o.Objet`
 export const sqlObjectById = `SELECT id, Objet, id_categorie, template FROM objet WHERE id=?`

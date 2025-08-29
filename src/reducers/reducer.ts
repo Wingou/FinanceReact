@@ -742,11 +742,11 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
     }
 
     case 'SET_OBJECT_AFTER_ADD': {
-      const { id, name, cat: catId }: { id: string, name: string, cat: string } = action.payload
+      const { id, name, cat }: { id: string, name: string, cat: { id: string } } = action.payload
       const objId: number = parseInt(id)
-      const catId_: number = parseInt(catId)
+      const catId_: number = parseInt(cat.id)
       const catById: Categorie = getCatById(state.categories, catId_)
-      const cat: CatRaw = {
+      const cat_: CatRaw = {
         id: catId_,
         name: catById.name,
         position: catById.position,
@@ -756,7 +756,7 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         id: objId,
         name,
         template: 0,
-        cat,
+        cat: cat_,
         nbChild: 0
       }
       const objects: Object[] = [...state.objects, newObj]
@@ -841,7 +841,8 @@ export const mainReducer = (state: StateType = initialModel, action: ActionType)
         })
       const newState: StateType = {
         ...state,
-        categories
+        categories,
+        categoryInput: initialCategoryInput
       }
       return newState
     }

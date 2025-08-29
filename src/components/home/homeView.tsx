@@ -60,7 +60,7 @@ const InputObj: React.FC = () => {
     const isCatSelected = catId !== -1
     const isObjSelected = objId !== -1
     const isObjInput = objName.length > 0
-    const isObjNew = objects.filter(o => o.name === objectInput.objName && o.cat.id === catId).length === 0
+    const isObjNew = objects.filter(o => o.name === objectInput.objName && o.cat.id === catId && o.template === 0).length === 0
     const isObjOrphan = getObjById(objects, objId).nbChild === 0
 
     const btnAjout_Title = !isCatSelected
@@ -103,10 +103,10 @@ const InputObj: React.FC = () => {
               border-solid
               border-black
               border-2
-              p-2
-              m-1
+              py-2
+              px-4
               mb-5
-              w-9/12
+              min-w-min
               flex
               '>
         <div className='font-bold w-24'>
@@ -208,9 +208,10 @@ const InputCat: React.FC = () => {
               border-solid
               border-black
               border-2
-              w-9/12
-              m-1
-              p-2
+              min-w-min
+              py-2
+              px-4
+              mb-1
               flex'>
         <div className='font-bold w-24'>
             Catégorie

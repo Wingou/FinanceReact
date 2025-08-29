@@ -89,7 +89,7 @@ export const handleModifCategory = async (categoryInput: CategoryInput, template
             id: categoryInput.catId.toString(),
             catName: categoryInput.catName,
             position: categoryInput.position.toString(),
-            template: categoryInput.template.toString(),
+            template: template.toString(),
         }
         const response = await apolloClient.mutate({
             mutation: api,
