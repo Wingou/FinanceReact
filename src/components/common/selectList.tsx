@@ -69,7 +69,7 @@ export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
         })
     const isCatSelected = catId !== -1
     const objectsByCatIds =
-        isCatSelected && caller !== 'MODIF_PRICE'
+        isCatSelected && !(caller === 'MODIF_PRICE' || caller === 'ADD')
             ? objectsAll.filter(o => o.cat.id === catId)
             : objectsAll
     const objById = getObjById(objects, objId)
@@ -83,6 +83,7 @@ export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
             ? ' : ' + getCatById(categories, catId).name + ' '
             : '')
     const Red_Border_Obj = objId === -1 ? 'invalidValue' : ''
+    const isDisplayed = !isCatSelected
     return (
         <select
             className={`addInput_Select ${Red_Border_Obj}`}
@@ -97,7 +98,7 @@ export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
             >
                 {objLabel}
             </option>
-            {!isCatSelected && topObjs.map((muObj: Object, index: number) => {
+            {isDisplayed && topObjs.map((muObj: Object, index: number) => {
                 return (
                     <option key={'option_TopObjId_' + index} value={muObj.id.toString()} title={muObj.name}>
                         {`${muObj.name} : ${muObj.cat.name} (${muObj.nbChild})`}
@@ -105,9 +106,9 @@ export const SelectObj: React.FC<{ caller: CALLER }> = ({ caller }) => {
                 )
             }
             )}
-            {!isCatSelected && <option disabled={true} className="text-center" >¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤</option>}
+            {isDisplayed && <option disabled={true} className="text-center" >¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤ ¤</option>}
             {objectsByCatIds.map((obj_: Object, index: number) => {
-                const objName = caller === 'MODIF_PRICE'
+                const objName = (caller === 'MODIF_PRICE' || caller === 'ADD')
                     ? `${obj_.name} : ${obj_.cat.name}`
                     : obj_.name + (caller === 'HOME' ? ' (' + obj_.nbChild + ')' : '')
                 const objTitle = `${obj_.name} (${obj_.nbChild}) : ${obj_.cat.name}`

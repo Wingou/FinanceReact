@@ -17,19 +17,10 @@ import { handleSearchObj } from '../../actions/search'
 import { BoardViewContext } from '../../containers/boardViewContainer'
 
 export const SimpleLine: React.FC<SimpleLineProps> = ({ price, index }) => {
-    const { id: priceId, amount, actionDate, comment, dateCreate, dateModif, template } = price
-    const { selectedCats, view, searchOptions, objectInput } = useContext(BoardViewContext)
+    const { template } = price
+    const { selectedCats, view, searchOptions } = useContext(BoardViewContext)
     const { isColMonth, isColDay, isColObj, isColAmount, isColCat, isColComment, isColDateCreate, isColDateModif, isColTemplate } = view
     const { lastMutatedPriceId } = searchOptions
-    const priceInputToReserve: PriceInput = {
-        priceId,
-        amount: price.amount.toString(),
-        actionDate,
-        comment,
-        dateCreate,
-        dateModif,
-        template: price.template === 0 ? 1 : 0
-    }
     const simpleLineStyleByTemplate: string =
         {
             0: 'SimpleLineActivated',
@@ -49,7 +40,7 @@ export const SimpleLine: React.FC<SimpleLineProps> = ({ price, index }) => {
 
     return <tr key={`tr_SimpleLine_${index}`} className={trSimpleLine + ' trhover ' + simpleLineStyleByTemplate + ' ' + groupbyLineStyle} title={commentTitle}>
         <td key={`td_admin_${index}`}>
-            <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={price.template === 2 || !isColObj || !isColDay} onClick={() => handleModifPrice(priceInputToReserve, objectInput)}>~</button>
+            <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={price.template === 2 || !isColObj || !isColDay} onClick={() => handleModif({ ...price, template: template === 0 ? 1 : 0 })}>~</button>
             <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={price.template === 2 || !isColObj || !isColDay} onClick={() => handleModif(price)}>...</button>
             <button className={`btnAdmin btnAdminSize3 ${btnStyleDisabled}`} disabled={price.template === 2 || !isColObj || !isColDay} onClick={() => handleModif({ ...price, template: 2 })}>X</button>
         </td>
