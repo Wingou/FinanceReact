@@ -9,8 +9,7 @@ import {
     formatPriceWithZero,
     formatTemplate
 } from '../../utils/helper'
-import { PriceInput } from '../../types/common'
-import { handleModif, handleModifPrice } from '../../actions/modif'
+import { handleModif } from '../../actions/modif'
 import { SimpleLineProps, TitleAmountMapString } from '../board/boardView.d'
 import { SUM_TYPE } from '../../types/constants'
 import { handleSearchObj } from '../../actions/search'

@@ -81,16 +81,6 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
     .filter((price: Price) => (searchMax === null ? true : price.amount <= searchMax))
     .filter((price: Price) => (price.template === 2 ? isSearchDeleted : true))
     .filter((price: Price) => (price.template === 1 ? isSearchReserved : true))
-    .sort((a: Price, b: Price) => {
-      if (orderRefs.length === 0) {
-        return a.dateModif.localeCompare(b.dateModif)
-      }
-      else {
-        return orderRefs.reduce((acc: number, orderRef: OrderOption) => {
-          return acc !== 0 ? acc : compareValue(orderRef.value, orderRef.dir, a, b)
-        }, 0)
-      }
-    })
 
   const filteredPrices__: Price[] = isColObj
     ? filteredPrices_
@@ -171,6 +161,16 @@ const mapStateToProps = (state: RootState): BoardViewProps => {
         , [])
 
   const filteredPrices = filteredPrices___
+    .sort((a: Price, b: Price) => {
+      if (orderRefs.length === 0) {
+        return a.dateModif.localeCompare(b.dateModif)
+      }
+      else {
+        return orderRefs.reduce((acc: number, orderRef: OrderOption) => {
+          return acc !== 0 ? acc : compareValue(orderRef.value, orderRef.dir, a, b)
+        }, 0)
+      }
+    })
   const filteredPricesCatIds = [...new Set(filteredPrices.map((p: Price) => p.cat.id))]
   const selectedCats = displayedCats
     .filter((cat: Categorie) => cat.isOn)
