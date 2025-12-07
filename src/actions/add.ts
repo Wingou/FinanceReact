@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify'
 import { store } from '../store/store'
 import { PriceInput, ObjectInput } from '../types/common'
-import { formatTextSQL } from '../utils/helper'
+import { amountFormat, formatTextSQL } from '../utils/helper'
 import { gql } from '@apollo/client'
 import { apolloClient } from '../apollo-client'
 import { PriceGql } from '../types/graphql'
@@ -39,13 +39,10 @@ export const handleAddDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 }
 
 export const handleAddPriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const valeur = e.target.value.replace(',', '.')
-  if (!/^-?\d*\.?\d{0,2}$/.test(valeur)) {
-    e.target.value = e.target.value.slice(0, -1)
-  }
+  const payload = amountFormat(e.target.value)
   const action = {
     type: 'PRICE_INPUT_SET_PRICE',
-    payload: e.target.value
+    payload
   }
   store.dispatch(action)
 }

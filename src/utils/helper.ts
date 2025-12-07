@@ -96,3 +96,41 @@ export const getTopObjs = (objects: Object[], nb: number): Object[] => {
     .sort((a: Object, b: Object) => b.nbChild - a.nbChild)
     .slice(0, nb)
 }
+
+const toAmountRaw = (p_: string): string => {
+  if (p_ == '0' || p_ == '') {
+    return p_
+  }
+  const signe = p_.includes('-') ? '-' : ''
+  const pp = ('#' + p_).replace('-', '')
+    .replace('.', '')
+    .replace('#00', '')
+    .replace('#0', '')
+    .replace('#', '')
+  return signe + pp
+}
+
+const toAmountFormatted = (pRaw: string): string => {
+  const signe = pRaw.slice(0, 1) == '-' ? '-' : ''
+  const p = pRaw.replace(/-/g, '')
+  const len = p.length
+  switch (len) {
+    case 0:
+      return signe;
+    case 1:
+      return signe + '0.0' + p;
+    case 2:
+      return signe + '0.' + p;
+    default:
+      return signe
+        + p.slice(0, len - 2)
+        + '.'
+        + p.slice(len - 2, len)
+  }
+}
+
+export const amountFormat = (p: string): string => {
+  const pRaw = toAmountRaw(p)
+  const pFormatted = toAmountFormatted(pRaw)
+  return pFormatted;
+}
